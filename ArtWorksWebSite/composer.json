@@ -1,0 +1,18 @@
+{
+  "name": "ArtWorksWebSite",
+  "description": "the mini php framework with project",
+  "type": "Framework",
+  "keywords":[
+    "PHP","PHP framework"
+  ],
+  "require": {
+    "php": ">= 5.3.0",
+    "monolog/monolog": "*",
+  },
+  "repositories": {
+    "packagist": {
+      "type": "composer",
+      "url": "https://packagist.phpcomposer.com"
+    }
+  }
+}
