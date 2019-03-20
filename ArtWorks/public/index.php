@@ -7,6 +7,8 @@
  * Time: 21:39
  */
 
+session_start();
+
 define('ROOT_PATH',dirname(dirname(__FILE__)));
 define('APP_PATH',ROOT_PATH.'/app');
 define('CONFIG_PATH',ROOT_PATH.'/config');
@@ -16,7 +18,8 @@ require ROOT_PATH.'/bootstrap/autoload.php';
 $appConfig = require CONFIG_PATH.'/app.php';
 $dbConfig = require CONFIG_PATH.'/database.php';
 $loggerConfig = require CONFIG_PATH.'/logger.php';
-$config = ['setting' => array_merge($appConfig,$dbConfig,$loggerConfig)];
+$keyConfig = require CONFIG_PATH . '/key.php';
+$config = ['setting' => array_merge($appConfig,$dbConfig,$loggerConfig,$keyConfig)];
 
 $app = require_once ROOT_PATH.'/bootstrap/app.php';
 

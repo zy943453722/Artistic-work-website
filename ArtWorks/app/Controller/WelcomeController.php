@@ -33,8 +33,15 @@ class WelcomeController extends baseController
         //传递参数到model层
         $user = new User();
         $result = $user->getUser();
-        $data = ['data' => $result];
-        //接收到返回的参数组装成response返回
-        return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
+        //判断是否出现逻辑错误
+        if (isset($result['res']) && $result['res'] === false) {
+            return ApiView::jsonResponse($response, $result['message']);
+        }
+        else {
+            $data = ['data' => $result];
+            //接收到返回的参数组装成response返回
+            return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
+        }
+
     }
 }

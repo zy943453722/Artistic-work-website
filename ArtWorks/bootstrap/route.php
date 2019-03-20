@@ -20,7 +20,7 @@ switch ($args) {
         require ROOT_PATH.'./routers/workRouter.php';
         break;
     default:
-        die();
+        $app->getContainer()->get('notFoundHandler');//匹配不到路由
         break;
 }
 

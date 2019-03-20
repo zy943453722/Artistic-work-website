@@ -14,8 +14,9 @@ class RequestMiddleware
 {
     public function __invoke($resquest, $response, $next)
     {
-        //业务
+        //前置业务
         $response = $next($resquest, $response);
+        //后置业务
         return $response;
     }
 

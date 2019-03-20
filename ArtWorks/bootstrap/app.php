@@ -10,6 +10,7 @@ use Illuminate\Database\Capsule\Manager;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Slim\Csrf\Guard;
+use PhpMiddleware\RequestId\Generator\PhpUniqidGenerator;
 
 $container = new Slim\Container($config);
 $app = new Slim\App($container);
@@ -31,19 +32,73 @@ $container['logger'] = function ($container) {
 };
 
 $container['csrf'] = function ($container) {
-    return new Guard();
+    $guard = new Guard();
+    $guard->setPersistentTokenMode(true);
+    $guard->setFailureCallable(function ($request, $response, $next) use ($container){
+        $generator = new PhpUniqidGenerator();
+        $requestId = $generator->generateRequestId();
+        return $container['response']
+            ->withStatus(400)
+            ->withHeader('Content-type','application/json')
+            ->write(json_encode(['requestId'=> $requestId,
+                'error' => [
+                    'code' => 400,
+                    'message' => "Failed CSRF check!"
+                ]]));
+    });
+    return $guard;
 };
 
 $container['notFoundHandler'] = function ($container) {
-
+    return function ($request, $response) use ($container) {
+        $generator = new PhpUniqidGenerator();
+        $requestId = $generator->generateRequestId();
+      return $container['response']
+          ->withStatus(404)
+          ->withHeader('Content-type','application/json')
+          ->write(json_encode(['requestId'=> $requestId,
+              'error' => [
+                  'code' => 404,
+                  'message' => "Resource not valid"
+              ]]));
+    };
 };
 
 $container['errorHandler'] = function ($container) {
-
+    return function ($request, $response,$exception=null) use ($container) {
+        $generator = new PhpUniqidGenerator();
+        $requestId = $generator->generateRequestId();
+        if ($exception !== null) {
+            $code = $exception->getCode();
+            $message = $exception->getMessage();
+        }
+        if (!is_integer($code) || $code < 100 || $code > 599) {
+            $code = 500;
+        }
+        return $container['response']
+            ->withStatus(500)
+            ->withHeader('Content-type','application/json')
+            ->write(json_encode(['requestId'=> $requestId,
+                'error' => [
+                    'code' => $code,
+                    'message' => $message
+                ]]));
+    };
 };
 
 $container['notAllowedHandler'] = function ($container) {
-
+    return function ($request, $response) use ($container) {
+        $generator = new PhpUniqidGenerator();
+        $requestId = $generator->generateRequestId();
+        return $container['response']
+            ->withStatus(405)
+            ->withHeader('Content-type','application/json')
+            ->write(json_encode(['requestId'=> $requestId,
+                'error' => [
+                    'code' => 405,
+                    'message' => "Method not allowed"
+                ]]));
+    };
 };
 
 return $app;
