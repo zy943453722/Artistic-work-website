@@ -26,11 +26,12 @@ class ApiView
             'errno' => $message
         ];
         $output['errmsg'] = $codes[$message]['message'];
+        $output['data'] = [];
         $output = array_merge($output, $data);
-        $response = $response->withStatus($code);
-        $response = $response->withHeader('Content-type','application/json');
-        $body = $response->getBody();
-        $body->write(json_encode($output));
-        return $response;
+
+        return $response->withStatus($code)
+                        ->withHeader("Content-Type", "application/json")
+                        ->write(json_encode($output));
+
     }
 }

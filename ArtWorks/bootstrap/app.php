@@ -9,7 +9,6 @@
 use Illuminate\Database\Capsule\Manager;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
-use Slim\Csrf\Guard;
 use PhpMiddleware\RequestId\Generator\PhpUniqidGenerator;
 
 $container = new Slim\Container($config);
@@ -29,24 +28,6 @@ $container['logger'] = function ($container) {
         ['logger']['path'],$container['setting']['logger']['level']);
     $logger->pushHandler($file_handle);
     return $logger;
-};
-
-$container['csrf'] = function ($container) {
-    $guard = new Guard();
-    $guard->setPersistentTokenMode(true);
-    $guard->setFailureCallable(function ($request, $response, $next) use ($container){
-        $generator = new PhpUniqidGenerator();
-        $requestId = $generator->generateRequestId();
-        return $container['response']
-            ->withStatus(400)
-            ->withHeader('Content-type','application/json')
-            ->write(json_encode(['requestId'=> $requestId,
-                'error' => [
-                    'code' => 400,
-                    'message' => "Failed CSRF check!"
-                ]]));
-    });
-    return $guard;
 };
 
 $container['notFoundHandler'] = function ($container) {

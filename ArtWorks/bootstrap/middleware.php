@@ -9,13 +9,15 @@
 use Slim\Middleware\JwtAuthentication;
 use PhpMiddleware\RequestId\Generator\PhpUniqidGenerator;
 use Tuupola\Middleware\CorsMiddleware;
+use App\Middleware\DatabaseMiddleware;
 
 //jwt验证的中间件
 $app->add(new JwtAuthentication(
     [
         "secure" => false,//是否启用HTTPS
         "secret" => $container['setting']['secret'],//密钥
-        "cookie" => "token",//cookie中的名字
+        "header" => "Authorization",//放在http头里面
+        "regexp" => "/Bearer\s+(.*)$/i",//匹配字符串
         "attribute" => "token",//放入$request对象，可用getAttribute获取
         "path" => "/",//需要检查的路径
         "passthrough" => "/users/token",//不需要检查路径
@@ -62,5 +64,4 @@ $app->add(new CorsMiddleware([
         ]
 ));
 
-$app->add($container['csrf']);
-
+$app->add(DatabaseMiddleware::class);

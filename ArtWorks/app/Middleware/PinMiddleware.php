@@ -17,7 +17,7 @@ class PinMiddleware extends baseMiddleware
     {
         $pin = $request->getHeader('x-artgallery-pin');
         if (!empty($pin)) {
-            $next($request, $response);
+            $response = $next($request, $response);
             return $response;
         } else {
             $generator = new PhpUniqidGenerator();

@@ -7,8 +7,6 @@
  * Time: 21:39
  */
 
-session_start();
-
 define('ROOT_PATH',dirname(dirname(__FILE__)));
 define('APP_PATH',ROOT_PATH.'/app');
 define('CONFIG_PATH',ROOT_PATH.'/config');

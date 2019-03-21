@@ -45,8 +45,11 @@ class TokenController extends baseController
             ->set('pin', $pin)
             ->sign($signer, $this->ci['setting']['secret'])//设置
             ->getToken();
-
-        $data = ['data' => [['token'=> (string)$token]]];
-        return ApiView::jsonResponse($response, ResultCode::SUCCESS,$data);
+        //setcookie('token',$token,time()+7200,"","",false,true);
+        //$data = ['data' => [['token'=> (string)$token]]];
+        $expires = time()+7200;
+        $response = $response->withHeader('Set-Cookie',"token=$token;expires=$expires;httpOnly");
+        //var_dump($response);exit();
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS,[]);
     }
 }

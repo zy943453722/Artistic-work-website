@@ -13,4 +13,5 @@ use App\Middleware\PinMiddleware;
 $app->group('/users',function () {
     //$this->get('/{uid}',Controller\WelcomeController::class.":getUser")->setName('getUserInformation');
     $this->get('/token',Controller\TokenController::class.":getToken")->setName('getToken')->add(PinMiddleware::class);
+    $this->get('/getUserDetail',Controller\UserController::class.":getUserDetail");
 });

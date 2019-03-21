@@ -3,8 +3,8 @@
  * Created by PhpStorm.
  * User: zy
  * Email: zy943453722@gmail.com
- * Date: 2019/3/1
- * Time: 16:39
+ * Date: 2019/3/19
+ * Time: 9:18
  */
 
 namespace App\Model;
@@ -22,13 +22,25 @@ class User extends Model
         $this->model = new self();
     }
 
-    public function getUser()
+    public function getUserDetail($phoneNumber)
     {
         if (is_null($this->model)) {
             $this->init();
         }
-        return $this->model::where('id','>',1)
-            ->orderBy('username','desc')
-            ->get()->toArray();
+        $result = $this->model::where('phone_number','=',$phoneNumber)
+            ->get()
+            ->toArray();
+        $result['count'] = $this->getCountOfUserInfo($phoneNumber);
+        return $result;
     }
+
+    public function getCountOfUserInfo($phoneNumber)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::where('phone_number','=',$phoneNumber)
+            ->count();
+    }
+
 }

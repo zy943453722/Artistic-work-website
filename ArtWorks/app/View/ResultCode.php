@@ -32,7 +32,9 @@ class ResultCode
           self::PARAM_TYPE_BIND_ERROR => [
                'message' => "参数类型绑定失败"
           ],
-          
+          self::PARAM_IS_INVAILD => [
+              'message' => "参数无效"
+          ]
         ];
     }
 }
