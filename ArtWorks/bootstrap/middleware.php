@@ -39,6 +39,7 @@ $app->add(new JwtAuthentication(
             $container['token'] = $param['decoded'];
         }//正确时的回调
     ]));
+
 //跨域请求访问的中间件
 $app->add(new CorsMiddleware([
         "logger" => $container['logger'],

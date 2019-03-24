@@ -22,6 +22,11 @@ class User extends Model
         $this->model = new self();
     }
 
+    /**
+     * @param $phoneNumber
+     * @return mixed
+     * 根据电话号码查用户是否注册过
+     */
     public function getUserDetail($phoneNumber)
     {
         if (is_null($this->model)) {
@@ -34,6 +39,16 @@ class User extends Model
         return $result;
     }
 
+    public function verifyUserLogin($phoneNumber, $password)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        $result = $this->model::where(['phone_number' => $phoneNumber,
+            'password'=> $password],'=')
+            ->count();
+    }
+
     public function getCountOfUserInfo($phoneNumber)
     {
         if (is_null($this->model)) {
@@ -41,6 +56,22 @@ class User extends Model
         }
         return $this->model::where('phone_number','=',$phoneNumber)
             ->count();
+    }
+
+    public function addUser($phoneNumber, $password,$salt)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        $pin = $phoneNumber;
+        $password = md5($password.$salt);
+        return $this->model::insert(
+          [
+              'pin' => $pin,
+              'phone_number' => $phoneNumber,
+              'password' => $password
+          ]
+        );
     }
 
 }

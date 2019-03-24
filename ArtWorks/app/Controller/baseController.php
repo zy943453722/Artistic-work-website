@@ -25,8 +25,4 @@ abstract class baseController
         }
         return null;
     }
-    /*public function initDatabase()
-    {
-        $this->db;
-    }*/
 }

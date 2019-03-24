@@ -9,6 +9,7 @@
 use Illuminate\Database\Capsule\Manager;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
+use Predis\Client;
 use PhpMiddleware\RequestId\Generator\PhpUniqidGenerator;
 
 $container = new Slim\Container($config);
@@ -20,6 +21,10 @@ $container['db'] = function ($container) {
     $capsule->setAsGlobal();
     $capsule->bootEloquent();
     return $capsule;
+};
+
+$container['redis'] = function ($container) {
+    return new Client($container['setting']['redis']);
 };
 
 $container['logger'] = function ($container) {

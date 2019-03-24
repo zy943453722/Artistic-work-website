@@ -16,20 +16,15 @@ use Slim\Http\Response;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use PhpMiddleware\RequestId\Generator\PhpUniqidGenerator;
-//use Firebase\JWT\JWT;
-use App\Validation\Validator;
 
 class TokenController extends baseController
 {
     public function getToken(Request $request, Response $response)
     {
-        /*$params = $request->getQueryParams();
-        $rules = [
-            'pin' => 'required|string'
-        ];
-        if (!Validator::validators($rules, $params)) {
-            return ApiView::jsonResponse($response,ResultCode::PARAM_TYPE_BIND_ERROR);
-        }*/
+        $pin = $request->getHeader('x-artgallery-pin')[0];
+        if (empty($pin)) {
+            return ApiView::jsonResponse($response, ResultCode::USER_PIN_LACK);
+        }
         $pin = base64_decode($request->getHeader('x-artgallery-pin')[0]);
         $generator = new PhpUniqidGenerator();
         $id = $generator->generateRequestId();
@@ -45,11 +40,10 @@ class TokenController extends baseController
             ->set('pin', $pin)
             ->sign($signer, $this->ci['setting']['secret'])//设置
             ->getToken();
-        //setcookie('token',$token,time()+7200,"","",false,true);
-        //$data = ['data' => [['token'=> (string)$token]]];
+
         $expires = time()+7200;
         $response = $response->withHeader('Set-Cookie',"token=$token;expires=$expires;httpOnly");
-        //var_dump($response);exit();
+
         return ApiView::jsonResponse($response, ResultCode::SUCCESS,[]);
     }
 }

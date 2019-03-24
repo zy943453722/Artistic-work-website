@@ -27,7 +27,7 @@ class Validator extends Factory
         //保证只需创建一次
         static $validator = null;
         if ($validator === null) {
-            $translationPath = ROOT_PATH.'/common';
+            $translationPath = ROOT_PATH.'/database';
             $translationLocale = 'en';
             $translationLoader = new FileLoader(new Filesystem, $translationPath);
             $translator = new Translator($translationLoader, $translationLocale);

@@ -22,6 +22,12 @@ class ResultCode
     const WORKS_TYPE_ERROR = 30001;
     //用户系统相关
     const USER_NOT_EXIST = 40001;
+    const USER_PIN_LACK = 40002;
+    const USER_ALREADY_LOGIN = 40003;
+    const USER_PASSWORD_ERROR = 40004;
+    //其他
+    const VERIFYCODE_IS_ERROR = 50001;
+    const UNKNOWN_ERROR = 50002;
 
 
     public static function mapCode(){
@@ -34,7 +40,22 @@ class ResultCode
           ],
           self::PARAM_IS_INVAILD => [
               'message' => "参数无效"
-          ]
+          ],
+           self::VERIFYCODE_IS_ERROR => [
+               'message' => "验证码有误"
+           ],
+           self::USER_PIN_LACK => [
+               'message' => "缺少用户pin"
+           ],
+           self::UNKNOWN_ERROR => [
+               'message' => "未知错误"
+           ],
+           self::USER_ALREADY_LOGIN => [
+               'message' => "用户已经登录"
+           ],
+           self::USER_PASSWORD_ERROR => [
+               'message' => "用户密码错误"
+           ],
         ];
     }
 }

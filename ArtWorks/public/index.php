@@ -17,7 +17,8 @@ $appConfig = require CONFIG_PATH.'/app.php';
 $dbConfig = require CONFIG_PATH.'/database.php';
 $loggerConfig = require CONFIG_PATH.'/logger.php';
 $keyConfig = require CONFIG_PATH . '/key.php';
-$config = ['setting' => array_merge($appConfig,$dbConfig,$loggerConfig,$keyConfig)];
+$redisConfig = require CONFIG_PATH.'/redis.php';
+$config = ['setting' => array_merge($appConfig,$dbConfig,$loggerConfig,$keyConfig,$redisConfig)];
 
 $app = require_once ROOT_PATH.'/bootstrap/app.php';
 
