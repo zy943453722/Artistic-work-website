@@ -9,7 +9,8 @@
 
 namespace App\Middleware;
 
-use PhpMiddleware\RequestId\Generator\PhpUniqidGenerator;
+use App\View\ApiView;
+use App\View\ResultCode;
 
 class PinMiddleware extends baseMiddleware
 {
@@ -20,18 +21,7 @@ class PinMiddleware extends baseMiddleware
             $response = $next($request, $response);
             return $response;
         } else {
-            $generator = new PhpUniqidGenerator();
-            $requestId = $generator->generateRequestId();
-            $output = [
-                'requestId' =>  $requestId,
-                'error' => [
-                    'code' => 401,
-                    'message' => "user authentication failed,lack pin"
-                ]
-            ];
-            return $response->withStatus(401)
-                ->withHeader("Content-Type", "application/json")
-                ->write(json_encode($output));
+            return ApiView::jsonResponse($response, ResultCode::USER_PIN_LACK);
         }
     }
 }

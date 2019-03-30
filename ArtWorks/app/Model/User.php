@@ -74,4 +74,16 @@ class User extends Model
         );
     }
 
+    public function modifyUserPassword($phoneNumber, $password,$salt)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        $password = md5($password.$salt);
+        return $this->model::where('pin','=',$phoneNumber)
+            ->update([
+                'password' => $password
+            ]);
+    }
+
 }

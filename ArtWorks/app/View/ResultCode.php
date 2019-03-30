@@ -25,6 +25,8 @@ class ResultCode
     const USER_PIN_LACK = 40002;
     const USER_ALREADY_LOGIN = 40003;
     const USER_PASSWORD_ERROR = 40004;
+    const TOKEN_IS_EXPIRED = 40005;
+    const TOKEN_IS_LACK = 40006;
     //其他
     const VERIFYCODE_IS_ERROR = 50001;
     const UNKNOWN_ERROR = 50002;
@@ -56,6 +58,12 @@ class ResultCode
            self::USER_PASSWORD_ERROR => [
                'message' => "用户密码错误"
            ],
+           self::TOKEN_IS_EXPIRED => [
+               'message' => "Expired token"
+           ],
+           self::TOKEN_IS_LACK => [
+               'message' => "缺少token"
+           ]
         ];
     }
 }

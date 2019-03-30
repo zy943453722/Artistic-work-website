@@ -19,6 +19,17 @@ class FeedbackController extends baseController
 {
     public function sendEmail(Request $request, Response $response)
     {
+        $params = $request->getParsedBody();
+        $rules = [
+            'nickname' => 'required|string',
+            'email' => 'required|email',
+            'qq' => 'required|numeric',
+            'content' => 'required|string'
+        ];
+        if (!Validator::validators($rules, $params)) {
+            return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
+        }
+
 
     }
 }

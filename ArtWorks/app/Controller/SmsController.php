@@ -23,7 +23,7 @@ class SmsController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'phoneNumber' => 'required|string'
+            'phoneNumber' => 'required|numeric'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
@@ -70,8 +70,8 @@ class SmsController extends baseController
         $response = json_decode($result);
         if ($response->code === 0) {
             $redis = $this->redis;
-            //$redis->set($phoneNumber, $verifyCode);
-            $redis->setex($phoneNumber, 300, $verifyCode);
+            $redis->set($phoneNumber, $verifyCode);
+            //$redis->setex($phoneNumber, 300, $verifyCode);
             return true;
         }
         return false;

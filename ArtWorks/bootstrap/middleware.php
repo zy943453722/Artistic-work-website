@@ -7,6 +7,8 @@
  * Time: 15:36
  */
 use Slim\Middleware\JwtAuthentication;
+use App\View\ResultCode;
+use App\View\ApiView;
 use PhpMiddleware\RequestId\Generator\PhpUniqidGenerator;
 use Tuupola\Middleware\CorsMiddleware;
 use App\Middleware\DatabaseMiddleware;
@@ -22,6 +24,12 @@ $app->add(new JwtAuthentication(
         "path" => "/",//需要检查的路径
         "passthrough" => "/users/token",//不需要检查路径
         "error" => function ($request, $response, $args) {//错误处理
+            $codes = ResultCode::mapCode();
+            //如果token过期返回成功，刷新token
+            if ($args['message'] == $codes[ResultCode::TOKEN_IS_EXPIRED]['message']) {
+                return ApiView::jsonResponse($response, ResultCode::TOKEN_IS_EXPIRED);
+            }
+            //其他情况均是不合法的身份
             $generator = new PhpUniqidGenerator();
             $requestId = $generator->generateRequestId();
             $output = [
@@ -39,7 +47,6 @@ $app->add(new JwtAuthentication(
             $container['token'] = $param['decoded'];
         }//正确时的回调
     ]));
-
 //跨域请求访问的中间件
 $app->add(new CorsMiddleware([
         "logger" => $container['logger'],

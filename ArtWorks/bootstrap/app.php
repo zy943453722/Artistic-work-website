@@ -27,6 +27,10 @@ $container['redis'] = function ($container) {
     return new Client($container['setting']['redis']);
 };
 
+$container['tokenRedis'] = function ($container) {
+    return new Client($container['setting']['tokenRedis']);
+};
+
 $container['logger'] = function ($container) {
     $logger = new Logger($container['setting']['logger']['name']);
     $file_handle = new StreamHandler($container['setting']

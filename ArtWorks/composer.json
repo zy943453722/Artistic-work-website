@@ -9,10 +9,15 @@
             "email": "zy943453722@gmail.com"
         }
     ],
+    "config": {
+        "github-protocols": [
+          "https"
+        ]
+    },
     "repositories": {
         "packagist": {
             "type": "composer",
-            "url": "https://packagist.phpcomposer.com"
+            "url": "https://packagist.laravel-china.org"
         }
     },
     "require": {
@@ -28,7 +33,8 @@
         "tuupola/cors-middleware": "^0.9.3",
         "slim/csrf": "^0.8.3",
         "ramsey/uuid": "^3.8",
-        "php-middleware/request-id": "^3.1"
+        "php-middleware/request-id": "^3.1",
+        "swiftmailer/swiftmailer": "^6.2"
     },
     "require-dev": {
         "phpunit/phpunit": "~6.0"

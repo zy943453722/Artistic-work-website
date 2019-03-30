@@ -15,6 +15,7 @@ class DatabaseMiddleware extends baseMiddleware
     public function __invoke($request, $response, $next)
     {
         $this->db;
+        $this->tokenRedis;
         $response = $next($request,$response);
         return $response;
     }

@@ -9,6 +9,7 @@
 
 use App\Controller;
 use App\Middleware\PinMiddleware;
+use App\Middleware\VerifyRefreshTokenMiddleware;
 
 $app->group('/users',function () {
     //$this->get('/{uid}',Controller\WelcomeController::class.":getUser")->setName('getUserInformation');
@@ -18,4 +19,8 @@ $app->group('/users',function () {
     $this->post('/add', Controller\UserController::class.":register");
     $this->post('/login', Controller\UserController::class.":login");
     $this->post('/feedback', Controller\FeedbackController::class.":sendEmail");
+    $this->get('/verifyUserCode', Controller\UserController::class.":verifyUserCode");
+    $this->put('/modifyUserPassword', Controller\UserController::class.":modifyUser");
+    $this->put('/logout', Controller\UserController::class.":logout");
+    $this->put('/updateToken', Controller\TokenController::class.":updateToken")->add(VerifyRefreshTokenMiddleware::class);
 });
