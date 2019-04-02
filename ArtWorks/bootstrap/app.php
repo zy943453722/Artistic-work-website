@@ -11,6 +11,7 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Predis\Client;
 use PhpMiddleware\RequestId\Generator\PhpUniqidGenerator;
+use Pheanstalk\Pheanstalk;
 
 $container = new Slim\Container($config);
 $app = new Slim\App($container);
@@ -29,6 +30,11 @@ $container['redis'] = function ($container) {
 
 $container['tokenRedis'] = function ($container) {
     return new Client($container['setting']['tokenRedis']);
+};
+
+$container['mq'] = function ($container) {
+    return new Pheanstalk($container['setting']['mq']['host'],
+        $container['setting']['mq']['port']);
 };
 
 $container['logger'] = function ($container) {

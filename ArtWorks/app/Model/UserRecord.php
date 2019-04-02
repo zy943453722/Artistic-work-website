@@ -44,4 +44,20 @@ class UserRecord extends Model
             ]
         );
     }
+
+    public function getUserRecord($limit=9, $offset)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::join('userInformation', $this->table.'.pin','=','userInformation.pin')
+            ->join('works',$this->table.'.masterpiece_id','=','works.id')
+            ->select('userInformation.pin','works_number','followers_number','likes_number',
+                'masterpiece','masterpiece_id','nickname','avator','name','make_at','type','likes')
+            ->orderBy('followers_number','desc')
+            ->limit($limit)
+            ->offset($offset)
+            ->get()
+            ->toArray();
+    }
 }

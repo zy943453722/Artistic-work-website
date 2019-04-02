@@ -192,4 +192,29 @@ class UserController extends baseController
         }
         return ApiView::jsonResponse($response, ResultCode::SUCCESS, []);
     }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return mixed
+     * 获取用户记录列表
+     */
+    public function getUserRecord(Request $request, Response $response)
+    {
+        $params = $request->getQueryParams();
+        $rules = [
+            'pageSize' => 'required|numeric',
+            'pageNumber' => 'required|numeric',
+        ];
+        if (!Validator::validators($rules, $params)) {
+            return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
+        }
+
+        $limit = $params['pageSize'];
+        $offset = $params['pageSize'] * ($params['pageNumber'] - 1);
+        $userRecord = new UserRecord();
+        $res = $userRecord->getUserRecord($limit, $offset);
+        $data = ['data'=> $res];
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
+    }
 }
