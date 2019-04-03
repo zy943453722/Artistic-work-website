@@ -23,5 +23,6 @@ $app->group('/users',function () {
     $this->put('/modifyUserPassword', Controller\UserController::class.":modifyUser");
     $this->put('/logout', Controller\UserController::class.":logout");
     $this->put('/updateToken', Controller\TokenController::class.":updateToken")->add(VerifyRefreshTokenMiddleware::class);
-    $this->get('/listUserRecord', Controller\UserController::class.":getUserRecord");
+    $this->get('/touristListUserRecord', Controller\UserController::class.":touristGetUserRecord");
+    $this->get('/pinListUserRecord', Controller\UserController::class.":pinGetUserRecord");
 });

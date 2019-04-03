@@ -6,3 +6,11 @@
  * Date: 2019/2/26
  * Time: 17:02
  */
+
+use App\Controller;
+use App\Middleware\PinMiddleware;
+
+$app->group('/works',function () {
+    $this->get('/touristList', Controller\WorksController::class.":touristGetWorksList");
+    $this->get('/pinList', Controller\WorksController::class.":pinGetWorksList");
+});

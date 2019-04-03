@@ -17,7 +17,7 @@ switch ($args) {
         require ROOT_PATH.'/routers/userRouter.php';
         break;
     case 'works':
-        require ROOT_PATH.'./routers/workRouter.php';
+        require ROOT_PATH.'/routers/workRouter.php';
         break;
     default:
         $app->getContainer()->get('notFoundHandler');//匹配不到路由

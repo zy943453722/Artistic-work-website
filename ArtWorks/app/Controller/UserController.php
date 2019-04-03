@@ -10,6 +10,7 @@
 namespace App\Controller;
 
 use App\Model\User;
+use App\Model\UserFriends;
 use App\Model\UserInformation;
 use App\Model\UserStatus;
 use App\Model\UserRecord;
@@ -197,9 +198,49 @@ class UserController extends baseController
      * @param Request $request
      * @param Response $response
      * @return mixed
-     * 获取用户记录列表
+     * 用户获取用户记录列表
      */
-    public function getUserRecord(Request $request, Response $response)
+    public function pinGetUserRecord(Request $request, Response $response)
+    {
+        $params = $request->getQueryParams();
+        $rules = [
+            'pageSize' => 'required|numeric',
+            'pageNumber' => 'required|numeric',
+        ];
+        if (!Validator::validators($rules, $params)) {
+            return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
+        }
+
+        $token = (Array)$this->token;
+        $limit = $params['pageSize'];
+        $offset = $params['pageSize'] * ($params['pageNumber'] - 1);
+        $userRecord = new UserRecord();
+        $res = $userRecord->pinGetUserRecord($limit, $offset,$token['pin']);
+
+        $userFriend = new UserFriends();
+        foreach ($res as $key => &$value) {
+            $result = $userFriend->getUserRelation($token['pin'], $value['pin']);
+            if (empty($result)) {
+                continue;
+            } else if ($result[0]['status'] === 0) {
+                $value['relation'] = "已关注";
+            } else if ($result[0]['status'] == 2) {
+                $value['relation'] = "互相关注";
+            } else {
+                continue;
+            }
+        }
+        $data = ['data'=> $res];
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return mixed
+     * 游客获取用户记录列表
+     */
+    public function touristGetUserRecord(Request $request, Response $response)
     {
         $params = $request->getQueryParams();
         $rules = [
@@ -213,7 +254,7 @@ class UserController extends baseController
         $limit = $params['pageSize'];
         $offset = $params['pageSize'] * ($params['pageNumber'] - 1);
         $userRecord = new UserRecord();
-        $res = $userRecord->getUserRecord($limit, $offset);
+        $res = $userRecord->touristGetUserRecord($limit, $offset);
         $data = ['data'=> $res];
         return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
     }
