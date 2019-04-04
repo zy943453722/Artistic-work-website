@@ -25,4 +25,8 @@ $app->group('/users',function () {
     $this->put('/updateToken', Controller\TokenController::class.":updateToken")->add(VerifyRefreshTokenMiddleware::class);
     $this->get('/touristListUserRecord', Controller\UserController::class.":touristGetUserRecord");
     $this->get('/pinListUserRecord', Controller\UserController::class.":pinGetUserRecord");
+    $this->post('/addFollowing', Controller\FollowingController::class.":addFollowing");
+    $this->put('/modifyFollowing', Controller\FollowingController::class.":modifyFollowing");
+    $this->delete('/deleteFollowing', Controller\FollowingController::class.":deleteFollowing");
+    $this->get('/getFollowing', Controller\FollowingController::class.":getFollowing");
 });

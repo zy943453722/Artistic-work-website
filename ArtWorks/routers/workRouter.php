@@ -8,7 +8,6 @@
  */
 
 use App\Controller;
-use App\Middleware\PinMiddleware;
 
 $app->group('/works',function () {
     $this->get('/touristList', Controller\WorksController::class.":touristGetWorksList");
