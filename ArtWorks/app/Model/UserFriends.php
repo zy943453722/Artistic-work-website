@@ -83,4 +83,33 @@ class UserFriends extends Model
             ->update(['status' => 3,'update_at'=>time(),'deleted_at'=>time(),'is_delete'=>1]);
         return $res&&$ret;
     }
+
+    public function getUserFollowing($status, $pin)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::join('userInformation',$this->table.'.friend_pin','=','userInformation.pin')
+            ->where([$this->table.'.pin'=>$pin, 'is_delete'=>0], '=')
+            ->whereIn('status', [$status, 2])
+            ->select('nickname','avator','status')
+            ->get()
+            ->toArray();
+    }
+
+    public function getUserFollowingCount($status, $pin)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        $first = $this->model::where(['pin'=>$pin, 'is_delete'=>0,'status'=>2], '=');
+        $mutualCount = $first->count();
+        $count = $this->model::where(['pin'=>$pin, 'is_delete'=>0,'status'=>$status], '=')
+            ->unionAll($first)
+            ->count();
+        return [
+            'mutualCount' => $mutualCount,
+            'count' => $count
+        ];
+    }
 }

@@ -45,6 +45,22 @@ class UserRecord extends Model
         );
     }
 
+    public function modifyUserRecord($pin,$params,$symbol)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        if ($symbol == '+') {
+            return $this->model::where('pin','=',$pin)
+                ->increment($params);
+        } else {
+            return $this->model::where('pin','=',$pin)
+                ->decrement($params);
+        }
+
+
+    }
+
     public function pinGetUserRecord($limit=9, $offset,$pin)
     {
         if (is_null($this->model)) {
@@ -76,4 +92,6 @@ class UserRecord extends Model
             ->get()
             ->toArray();
     }
+
+
 }

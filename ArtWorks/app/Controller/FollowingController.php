@@ -10,6 +10,7 @@
 namespace App\Controller;
 
 use App\Model\UserFriends;
+use App\Model\UserRecord;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use App\Validation\Validator;
@@ -27,6 +28,15 @@ class FollowingController extends baseController
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
         }
+
+        $userFriend = new UserFriends();
+        $token = (Array)$this->token;
+        $result = $userFriend->getUserFollowing($params['status'], $token['pin']);
+        $res = $userFriend->getUserFollowingCount($params['status'], $token['pin']);
+        $result = array_merge($result, $res);
+
+        $data = ['data' => $result];
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
     }
 
     public function addFollowing(Request $request, Response $response)
@@ -42,6 +52,7 @@ class FollowingController extends baseController
         $friendPin = base64_decode($params['friendPin']);
         $token = (Array)$this->token;
         $userFriend = new UserFriends();
+        $userRecord = new UserRecord();
         $result = $userFriend->getUserRelation($token['pin'], $friendPin);
         if (!empty($result) && $result[0]['status'] == 1) {
             $res = $userFriend->modifyUserFriend($token['pin'], $friendPin, 2, 2);
@@ -52,6 +63,7 @@ class FollowingController extends baseController
         if ($res == false) {
             return ApiView::jsonResponse($response, ResultCode::UNKNOWN_ERROR);
         }
+        $userRecord->modifyUserRecord($friendPin, 'followers_number', '+');
         return ApiView::jsonResponse($response, ResultCode::SUCCESS,[],201);
     }
 
@@ -68,10 +80,12 @@ class FollowingController extends baseController
         $friendPin = base64_decode($params['friendPin']);
         $token = (Array)$this->token;
         $userFriend = new UserFriends();
+        $userRecord = new UserRecord();
         $res = $userFriend->modifyUserFriend($token['pin'], $friendPin, 1, 0);
         if ($res == false) {
             return ApiView::jsonResponse($response, ResultCode::UNKNOWN_ERROR);
         }
+        $userRecord->modifyUserRecord($friendPin, 'followers_number', '-');
         return ApiView::jsonResponse($response, ResultCode::SUCCESS,[]);
     }
 
@@ -88,10 +102,12 @@ class FollowingController extends baseController
         $friendPin = base64_decode($params['friendPin']);
         $token = (Array)$this->token;
         $userFriend = new UserFriends();
+        $userRecord = new UserRecord();
         $res = $userFriend->deleteUserFriend($token['pin'],$friendPin);
         if ($res == false) {
             return ApiView::jsonResponse($response, ResultCode::UNKNOWN_ERROR);
         }
+        $userRecord->modifyUserRecord($friendPin, 'followers_number', '-');
         return ApiView::jsonResponse($response, ResultCode::SUCCESS,[],200);
     }
 }

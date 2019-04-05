@@ -82,4 +82,22 @@ class Works extends Model
             ->get()
             ->toArray();
     }
+
+    public function addWorksLike($id)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::where('id','=',$id)
+            ->increment('likes');
+    }
+
+    public function deleteWorksLike($id)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::where('id','=',$id)
+            ->decrement('likes');
+    }
 }

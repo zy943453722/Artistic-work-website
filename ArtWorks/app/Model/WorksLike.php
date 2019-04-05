@@ -30,4 +30,28 @@ class WorksLike extends Model
         return $this->model::where(['pin' => $pin, 'works_id'=>$id,'is_delete'=>0])
             ->count();
     }
+
+    public function addWorksLike($pin, $id)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::insert([
+            'works_id' => $id,
+            'pin' => $pin,
+            'like_time' => time()
+        ]);
+    }
+
+    public function deleteWorksLike($id, $pin)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::where(['works_id'=>$id, 'pin'=>$pin, 'is_delete'=> 0])
+            ->update([
+               'deleted_at' => time(),
+                'is_delete' => 1
+            ]);
+    }
 }
