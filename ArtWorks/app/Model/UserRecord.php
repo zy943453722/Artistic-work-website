@@ -93,5 +93,16 @@ class UserRecord extends Model
             ->toArray();
     }
 
+    public function getUserRecordDetail($pin)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::join('userInformation', $this->table.'.pin','=','userInformation.pin')
+            ->where($this->table.'.pin','=',$pin)
+            ->select('nickname','avator','city','userInformation.pin','works_number','followers_number','likes_number')
+            ->get()
+            ->toArray();
+    }
 
 }

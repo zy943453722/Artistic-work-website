@@ -12,6 +12,7 @@ use Monolog\Handler\StreamHandler;
 use Predis\Client;
 use PhpMiddleware\RequestId\Generator\PhpUniqidGenerator;
 use Pheanstalk\Pheanstalk;
+use OSS\OssClient;
 
 $container = new Slim\Container($config);
 $app = new Slim\App($container);
@@ -30,6 +31,12 @@ $container['redis'] = function ($container) {
 
 $container['tokenRedis'] = function ($container) {
     return new Client($container['setting']['tokenRedis']);
+};
+
+$container['oss'] = function ($container) {
+    return new OssClient($container['setting']['oss']['accessKeyId'],
+        $container['setting']['oss']['accessKeySecret'],
+        $container['setting']['oss']['endpoint']);
 };
 
 $container['mq'] = function ($container) {

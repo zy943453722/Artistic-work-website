@@ -48,4 +48,23 @@ class UserInformation extends Model
           ]
         );
     }
+
+    public function getUserInfoDetail($pin)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::where('pin','=', $pin)
+            ->get()
+            ->toArray();
+    }
+
+    public function modifyUserInfo($pin,$params)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::where('pin','=',$pin)
+            ->update($params);
+    }
 }

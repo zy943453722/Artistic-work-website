@@ -65,4 +65,9 @@ class LikeController extends baseController
 
         return ApiView::jsonResponse($response, ResultCode::SUCCESS, []);
     }
+
+    public function getLikemeDetail()
+    {
+
+    }
 }

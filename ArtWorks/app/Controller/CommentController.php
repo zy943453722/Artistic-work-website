@@ -10,7 +10,7 @@
 namespace App\Controller;
 
 
-class CommentController
+class CommentController extends baseController
 {
 
 }

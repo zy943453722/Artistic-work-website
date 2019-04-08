@@ -258,4 +258,53 @@ class UserController extends baseController
         $data = ['data'=> $res];
         return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
     }
+
+    public function getUserInfo(Request $request, Response $response)
+    {
+        $token = (Array)$this->token;
+        $userInfo = new UserInformation();
+        $result = $userInfo->getUserInfoDetail($token['pin']);
+
+        $data = ['data' => $result];
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
+    }
+
+    public function getUserRecord(Request $request, Response $response)
+    {
+        $params = $request->getQueryParams();
+        $rules = [
+            'pin' => 'required|string'
+        ];
+        if (!Validator::validators($rules, $params)) {
+            return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
+        }
+
+        $pin = base64_decode($params['pin']);
+        $userRecord = new UserRecord();
+        $result = $userRecord->getUserRecordDetail($pin);
+
+        $data = ['data' => $result];
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
+    }
+
+    public function modifyUserInfo(Request $request, Response $response)
+    {
+        $params = $request->getParsedBody();
+        $rules = [
+            'avator' => 'string',
+            'nickname' => 'string',
+            'sex' => 'numeric',
+            'birthday' => 'integer',
+            'city' => 'string',
+            'introduction' => 'string'
+        ];
+        if (!Validator::validators($rules, $params)) {
+            return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
+        }
+
+        $token = (Array)$this->token;
+        $userInfo = new UserInformation();
+        $userInfo->modifyUserInfo($token['pin'],$params);
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS,[]);
+    }
 }

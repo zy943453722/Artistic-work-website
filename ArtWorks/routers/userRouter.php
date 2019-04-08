@@ -29,4 +29,11 @@ $app->group('/users',function () {
     $this->put('/modifyFollowing', Controller\FollowingController::class.":modifyFollowing");
     $this->delete('/deleteFollowing', Controller\FollowingController::class.":deleteFollowing");
     $this->get('/getFollowing', Controller\FollowingController::class.":getFollowing");
+    $this->get('/getLikemeDetail', Controller\LikeController::class.":getLikemeDetail");
+    $this->get('/getUserInfo', Controller\UserController::class.":getUserInfo");
+    $this->get('/getUserRecord', Controller\UserController::class.":getUserRecord");
+    $this->put('/modifyUserInfo', Controller\UserController::class.":modifyUserInfo");
+    $this->post('/upload', Controller\FileController::class.":getPolicy");
+    $this->post('/uploadCallback', Controller\FileController::class.":callback");
+    $this->get('/download', Controller\FileController::class.":download");
 });

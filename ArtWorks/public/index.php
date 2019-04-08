@@ -20,8 +20,9 @@ $keyConfig = require CONFIG_PATH . '/key.php';
 $redisConfig = require CONFIG_PATH.'/redis.php';
 $beanstalkdConfig = require CONFIG_PATH.'/beanstalkd.php';
 $emailConfig = require CONFIG_PATH.'/email.php';
+$ossConfig = require CONFIG_PATH.'/oss.php';
 $config = ['setting' => array_merge($appConfig,$dbConfig,$loggerConfig,
-    $keyConfig,$redisConfig,$beanstalkdConfig,$emailConfig)];
+    $keyConfig,$redisConfig,$beanstalkdConfig,$emailConfig,$ossConfig)];
 
 $app = require_once ROOT_PATH.'/bootstrap/app.php';
 
