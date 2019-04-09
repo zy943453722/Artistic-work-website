@@ -10,6 +10,7 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Capsule\Manager as DB;
 
 class Works extends Model
 {
@@ -99,5 +100,78 @@ class Works extends Model
         }
         return $this->model::where('id','=',$id)
             ->decrement('likes');
+    }
+
+    public function addWorks($pin, $params)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        $arr = [
+            'pin' => $pin,
+            'create_at' => time(),
+            'update_at' => time()
+        ];
+        $params = array_merge($params,$arr);
+        //开启事务保证获取到正确的id
+        DB::beginTransaction();
+        try {
+            $res = $this->model::insert($params);
+            $id = $this->model::lockForUpdate()->max('id');
+            if ($res && $id) {
+                DB::commit();
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            return false;
+        }
+        return $id;
+    }
+
+    public function modifyWorks($id, $params)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        $arr = ['update_at' => time()];
+        $params = array_merge($params,$arr);
+        return $this->model::where('id','=',$id)
+            ->update($params);
+    }
+
+    public function deleteWorks($id)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::where('id','=',$id)
+            ->update([
+                'update_at' => time(),
+                'deleted_at' => time(),
+                'is_delete' => 1
+            ]);
+    }
+
+    public function getWorksLike($id)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::where('id','=',$id)
+            ->select('likes')
+            ->get()
+            ->toArray()[0]['likes'];
+    }
+
+    public function getWorksIdAndInstance($pin)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::where(['pin'=>$pin,'is_delete'=>0],'=')
+            ->select('id','instance')
+            ->orderBy('create_at','desc')
+            ->get()
+            ->toArray()[0];
     }
 }

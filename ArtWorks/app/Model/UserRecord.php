@@ -45,17 +45,24 @@ class UserRecord extends Model
         );
     }
 
-    public function modifyUserRecord($pin,$params,$symbol)
+    /**
+     * @param $pin
+     * @param $params
+     * @param $symbol
+     * @return mixed
+     * 修改用户部分记录
+     */
+    public function modifyUserRecord($pin,$params,$symbol,$number=1)
     {
         if (is_null($this->model)) {
             $this->init();
         }
         if ($symbol == '+') {
             return $this->model::where('pin','=',$pin)
-                ->increment($params);
+                ->increment($params,$number);
         } else {
             return $this->model::where('pin','=',$pin)
-                ->decrement($params);
+                ->decrement($params,$number);
         }
 
 
@@ -93,6 +100,11 @@ class UserRecord extends Model
             ->toArray();
     }
 
+    /**
+     * @param $pin
+     * @return mixed
+     * 用户个人主页的展示
+     */
     public function getUserRecordDetail($pin)
     {
         if (is_null($this->model)) {
@@ -101,6 +113,28 @@ class UserRecord extends Model
         return $this->model::join('userInformation', $this->table.'.pin','=','userInformation.pin')
             ->where($this->table.'.pin','=',$pin)
             ->select('nickname','avator','city','userInformation.pin','works_number','followers_number','likes_number')
+            ->get()
+            ->toArray();
+    }
+
+    /**
+     * 修改用户记录表中的作品部分
+     */
+    public function modifyUserWorks($pin, $feator)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::where('pin','=',$pin)
+            ->update($feator);
+    }
+
+    public function pinGetUserRecordDetail($pin, $id)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::where(['pin' => $pin, 'masterpiece_id'=> $id],'=')
             ->get()
             ->toArray();
     }

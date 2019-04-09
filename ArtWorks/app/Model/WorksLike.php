@@ -54,4 +54,16 @@ class WorksLike extends Model
                 'is_delete' => 1
             ]);
     }
+
+    public function deleteWorksLikeById($id)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::where(['works_id'=>$id,'is_delete'=> 0])
+            ->update([
+                'deleted_at' => time(),
+                'is_delete' => 1
+            ]);
+    }
 }

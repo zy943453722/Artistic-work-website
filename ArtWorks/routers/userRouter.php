@@ -20,7 +20,7 @@ $app->group('/users',function () {
     $this->post('/login', Controller\UserController::class.":login");
     $this->post('/feedback', Controller\FeedbackController::class.":sendEmail");
     $this->get('/verifyUserCode', Controller\UserController::class.":verifyUserCode");
-    $this->put('/modifyUserPassword', Controller\UserController::class.":modifyUser");
+    $this->put('/findUserPassword', Controller\UserController::class.":modifyUser");
     $this->put('/logout', Controller\UserController::class.":logout");
     $this->put('/updateToken', Controller\TokenController::class.":updateToken")->add(VerifyRefreshTokenMiddleware::class);
     $this->get('/touristListUserRecord', Controller\UserController::class.":touristGetUserRecord");
@@ -36,4 +36,5 @@ $app->group('/users',function () {
     $this->post('/upload', Controller\FileController::class.":getPolicy");
     $this->post('/uploadCallback', Controller\FileController::class.":callback");
     $this->get('/download', Controller\FileController::class.":download");
+    $this->put('/modifyUserPassword', Controller\UserController::class.":modifyPassword");
 });

@@ -10,6 +10,7 @@
 namespace App\Controller;
 
 use App\Common\FilterParams;
+use App\Model\UserRecord;
 use App\Model\Works;
 use App\Model\WorksLike;
 use Slim\Http\Request;
@@ -164,6 +165,103 @@ class WorksController extends baseController
         }
         $data = ['data' => $result];
         return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
+    }
+
+    public function addWorks(Request $request, Response $response)
+    {
+        $params = $request->getParsedBody();
+        $rules = [
+            'length' => 'required|numeric',
+            'height' => 'required|numeric',
+            'type' => 'required|numeric',
+            'name' => 'required|string',
+            'introduction' => 'required|string',
+            'instance' => 'required|string',
+            'makeAt' => 'required|int'
+        ];
+        if (!Validator::validators($rules, $params)) {
+            return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
+        }
+
+        $token = (Array)$this->token;
+        $works = new Works();
+        $userRecord = new UserRecord();
+        $ret = FilterParams::toUnderline($params);
+        $id = $works->addWorks($token['pin'], $ret);
+        $userRecord->modifyUserRecord($token['pin'], 'works_number', '+');
+        $feator = [
+            'masterpiece' => $params['instance'],
+            'masterpiece_id' => $id
+        ];
+        $userRecord->modifyUserWorks($token['pin'], $feator);
+
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS,[]);
+    }
+
+    public function modifyWorks(Request $request, Response $response)
+    {
+        $params = $request->getParsedBody();
+        $rules = [
+            'id' => 'required|numeric',
+            'length' => 'numeric',
+            'height' => 'numeric',
+            'type' => 'numeric',
+            'name' => 'string',
+            'introduction' => 'string',
+            'instance' => 'string',
+            'makeAt' => 'int'
+        ];
+        if (!Validator::validators($rules, $params)) {
+            return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
+        }
+
+        $id = $params['id'];
+        unset($params['id']);
+        $token = (Array)$this->token;
+        $works = new Works();
+        $ret = FilterParams::toUnderline($params);
+        $works->modifyWorks($id, $ret);
+        if (array_key_exists('instance', $ret)) {
+            $userRecord = new UserRecord();
+            $res = $userRecord->pinGetUserRecordDetail($token['pin'], $id);
+            if (!empty($res)) {
+                $userRecord->modifyUserWorks($token['pin'], ['masterpiece'=> $params['instance']]);
+            }
+        }
+
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS,[]);
+    }
+
+    public function deleteWorks(Request $request, Response $response)
+    {
+        $params = $request->getParsedBody();
+        $rules = [
+            'id' => 'required|numeric'
+        ];
+        if (!Validator::validators($rules, $params)) {
+            return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
+        }
+
+        $token = (Array)$this->token;
+        $works = new Works();
+        $works->deleteWorks($params['id']);
+        $count = $works->getWorksLike($params['id']);
+        $worksLike = new WorksLike();
+        $worksLike->deleteWorksLikeById($params['id']);
+        $userRecord = new UserRecord();
+        $userRecord->modifyUserRecord($token['pin'], 'works_number','-');
+        $userRecord->modifyUserRecord($token['pin'], 'likes_number','-',$count);
+        $res = $userRecord->pinGetUserRecordDetail($token['pin'], $params['id']);
+        if (!empty($res)) {
+            $ret = $works->getWorksIdAndInstance($token['pin']);
+            $factor = [
+                'masterpiece' => $ret['instance'],
+                'masterpiece_id' => $ret['id']
+            ];
+            $userRecord->modifyUserWorks($token['pin'], $factor);
+        }
+
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS,[]);
     }
 }
 

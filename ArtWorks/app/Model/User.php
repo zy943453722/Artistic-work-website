@@ -44,7 +44,7 @@ class User extends Model
         if (is_null($this->model)) {
             $this->init();
         }
-        $result = $this->model::where(['phone_number' => $phoneNumber,
+        return $this->model::where(['phone_number' => $phoneNumber,
             'password'=> $password],'=')
             ->count();
     }

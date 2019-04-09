@@ -187,10 +187,7 @@ class UserController extends baseController
         }
 
         $user = new User();
-        $res = $user->modifyUserPassword($params['phoneNumber'], $params['password'], $this->setting['salt']);
-        if ($res == false) {
-            return ApiView::jsonResponse($response, ResultCode::UNKNOWN_ERROR);
-        }
+        $user->modifyUserPassword($params['phoneNumber'], $params['password'], $this->setting['salt']);
         return ApiView::jsonResponse($response, ResultCode::SUCCESS, []);
     }
 
@@ -306,5 +303,28 @@ class UserController extends baseController
         $userInfo = new UserInformation();
         $userInfo->modifyUserInfo($token['pin'],$params);
         return ApiView::jsonResponse($response, ResultCode::SUCCESS,[]);
+    }
+
+    public function modifyPassword(Request $request, Response $response)
+    {
+        $params = $request->getParsedBody();
+        $rules = [
+            'oldPassword' => 'required|string',
+            'newPassword' => 'required|string'
+        ];
+        if (!Validator::validators($rules, $params)) {
+            return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
+        }
+
+        $token = (Array)$this->token;
+        $user = new User();
+        $password = md5($params['oldPassword'].$this->setting['salt']);
+        $count = $user->verifyUserLogin($token['pin'], $password);
+        if ($count == 0) {
+            return ApiView::jsonResponse($response, ResultCode::USER_PASSWORD_ERROR);
+        }
+
+        $user->modifyUserPassword($token['pin'], $params['newPassword'], $this->setting['salt']);
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS, []);
     }
 }
