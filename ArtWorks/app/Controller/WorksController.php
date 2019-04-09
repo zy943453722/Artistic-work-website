@@ -263,6 +263,46 @@ class WorksController extends baseController
 
         return ApiView::jsonResponse($response, ResultCode::SUCCESS,[]);
     }
+
+    public function touristGetWorksDetail(Request $request, Response $response)
+    {
+        $params = $request->getQueryParams();
+        $rules = [
+            'worksId' => 'required|numeric'
+        ];
+        if (!Validator::validators($rules, $params)) {
+            return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
+        }
+
+        $works = new Works();
+        $result = $works->getWorksDetail($params['worksId']);
+        $data = ['data' => $result];
+
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS,$data);
+    }
+
+    public function pinGetWorksDetail(Request $request, Response $response)
+    {
+        $params = $request->getQueryParams();
+        $rules = [
+            'worksId' => 'required|numeric'
+        ];
+        if (!Validator::validators($rules, $params)) {
+            return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
+        }
+
+        $token = (Array)$this->token;
+        $works = new Works();
+        $result = $works->getWorksDetail($params['worksId']);
+        $worksLike = new WorksLike();
+        $count = $worksLike->getUserWorksLike($token['pin'], $params['worksId']);
+        if ($count != 0) {
+            $result['relation'] = "已点赞";
+        }
+
+        $data = ['data' => $result];
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS,$data);
+    }
 }
 
 

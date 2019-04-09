@@ -48,7 +48,7 @@ $app->add(new JwtAuthentication(
         }//正确时的回调
     ]));
 //跨域请求访问的中间件
-$app->add(new CorsMiddleware([
+/*$app->add(new CorsMiddleware([
         "logger" => $container['logger'],
         "origin" => "http://www.artgallery.com:8888",//请求源
         "method" => ["GET", "POST", "PUT", "DELETE"],//允许请求方法
@@ -70,6 +70,6 @@ $app->add(new CorsMiddleware([
                 ->write(json_encode($output));
         }
         ]
-));
+));*/
 
 $app->add(DatabaseMiddleware::class);

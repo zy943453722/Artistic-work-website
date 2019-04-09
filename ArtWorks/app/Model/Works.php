@@ -174,4 +174,18 @@ class Works extends Model
             ->get()
             ->toArray()[0];
     }
+
+    public function getWorksDetail($id)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::join('userInformation', $this->table.'.pin',
+            '=','userInformation.pin')
+            ->where([$this->table.'.id' => $id,'is_delete' => 0])
+            ->select($this->table.'.id','instance','name','type','length',
+                'height',$this->table.'.introduction',$this->table.'.pin','nickname','avator')
+            ->get()
+            ->toArray()[0];
+    }
 }

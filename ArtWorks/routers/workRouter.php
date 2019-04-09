@@ -17,4 +17,6 @@ $app->group('/works',function () {
     $this->post('/add', Controller\WorksController::class.":addWorks");
     $this->put('/modify', Controller\WorksController::class.":modifyWorks");
     $this->delete('/delete', Controller\WorksController::class.":deleteWorks");
+    $this->get('/touristGetWorksDetail', Controller\WorksController::class.":touristGetWorksDetail");
+    $this->get('/pinGetWorksDetail', Controller\WorksController::class.":pinGetWorksDetail");
 });
