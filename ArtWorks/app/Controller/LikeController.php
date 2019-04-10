@@ -70,4 +70,23 @@ class LikeController extends baseController
     {
 
     }
+
+    public function getWorksLikeDetail(Request $request, Response $response)
+    {
+        $params = $request->getQueryParams();
+        $rules = [
+            'worksId' => 'required|numeric'
+        ];
+        if (!Validator::validators($rules, $params)) {
+            return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
+        }
+
+        $worksLike = new WorksLike();
+        $result = $worksLike->getWorksLikeDetail($params['worksId']);
+        $data = ['data' => $result];
+
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
+    }
+
+
 }

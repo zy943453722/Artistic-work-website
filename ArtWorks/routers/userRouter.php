@@ -37,4 +37,6 @@ $app->group('/users',function () {
     $this->post('/uploadCallback', Controller\FileController::class.":callback");
     $this->get('/download', Controller\FileController::class.":download");
     $this->put('/modifyUserPassword', Controller\UserController::class.":modifyPassword");
+    $this->get('/touristListWorks', Controller\UserController::class.":touristGetUserWorksList");
+    $this->get('/pinListWorks', Controller\UserController::class.":pinGetUserWorksList");
 });

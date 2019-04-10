@@ -66,4 +66,16 @@ class WorksLike extends Model
                 'is_delete' => 1
             ]);
     }
+
+    public function getWorksLikeDetail($id)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::join('userInformation',$this->table.'.pin','=','userInformation.pin')
+            ->where(['works_id' => $id, 'is_delete'=> 0])
+            ->select('userInformation.pin','avator','nickname')
+            ->get()
+            ->toArray();
+    }
 }

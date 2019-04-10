@@ -186,6 +186,41 @@ class Works extends Model
             ->select($this->table.'.id','instance','name','type','length',
                 'height',$this->table.'.introduction',$this->table.'.pin','nickname','avator')
             ->get()
-            ->toArray()[0];
+            ->toArray();
+    }
+
+    public function getUserWorksOfCount($id, $pin)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::where([
+            'id' => $id,
+            'pin' => $pin,
+            'is_delete' => 0
+        ])->count();
+    }
+
+    public function getUserWorks($pin,$limit=9,$offset,$worksId=0)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        if ($worksId === 0) {
+            return $this->model::where(['pin'=>$pin, 'is_delete'=> 0])
+                ->select('id','instance','name','make_at','pin')
+                ->limit($limit)
+                ->offset($offset)
+                ->get()
+                ->toArray();
+        } else {
+            return $this->model::where(['pin'=>$pin, 'is_delete'=> 0])
+                ->where('id','!=',$worksId)
+                ->select('id','instance','name','make_at','pin')
+                ->limit($limit)
+                ->offset($offset)
+                ->get()
+                ->toArray();
+        }
     }
 }

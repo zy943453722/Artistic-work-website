@@ -14,6 +14,8 @@ use App\Model\UserFriends;
 use App\Model\UserInformation;
 use App\Model\UserStatus;
 use App\Model\UserRecord;
+use App\Model\Works;
+use App\Model\WorksLike;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use App\Validation\Validator;
@@ -326,5 +328,67 @@ class UserController extends baseController
 
         $user->modifyUserPassword($token['pin'], $params['newPassword'], $this->setting['salt']);
         return ApiView::jsonResponse($response, ResultCode::SUCCESS, []);
+    }
+
+    public function touristGetUserWorksList(Request $request, Response $response)
+    {
+        $params = $request->getQueryParams();
+        $rules = [
+            'pin' => 'required|string',
+            'pageNumber' => 'required|numeric',
+            'pageSize' => 'required|numeric',
+            'worksId' => 'numeric'
+        ];
+        if (!Validator::validators($rules, $params)) {
+            return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
+        }
+
+        $pin = base64_decode($params['pin']);
+        $works = new Works();
+        $limit = $params['pageSize'];
+        $offset = $params['pageSize'] * ($params['pageNumber'] - 1);
+        if (array_key_exists('worksId', $params)) {
+            $result = $works->getUserWorks($pin, $limit, $offset, $params['worksId']);
+        } else {
+            $result = $works->getUserWorks($pin, $limit, $offset);
+        }
+
+        $data = ['data' => $result];
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
+    }
+
+    public function pinGetUserWorksList(Request $request, Response $response)
+    {
+        $params = $request->getQueryParams();
+        $rules = [
+            'pin' => 'required|string',
+            'pageNumber' => 'required|numeric',
+            'pageSize' => 'required|numeric',
+            'worksId' => 'numeric'
+        ];
+        if (!Validator::validators($rules, $params)) {
+            return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
+        }
+
+        $pin = base64_decode($params['pin']);
+        $token = (Array)$this->token;
+        $works = new Works();
+        $worksLike = new WorksLike();
+        $limit = $params['pageSize'];
+        $offset = $params['pageSize'] * ($params['pageNumber'] - 1);
+        if (array_key_exists('worksId', $params)) {
+            $result = $works->getUserWorks($pin, $limit, $offset, $params['worksId']);
+        } else {
+            $result = $works->getUserWorks($pin, $limit, $offset);
+        }
+        foreach ($result as $key => &$value) {
+            $count = $worksLike->getUserWorksLike($token['pin'], $value['id']);
+            if ($count === 1) {
+                $value['relation'] = "已点赞";
+            }
+        }
+
+        $data = ['data' => $result];
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
     }
 }

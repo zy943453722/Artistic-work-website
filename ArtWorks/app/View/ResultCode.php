@@ -20,6 +20,7 @@ class ResultCode
     const PARAM_TYPE_BIND_ERROR = 20003;
     //作品资源系统相关
     const WORKS_TYPE_ERROR = 30001;
+    const WORKS_NOT_EXIST = 30002;
     //用户系统相关
     const USER_NOT_EXIST = 40001;
     const USER_PIN_LACK = 40002;
@@ -63,6 +64,9 @@ class ResultCode
            ],
            self::TOKEN_IS_LACK => [
                'message' => "缺少token"
+           ],
+           self::WORKS_NOT_EXIST => [
+               'message' => "作品不存在"
            ]
         ];
     }

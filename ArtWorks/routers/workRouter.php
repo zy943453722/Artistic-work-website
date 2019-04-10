@@ -19,4 +19,9 @@ $app->group('/works',function () {
     $this->delete('/delete', Controller\WorksController::class.":deleteWorks");
     $this->get('/touristGetWorksDetail', Controller\WorksController::class.":touristGetWorksDetail");
     $this->get('/pinGetWorksDetail', Controller\WorksController::class.":pinGetWorksDetail");
+    $this->get('/getLikesDetail', Controller\LikeController::class.":getWorksLikeDetail");
+    $this->post('/addComments', Controller\CommentController::class.":addWorksComments");
+    $this->delete('/deleteComments', Controller\CommentController::class.":deleteWorksComments");
+    $this->get('/touristGetCommentsDetail', Controller\CommentController::class.":touristGetCommentsDetail");
+    $this->get('/pinGetCommentsDetail', Controller\CommentController::class.":pinGetCommentsDetail");
 });
