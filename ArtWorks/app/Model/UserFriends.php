@@ -92,7 +92,7 @@ class UserFriends extends Model
         return $this->model::join('userInformation',$this->table.'.friend_pin','=','userInformation.pin')
             ->where([$this->table.'.pin'=>$pin, 'is_delete'=>0], '=')
             ->whereIn('status', [$status, 2])
-            ->select('nickname','avator','status')
+            ->select('nickname','avator','status','website')
             ->get()
             ->toArray();
     }

@@ -66,9 +66,24 @@ class LikeController extends baseController
         return ApiView::jsonResponse($response, ResultCode::SUCCESS, []);
     }
 
-    public function getLikemeDetail()
+    public function getLikemeDetail(Request $request, Response $response)
     {
+        $params = $request->getQueryParams();
+        $rules = [
+            'pin' => 'required|string'
+        ];
+        if (!Validator::validators($rules, $params)) {
+            return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
+        }
 
+        $pin = base64_decode($params['pin']);
+        $works = new Works();
+        $result = $works->getWorksLikeDetail($pin);
+        $count = $works->getWorksLikeDetailOfCount($pin);
+        $result['count'] = $count;
+
+        $data = ['data' => $result];
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
     }
 
     public function getWorksLikeDetail(Request $request, Response $response)
@@ -88,5 +103,24 @@ class LikeController extends baseController
         return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
     }
 
+    public function getILikeDetail(Request $request, Response $response)
+    {
+        $params = $request->getQueryParams();
+        $rules = [
+            'pin' => 'required|string'
+        ];
+        if (!Validator::validators($rules, $params)) {
+            return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
+        }
+
+        $pin = base64_decode($params['pin']);
+        $works = new Works();
+        $result = $works->getLikeDetail($pin);
+        $count = $works->getLikeDetailOfCount($pin);
+        $result['count'] = $count;
+
+        $data = ['data' => $result];
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
+    }
 
 }

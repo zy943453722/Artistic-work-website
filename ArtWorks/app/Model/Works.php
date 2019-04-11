@@ -62,7 +62,7 @@ class Works extends Model
 
         if (empty($factor)) {
             return $this->model::join('userInformation',$this->table.'.pin','=','userInformation.pin')
-                ->select('works.id','instance','name','works.pin','likes','nickname')
+                ->select('works.id','instance','name','works.pin','likes','website','nickname')
                 ->limit($limit)
                 ->offset($offset)
                 ->get()
@@ -77,7 +77,7 @@ class Works extends Model
                 $var = $temp;
             }
         }
-        return $var->select('works.id','instance','name','works.pin','likes','nickname')
+        return $var->select('works.id','instance','name','works.pin','likes','website','nickname')
             ->limit($limit)
             ->offset($offset)
             ->get()
@@ -184,7 +184,7 @@ class Works extends Model
             '=','userInformation.pin')
             ->where([$this->table.'.id' => $id,'is_delete' => 0])
             ->select($this->table.'.id','instance','name','type','length',
-                'height',$this->table.'.introduction',$this->table.'.pin','nickname','avator')
+                'height',$this->table.'.introduction',$this->table.'.pin','website','nickname','avator')
             ->get()
             ->toArray();
     }
@@ -222,5 +222,51 @@ class Works extends Model
                 ->get()
                 ->toArray();
         }
+    }
+
+    public function getWorksLikeDetail($pin)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::join('worksLike',$this->table.'.id','=','worksLike.works_id')
+            ->join('userInformation',$this->table.'.pin','=','userInformation.pin')
+            ->where([$this->table.'.pin' => $pin, 'worksLike.is_delete'=>0])
+            ->select('avator','nickname','website','like_time','name','works_id','userInformation.pin')
+            ->get()
+            ->toArray();
+    }
+
+    public function getWorksLikeDetailOfCount($pin)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::join('worksLike',$this->table.'.id','=','worksLike.works_id')
+            ->join('userInformation',$this->table.'.pin','=','userInformation.pin')
+            ->where([$this->table.'.pin' => $pin, 'worksLike.is_delete'=>0])
+            ->count();
+    }
+
+    public function getLikeDetail($pin)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::join('worksLike',$this->table.'.id','=','worksLike.works_id')
+            ->where(['worksLike.pin' => $pin, 'worksLike.is_delete'=>0])
+            ->select('works_id','name','instance',$this->table.'.pin','make_at','likes','worksLike.pin')
+            ->get()
+            ->toArray();
+    }
+
+    public function getLikeDetailOfCount($pin)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::join('worksLike',$this->table.'.id','=','worksLike.works_id')
+            ->where(['worksLike.pin' => $pin, 'worksLike.is_delete'=>0])
+            ->count();
     }
 }

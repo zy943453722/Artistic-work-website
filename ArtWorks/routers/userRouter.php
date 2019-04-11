@@ -29,7 +29,6 @@ $app->group('/users',function () {
     $this->put('/modifyFollowing', Controller\FollowingController::class.":modifyFollowing");
     $this->delete('/deleteFollowing', Controller\FollowingController::class.":deleteFollowing");
     $this->get('/getFollowing', Controller\FollowingController::class.":getFollowing");
-    $this->get('/getLikemeDetail', Controller\LikeController::class.":getLikemeDetail");
     $this->get('/getUserInfo', Controller\UserController::class.":getUserInfo");
     $this->get('/getUserRecord', Controller\UserController::class.":getUserRecord");
     $this->put('/modifyUserInfo', Controller\UserController::class.":modifyUserInfo");
@@ -39,4 +38,8 @@ $app->group('/users',function () {
     $this->put('/modifyUserPassword', Controller\UserController::class.":modifyPassword");
     $this->get('/touristListWorks', Controller\UserController::class.":touristGetUserWorksList");
     $this->get('/pinListWorks', Controller\UserController::class.":pinGetUserWorksList");
+    $this->get('/getRight', Controller\UserController::class.":getRight");
+    $this->get('/getLikemeDetail', Controller\LikeController::class.":getLikemeDetail");
+    $this->get('/getILikeDetail', Controller\LikeController::class.":getILikeDetail");
+    $this->get('/getComments', Controller\CommentController::class.":getUserCommentsDetail");
 });

@@ -221,9 +221,9 @@ class UserController extends baseController
             $result = $userFriend->getUserRelation($token['pin'], $value['pin']);
             if (empty($result)) {
                 continue;
-            } else if ($result[0]['status'] === 0) {
+            } elseif ($result[0]['status'] === 0) {
                 $value['relation'] = "已关注";
-            } else if ($result[0]['status'] == 2) {
+            } elseif ($result[0]['status'] == 2) {
                 $value['relation'] = "互相关注";
             } else {
                 continue;
@@ -268,6 +268,12 @@ class UserController extends baseController
         return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return mixed
+     * 用户个人主页的展示
+     */
     public function getUserRecord(Request $request, Response $response)
     {
         $params = $request->getQueryParams();
@@ -389,6 +395,44 @@ class UserController extends baseController
         }
 
         $data = ['data' => $result];
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
+    }
+
+    public function getRight(Request $request, Response $response)
+    {
+        $params = $request->getQueryParams();
+        $rules = [
+            'pin' => 'required|string'
+        ];
+        if (!Validator::validators($rules, $params)) {
+            return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
+        }
+
+        $token = (Array)$this->token;
+        $pin = base64_decode($params['pin']);
+        /**
+         * 0 代表自己
+         * 1 代表未关注
+         * 2 代表已关注
+         * 3 代表互相关注
+         */
+        if ($token['pin'] == $pin) {
+            $value['relation'] = 0;
+        } else {
+            $userFriend = new UserFriends();
+            $result = $userFriend->getUserRelation($token['pin'], $pin);
+            if (empty($result)) {
+                $value['relation'] = 1;
+            } elseif ($result[0]['status'] === 0) {
+                $value['relation'] = 2;
+            } elseif ($result[0]['status'] == 2) {
+                $value['relation'] = 3;
+            } else {
+                $value['relation'] = 1;
+            }
+        }
+
+        $data = ['data' => $value];
         return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
     }
 }

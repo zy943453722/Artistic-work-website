@@ -10,6 +10,7 @@
 namespace App\Controller;
 
 use App\Common\FilterParams;
+use App\Model\Comments;
 use App\Model\UserRecord;
 use App\Model\Works;
 use App\Model\WorksLike;
@@ -248,6 +249,8 @@ class WorksController extends baseController
         $count = $works->getWorksLike($params['id']);
         $worksLike = new WorksLike();
         $worksLike->deleteWorksLikeById($params['id']);
+        $comments = new Comments();
+        $comments->deleteCommentsByWorks($params['id']);
         $userRecord = new UserRecord();
         $userRecord->modifyUserRecord($token['pin'], 'works_number','-');
         $userRecord->modifyUserRecord($token['pin'], 'likes_number','-',$count);

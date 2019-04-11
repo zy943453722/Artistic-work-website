@@ -74,7 +74,7 @@ class WorksLike extends Model
         }
         return $this->model::join('userInformation',$this->table.'.pin','=','userInformation.pin')
             ->where(['works_id' => $id, 'is_delete'=> 0])
-            ->select('userInformation.pin','avator','nickname')
+            ->select('userInformation.pin','avator','website','nickname')
             ->get()
             ->toArray();
     }

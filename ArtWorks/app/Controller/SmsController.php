@@ -70,8 +70,8 @@ class SmsController extends baseController
         $response = json_decode($result);
         if ($response->code === 0) {
             $redis = $this->redis;
-            $redis->set($phoneNumber, $verifyCode);
-            //$redis->setex($phoneNumber, 300, $verifyCode);
+            //$redis->set($phoneNumber, $verifyCode);
+            $redis->setex($phoneNumber, 300, $verifyCode);
             return true;
         }
         return false;

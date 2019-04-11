@@ -77,7 +77,7 @@ class UserRecord extends Model
             ->join('works', $this->table.'.masterpiece_id','=','works.id')
             ->where($this->table.'.pin','!=',$pin)
             ->select('userInformation.pin','works_number','followers_number','likes_number',
-                'masterpiece','masterpiece_id','nickname','avator','name','make_at','type','likes')
+                'masterpiece','masterpiece_id','nickname','avator','website','name','make_at','type','likes')
             ->orderBy('followers_number','desc')
             ->limit($limit)
             ->offset($offset)
@@ -92,7 +92,7 @@ class UserRecord extends Model
         }
         return $this->model::join('userInformation', $this->table.'.pin','=','userInformation.pin')
             ->select('userInformation.pin','works_number','followers_number','likes_number',
-                'masterpiece','masterpiece_id','nickname')
+                'masterpiece','masterpiece_id','website','nickname')
             ->orderBy('followers_number','desc')
             ->limit($limit)
             ->offset($offset)
@@ -112,7 +112,7 @@ class UserRecord extends Model
         }
         return $this->model::join('userInformation', $this->table.'.pin','=','userInformation.pin')
             ->where($this->table.'.pin','=',$pin)
-            ->select('nickname','avator','city','userInformation.pin','works_number','followers_number','likes_number')
+            ->select('nickname','avator','introduction','city','userInformation.pin','works_number','followers_number','likes_number')
             ->get()
             ->toArray();
     }

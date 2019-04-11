@@ -109,4 +109,22 @@ class CommentController extends baseController
 
         return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
     }
+
+    public function getUserCommentsDetail(Request $request, Response $response)
+    {
+        $params = $request->getQueryParams();
+        $rules = [
+            'pin' => 'required|string'
+        ];
+        if (!Validator::validators($rules, $params)) {
+            return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
+        }
+
+        $pin = base64_decode($params['pin']);
+        $comments = new Comments();
+        $result = $comments->getComments($pin);
+        $data = ['data' => $result];
+
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
+    }
 }
