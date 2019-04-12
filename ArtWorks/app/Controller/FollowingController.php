@@ -43,7 +43,7 @@ class FollowingController extends baseController
     {
         $params = $request->getParsedBody();
         $rules = [
-            'friendPin' => 'required|string'
+            'friendPin' => 'required|string|between:0,255'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
@@ -71,7 +71,7 @@ class FollowingController extends baseController
     {
         $params = $request->getParsedBody();
         $rules = [
-            'friendPin' => 'required|string'
+            'friendPin' => 'required|string|between:0,255'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
@@ -93,7 +93,7 @@ class FollowingController extends baseController
     {
         $params = $request->getParsedBody();
         $rules = [
-            'friendPin' => 'required|string'
+            'friendPin' => 'required|string|between:0,255'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);

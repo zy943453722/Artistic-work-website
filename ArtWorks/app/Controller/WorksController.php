@@ -26,15 +26,15 @@ class WorksController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'pageSize' => 'required|numeric',
-            'pageNumber' => 'required|numeric',
-            'type' => 'numeric',
-            'lengthMin' => 'numeric',
-            'lengthMax' => 'numeric',
-            'makeAtStart' => 'integer',
-            'makeAtEnd' => 'integer',
-            'name' => 'string',
-            'nickname' => 'string'
+            'pageSize' => 'required|integer|between:0,9',
+            'pageNumber' => 'required|integer|min:1',
+            'type' => 'integer|between:0,17',
+            'lengthMin' => 'integer|between:0,200',
+            'lengthMax' => 'integer|between:0,200',
+            'makeAtStart' => 'integer|between:1980,2019',
+            'makeAtEnd' => 'integer|between:1980,2019',
+            'name' => 'string|between:0,16',
+            'nickname' => 'string|between:0,16'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
@@ -96,13 +96,15 @@ class WorksController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'pageSize' => 'required|numeric',
-            'pageNumber' => 'required|numeric',
-            'type' => 'numeric',
-            'length' => 'numeric',
-            'makeAt' => 'integer',
-            'name' => 'string',
-            'nickname' => 'string'
+            'pageSize' => 'required|integer|between:0,9',
+            'pageNumber' => 'required|integer|min:1',
+            'type' => 'integer|between:0,17',
+            'lengthMin' => 'integer|between:0,200',
+            'lengthMax' => 'integer|between:0,200',
+            'makeAtStart' => 'integer|between:1980,2019',
+            'makeAtEnd' => 'integer|between:1980,2019',
+            'name' => 'string|between:0,16',
+            'nickname' => 'string|between:0,16'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
@@ -237,7 +239,7 @@ class WorksController extends baseController
     {
         $params = $request->getParsedBody();
         $rules = [
-            'id' => 'required|numeric'
+            'id' => 'required|integer|min:1'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
@@ -271,7 +273,7 @@ class WorksController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'worksId' => 'required|numeric'
+            'worksId' => 'required|integer|min:1'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
@@ -288,7 +290,7 @@ class WorksController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'worksId' => 'required|numeric'
+            'worksId' => 'required|integer|min:1'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);

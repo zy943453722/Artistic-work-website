@@ -22,7 +22,27 @@ $app->add(new JwtAuthentication(
         "regexp" => "/Bearer\s+(.*)$/i",//匹配字符串
         "attribute" => "token",//放入$request对象，可用getAttribute获取
         "path" => "/",//需要检查的路径
-        "passthrough" => "/users/token",//不需要检查路径
+        "passthrough" => [
+            "/users/token",
+            "/users/touristListUserRecord",
+            "/works/touristList",
+            "/users/add",
+            "/users/getUserDetail",
+            "/users/findUserPassword",
+            "/users/getUserRecord",
+            "/users/touristListWorks",
+            "/works/touristGetWorksDetail",
+            "/works/getLikesDetail",
+            "/works/touristGetCommentsDetail",
+            "/users/getLikemeDetail",
+            "/users/getILikeDetail",
+            "/users/getComments",
+            "/users/updateToken",
+            "/users/login",
+            "/users/feedback",
+            "/users/verifyUserCode",
+            "/users/getSms"
+        ],//不需要检查路径
         "error" => function ($request, $response, $args) {//错误处理
             $codes = ResultCode::mapCode();
             //如果token过期返回成功，刷新token
@@ -48,7 +68,7 @@ $app->add(new JwtAuthentication(
         }//正确时的回调
     ]));
 //跨域请求访问的中间件
-$app->add(new CorsMiddleware([
+/*$app->add(new CorsMiddleware([
         "logger" => $container['logger'],
         "origin" => "http://www.artgallery.com:8888",//请求源
         "method" => ["GET", "POST", "PUT", "DELETE"],//允许请求方法
@@ -70,6 +90,6 @@ $app->add(new CorsMiddleware([
                 ->write(json_encode($output));
         }
         ]
-));
+));*/
 
 $app->add(DatabaseMiddleware::class);

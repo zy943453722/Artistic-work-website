@@ -34,8 +34,11 @@ class UserController extends baseController
     {
         $params = $request->getParsedBody();
         $rules = [
-            'phoneNumber' => 'required|numeric',
-            'password' => 'required|string'
+            'phoneNumber' => 'required|string|size:11',
+            'password' => [
+                'required',
+                'regex:/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z_]{8,16}$/'
+            ],
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
@@ -71,10 +74,16 @@ class UserController extends baseController
     {
         $params = $request->getParsedBody();
         $rules = [
-            'phoneNumber' => 'required|numeric',
-            'password' => 'required|string',
-            'verifyCode' => 'required|numeric',
-            'nickname' => 'required|string'
+            'phoneNumber' => 'required|string|size:11',
+            'password' => [
+                'required',
+                'regex:/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z_]{8,16}$/'
+            ],
+            'verifyCode' => [
+                'required',
+                'regex:/^\d{4}$/'
+            ],
+            'nickname' => 'required|alpha_num|between:1,16'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
@@ -134,7 +143,7 @@ class UserController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'phoneNumber' => 'required|numeric'
+            'phoneNumber' => 'required|string|size:11'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
@@ -156,8 +165,11 @@ class UserController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'phoneNumber' =>  'required|numeric',
-            'verifyCode' =>  'required|numeric'
+            'phoneNumber' => 'required|string|size:11',
+            'verifyCode' => [
+                'required',
+                'regex:/^\d{4}$/'
+            ]
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
@@ -181,8 +193,11 @@ class UserController extends baseController
     {
         $params = $request->getParsedBody();
         $rules = [
-            'phoneNumber' => 'required|numeric',
-            'password' => 'required|string',
+            'phoneNumber' => 'required|string|size:11',
+            'password' => [
+                'required',
+                'regex:/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z_]{8,16}$/'
+            ]
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
@@ -203,8 +218,8 @@ class UserController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'pageSize' => 'required|numeric',
-            'pageNumber' => 'required|numeric',
+            'pageSize' => 'required|integer|between:0,9',
+            'pageNumber' => 'required|integer|min:1',
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
@@ -243,8 +258,8 @@ class UserController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'pageSize' => 'required|numeric',
-            'pageNumber' => 'required|numeric',
+            'pageSize' => 'required|integer|between:0,9',
+            'pageNumber' => 'required|integer|min:1',
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
@@ -278,7 +293,7 @@ class UserController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'pin' => 'required|string'
+            'pin' => 'required|string|between:0,255'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
@@ -317,8 +332,14 @@ class UserController extends baseController
     {
         $params = $request->getParsedBody();
         $rules = [
-            'oldPassword' => 'required|string',
-            'newPassword' => 'required|string'
+            'oldPassword' => [
+                'required',
+                'regex:/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z_]{8,16}$/'
+            ],
+            'newPassword' => [
+                'required',
+                'regex:/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z_]{8,16}$/'
+            ]
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
@@ -340,10 +361,10 @@ class UserController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'pin' => 'required|string',
-            'pageNumber' => 'required|numeric',
-            'pageSize' => 'required|numeric',
-            'worksId' => 'numeric'
+            'pin' => 'required|string|between:0,255',
+            'pageSize' => 'required|integer|between:0,9',
+            'pageNumber' => 'required|integer|min:1',
+            'worksId' => 'integer|min:1'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
@@ -367,10 +388,10 @@ class UserController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'pin' => 'required|string',
-            'pageNumber' => 'required|numeric',
-            'pageSize' => 'required|numeric',
-            'worksId' => 'numeric'
+            'pin' => 'required|string|between:0,255',
+            'pageSize' => 'required|integer|between:0,9',
+            'pageNumber' => 'required|integer|min:1',
+            'worksId' => 'integer|min:1'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
@@ -402,7 +423,7 @@ class UserController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'pin' => 'required|string'
+            'pin' => 'required|string|between:0,255'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);

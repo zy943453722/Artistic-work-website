@@ -23,9 +23,9 @@ class CommentController extends baseController
     {
         $params = $request->getParsedBody();
         $rules = [
-            'worksId' => 'required|numeric',
-            'content' => 'required|string',
-            'toPin' => 'string'
+            'worksId' => 'required|integer|min:1',
+            'content' => 'required|string|between:0,255',
+            'toPin' => 'string|between:0,255'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
@@ -50,7 +50,7 @@ class CommentController extends baseController
     {
         $params = $request->getParsedBody();
         $rules = [
-            'id' => 'required|numeric',
+            'id' => 'required|integer|min:1',
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
@@ -66,7 +66,7 @@ class CommentController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'worksId' => 'required|numeric',
+            'worksId' => 'required|integer|min:1',
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
@@ -83,7 +83,7 @@ class CommentController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'worksId' => 'required|numeric',
+            'worksId' => 'required|integer|min:1',
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
@@ -114,7 +114,7 @@ class CommentController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'pin' => 'required|string'
+            'pin' => 'required|string|between:0,255'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);

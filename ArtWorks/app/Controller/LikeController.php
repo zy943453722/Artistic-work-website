@@ -24,8 +24,8 @@ class LikeController extends baseController
     {
         $params = $request->getParsedBody();
         $rules = [
-            'worksId' => 'required|numeric',
-            'pin' => 'required|string'
+            'worksId' => 'required|integer|min:1',
+            'pin' => 'required|string|between:0,255'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
@@ -47,8 +47,8 @@ class LikeController extends baseController
     {
         $params = $request->getParsedBody();
         $rules = [
-            'worksId' => 'required|numeric',
-            'pin' => 'required|string'
+            'worksId' => 'required|integer|min:1',
+            'pin' => 'required|string|between:0,255'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
@@ -70,7 +70,7 @@ class LikeController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'pin' => 'required|string'
+            'pin' => 'required|string|between:0,255'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
@@ -90,7 +90,7 @@ class LikeController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'worksId' => 'required|numeric'
+            'worksId' => 'required|integer|min:1'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
@@ -107,7 +107,7 @@ class LikeController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'pin' => 'required|string'
+            'pin' => 'required|string|between:0,255'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);

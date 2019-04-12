@@ -21,7 +21,7 @@ class FeedbackController extends baseController
     {
         $params = $request->getParsedBody();
         $rules = [
-            'nickname' => 'required|string',
+            'nickname' => 'required|alpha_num|between:1,16',
             'email' => 'required|email'
         ];
         if (!Validator::validators($rules, $params)) {

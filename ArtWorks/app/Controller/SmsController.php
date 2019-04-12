@@ -23,7 +23,7 @@ class SmsController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'phoneNumber' => 'required|numeric'
+            'phoneNumber' => 'required|string|size:11'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
