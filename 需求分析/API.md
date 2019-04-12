@@ -268,11 +268,12 @@ PUT /users/findUserPassword 无token检测
 ```
 
 #### 参数列表
-application/x-www-form-urlencoded 格式
- | 参数名| 参数类型 | 参数限制 | 是否必传 |备注|
- | ----- | -------- | -------- | -------- |----|
- |password|string|8-16位字母数字组合|是|无|
- |phoneNumber|string|11位长度|是|无|
+application/x-www-form-urlencoded格式
+
+| 参数名| 参数类型 | 参数限制 | 是否必传 |备注|
+| ----- | -------- | -------- | -------- |----|
+|password|string|8-16位字母数字组合|是|无|
+|phoneNumber|string|11位长度|是|无|
 
 #### http响应头
 ```
@@ -290,7 +291,9 @@ PUT /users/modifyUserPassword 有token检测
 ```
 
 #### 参数列表
+
 application/json格式
+
  | 参数名| 参数类型 | 参数限制 | 是否必传 |备注|
  | ----- | -------- | -------- | -------- |----|
  |oldPassword|string|8-16位字母数字组合|是|无|
@@ -716,7 +719,9 @@ GET /works/touristGetCommentsDetail 无token检测
 POST /works/addComments 有token检测
 ```
 #### 参数列表
+
 application/json格式
+
  | 参数名| 参数类型 | 参数限制 | 是否必传 |备注|
  | ----- | -------- | -------- | -------- |----|
  |worksId|int|正整数|是|作品id|
@@ -738,7 +743,9 @@ application/json格式
 DELETE /works/deleteComments 有token检测(只有本人和作品作者可删除)
 ```
 #### 参数列表
+
 application/json格式
+
  | 参数名| 参数类型 | 参数限制 | 是否必传 |备注|
  | ----- | -------- | -------- | -------- |----|
  | id|int|正整数|是|评论id|
@@ -758,7 +765,9 @@ application/json格式
 POST /works/addLikes 有token检测
 ```
 #### 参数列表
+
 application/json格式
+
  | 参数名| 参数类型 | 参数限制 | 是否必传 |备注|
  | ----- | -------- | -------- | -------- |----|
  |worksId|int|正整数|是|无|
@@ -779,7 +788,9 @@ application/json格式
 DELETE /works/deleteLikes 有token检测
 ```
 #### 参数列表
+
 application/json格式
+
  | 参数名| 参数类型 | 参数限制 | 是否必传 |备注|
  | ----- | -------- | -------- | -------- |----|
  |worksId|int|正整数|是|无|
