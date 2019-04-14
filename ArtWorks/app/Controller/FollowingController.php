@@ -23,7 +23,7 @@ class FollowingController extends baseController
     {
         $params = $request->getQueryParams();
         $rules = [
-            'status' => 'required|numeric'
+            'status' => 'required|integer|in:0,1'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);

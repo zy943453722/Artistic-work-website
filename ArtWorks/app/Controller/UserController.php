@@ -311,12 +311,12 @@ class UserController extends baseController
     {
         $params = $request->getParsedBody();
         $rules = [
-            'avator' => 'string',
-            'nickname' => 'string',
-            'sex' => 'numeric',
-            'birthday' => 'integer',
-            'city' => 'string',
-            'introduction' => 'string'
+            'avator' => 'url',
+            'nickname' => 'string|between:1,16',
+            'sex' => 'integer|in:0,1,2',
+            'birthday' => 'integer|between:1900,2019',
+            'city' => 'string|between:0,255',
+            'introduction' => 'string|between:0,500'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);

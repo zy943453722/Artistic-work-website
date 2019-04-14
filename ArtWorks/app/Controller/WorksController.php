@@ -174,13 +174,13 @@ class WorksController extends baseController
     {
         $params = $request->getParsedBody();
         $rules = [
-            'length' => 'required|numeric',
-            'height' => 'required|numeric',
-            'type' => 'required|numeric',
-            'name' => 'required|string',
-            'introduction' => 'required|string',
-            'instance' => 'required|string',
-            'makeAt' => 'required|int'
+            'length' => 'required|integer|min:1',
+            'height' => 'required|integer|min:1',
+            'type' => 'required|integer|between:0,17',
+            'name' => 'required|alpha_num|between:0,16',
+            'introduction' => 'required|string|between:0,255',
+            'instance' => 'required|url',
+            'makeAt' => 'required|integer|between:0,2019'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
@@ -205,14 +205,14 @@ class WorksController extends baseController
     {
         $params = $request->getParsedBody();
         $rules = [
-            'id' => 'required|numeric',
-            'length' => 'numeric',
-            'height' => 'numeric',
-            'type' => 'numeric',
-            'name' => 'string',
-            'introduction' => 'string',
-            'instance' => 'string',
-            'makeAt' => 'int'
+            'id' => 'required|integer|min:1',
+            'length' => 'integer|min:1',
+            'height' => 'integer|min:1',
+            'type' => 'integer|between:0,17',
+            'name' => 'alpha_num|between:0,16',
+            'introduction' => 'string|between:0,255',
+            'instance' => 'url',
+            'makeAt' => 'integer|between:0,2019'
         ];
         if (!Validator::validators($rules, $params)) {
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
