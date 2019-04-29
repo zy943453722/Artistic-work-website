@@ -1,10 +1,7 @@
 <template>
   <div>
-    <i
-      class="el-icon-menu"
-      :class="{siderbarLeft: isLeft, siderbarRight: isRight}"
-      @click="handleClick()"
-    ></i>
+    <span class="btn-expand iconfont" @click="handleClick" v-if="isLeft">&#xe72f;</span>
+    <span class="btn-shrink iconfont" @click="handleClick" v-if="isRight">&#xe600;</span>
     <mu-drawer :open.sync="open" :docked="docked">
       <mu-list>
         <mu-list-item button>
@@ -58,12 +55,12 @@ export default {
 </script>
 
 <style scoped>
-.siderbarLeft {
+.btn-expand {
   position: relative;
   left: 50px;
   font-size: 25px;
 }
-.siderbarRight {
+.btn-shrink {
   position: relative;
   left: 256px;
   font-size: 25px;
