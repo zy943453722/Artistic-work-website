@@ -67,6 +67,9 @@ class ResultCode
            ],
            self::WORKS_NOT_EXIST => [
                'message' => "作品不存在"
+           ],
+           self::USER_NOT_EXIST => [
+               'message' => "用户不存在"
            ]
         ];
     }

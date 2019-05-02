@@ -44,8 +44,12 @@ class UserController extends baseController
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
         }
 
+
         $userStatus = new UserStatus();
         $result = $userStatus->getUserStatus($params['phoneNumber']);
+        if (empty($result)) {
+            return ApiView::jsonResponse($response, ResultCode::USER_NOT_EXIST);
+        }
         if ($result[0]['status'] === 0) {
             return ApiView::jsonResponse($response, ResultCode::USER_ALREADY_LOGIN);
         }
@@ -86,7 +90,7 @@ class UserController extends baseController
             'nickname' => 'required|alpha_num|between:1,16'
         ];
         if (!Validator::validators($rules, $params)) {
-            return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
+            return ApiView::jsonResponse($response,ResultCologide::PARAM_IS_INVAILD);
         }
 
         $redis = $this->redis;
