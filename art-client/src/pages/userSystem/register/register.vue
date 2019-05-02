@@ -1,6 +1,7 @@
 <template>
   <el-container class="register-container">
     <el-header class="register-header">Artgallery</el-header>
+    <sider-bar></sider-bar>
     <el-main class="register-main">
       <h3 style="text-align:center">欢迎入驻Artgallery!</h3>
       <el-form label-position="right" label-width="90px" :model="ruleForm" :rules="rules" ref="ruleForm" status-icon>
@@ -18,7 +19,7 @@
         </el-form-item>
         <el-form-item label="验证码:" class="register-code" prop="code">
           <el-input placeholder="4位数字验证码" class="register-code-input" v-model="ruleForm.code"></el-input>
-          <timer-btn class="register-code-btn"></timer-btn>
+          <timer-btn class="register-code-btn" :phone="ruleForm.phone"></timer-btn>
         </el-form-item>
         <div class="register-btn">
           <el-button type="primary" class="register-btn-commit" @click="submitForm('ruleForm')">提交</el-button>
@@ -46,11 +47,14 @@
 
 <script>
 import TimerBtn from '../../common/timerBtn.vue';
+import SiderBar from '../../common/siderBar.vue';
+import axios from 'axios';
 
 export default {
   name: "Register",
   components: {
-    TimerBtn
+    TimerBtn,
+    SiderBar
   },
   data: function() {
     let nicknameRule = (rule, value, callback) => {
@@ -128,11 +132,49 @@ export default {
     submitForm: function(formName) {
       this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$message({
-              message: '注册成功',
-              type: 'success'
+            axios(
+              {
+                method: 'post',
+                url: '/api/users/add',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                data: {
+                  phoneNumber: this.ruleForm.phone,
+                  password: this.ruleForm.checkPass,
+                  nickname: this.ruleForm.nickname,
+                  verifyCode: this.ruleForm.code
+                },
+                transformRequest: [function(data) {
+                  data = JSON.stringify(data);
+                  return data;
+                }]
+              }).then(response => {
+              if (response.status === 201) {
+                  this.$message({
+                    message: '注册成功',
+                    type: 'success'
+                  });
+                  this.$router.push({name: 'Home'});
+              } else if(response.status === 200) {
+                  if(response.data.errno === 50001) {
+                    this.$message({
+                        message:'验证码输入错误,请填写正确的验证码',
+                        type: 'warning'
+                    });
+                    return false;
+                } else {
+                    this.$message({
+                        message:'参数有误',
+                        type: 'warning'
+                    });
+                    return false;
+                }
+              } else {
+                  this.$message.error('服务器请求错误');
+                  return false;
+              }
             });
-            this.$router.push({name: 'Home'});
           } else {
             this.$message({
               message:'信息有误，请仔细检查',
