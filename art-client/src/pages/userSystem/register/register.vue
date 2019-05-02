@@ -151,11 +151,36 @@ export default {
                 }]
               }).then(response => {
               if (response.status === 201) {
-                  this.$message({
-                    message: '注册成功',
-                    type: 'success'
-                  });
-                  this.$router.push({name: 'Home'});
+                  let pin = btoa(response.data.data.pin);
+                  axios({
+                    method: 'get',
+                    url: '/api/users/token',
+                    headers: {
+                      'x-artgallery-pin': pin
+                    }
+                  }).then(
+                    res => {
+                      if (res.status === 200) {
+                        if (res.data.errno === 10000) {
+                          this.$message({
+                            message: '注册成功',
+                            type: 'success'
+                          });
+                          localStorage.accessToken = res.data.data.accessToken;
+                          localStorage.refreshToken = res.data.data.refreshToken;
+                          this.$router.push({name: 'Home'});
+                        } else {
+                            this.$message({
+                            message: res.data.errmsg,
+                            type: 'warning'
+                          });
+                        }
+                      } else {
+                        this.$message.error('服务器请求错误');
+                        return false;
+                      }
+                    }
+                  );
               } else if(response.status === 200) {
                   if(response.data.errno === 50001) {
                     this.$message({
@@ -209,7 +234,7 @@ export default {
 }
 .register-main {
   border: thin solid black;
-  margin: 100px 400px;
+  margin: 50px 400px;
   background-color: white;
 }
 .register-btn {
