@@ -13,7 +13,7 @@
         <mu-list-item button>
           <mu-list-item-title>登录</mu-list-item-title>
         </mu-list-item>
-        <mu-list-item button>
+        <mu-list-item button @click="handleFeedback">
           <mu-list-item-title>意见反馈</mu-list-item-title>
         </mu-list-item>
         <mu-list-item button>
@@ -29,8 +29,8 @@
 
 <script>
 export default {
-    name: 'SiderBar',
-    data: function() {
+  name: "SiderBar",
+  data: function() {
     return {
       docked: true,
       open: false,
@@ -43,6 +43,9 @@ export default {
       this.open = !this.open;
       this.isLeft = !this.isLeft;
       this.isRight = !this.isRight;
+    },
+    handleFeedback: function() {
+      this.$store.commit('handleDialog', true);
     }
   }
 };

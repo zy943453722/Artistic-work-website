@@ -3,6 +3,7 @@
     <el-header class="register-header">Artgallery</el-header>
     <sider-bar></sider-bar>
     <el-main class="register-main">
+      <feed-back></feed-back>
       <h3 style="text-align:center">欢迎入驻Artgallery!</h3>
       <el-form label-position="right" label-width="90px" :model="ruleForm" :rules="rules" ref="ruleForm" status-icon>
         <el-form-item label="昵称:" prop="nickname">
@@ -48,13 +49,15 @@
 <script>
 import TimerBtn from '../../common/timerBtn.vue';
 import SiderBar from '../../common/siderBar.vue';
+import FeedBack from '../feedback/feedback.vue';
 import axios from 'axios';
 
 export default {
   name: "Register",
   components: {
     TimerBtn,
-    SiderBar
+    SiderBar,
+    FeedBack
   },
   data: function() {
     let nicknameRule = (rule, value, callback) => {
@@ -168,6 +171,7 @@ export default {
                           });
                           localStorage.accessToken = res.data.data.accessToken;
                           localStorage.refreshToken = res.data.data.refreshToken;
+                          localStorage.pin = pin;
                           this.$router.push({name: 'Home'});
                         } else {
                             this.$message({

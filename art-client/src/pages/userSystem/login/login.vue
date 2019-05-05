@@ -3,6 +3,7 @@
     <el-header class="login-header">Artgallery</el-header>
     <sider-bar></sider-bar>
     <el-main class="login-main">
+      <feed-back></feed-back>
       <h3 style="text-align:center">登录到Artgallery!</h3>
       <el-form
         label-position="right"
@@ -40,12 +41,14 @@
 
 <script>
 import SiderBar from "../../common/siderBar.vue";
+import FeedBack from '../feedback/feedback.vue';
 import axios from "axios";
 
 export default {
   name: "Login",
   components: {
-    SiderBar
+    SiderBar,
+    FeedBack
   },
   data: function() {
     let phoneRule = (rule, value, callback) => {
@@ -99,6 +102,7 @@ export default {
             });
             localStorage.accessToken = res.data.data.accessToken;
             localStorage.refreshToken = res.data.data.refreshToken;
+            localStorage.pin = pin;
             this.$router.push({ name: "Home" });
           } else {
             this.$message({
@@ -179,7 +183,7 @@ export default {
       });
     },
     find: function() {
-      this.$router.push({ name: "Forgot" });
+      this.$router.push({ name: "ForgotPassword" });
     },
     cancel: function() {
       this.$router.push({ name: "Home" });

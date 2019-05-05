@@ -9,7 +9,7 @@
         <sider-bar></sider-bar>
       </el-aside>
       <el-main>
-          
+          <feed-back></feed-back>
       </el-main>
     </el-container>
     <el-footer></el-footer>
@@ -20,13 +20,15 @@
 import HomeHeader from "./components/header.vue";
 import HomeTitle from "./components/title.vue";
 import SiderBar from '../common/siderBar.vue';
+import FeedBack from '../userSystem/feedback/feedback.vue';
 
 export default {
   name: "Home",
   components: {
     HomeHeader,
     HomeTitle,
-    SiderBar
+    SiderBar,
+    FeedBack
   }
 };
 </script>
