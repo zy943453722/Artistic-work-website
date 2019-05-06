@@ -7,7 +7,6 @@ import Vue from 'vue';
 import Home from '@/pages/home/home.vue';
 import Works from '@/pages/home/works/works.vue';
 import About from '@/pages/about/about.vue';
-import Artist from '@/pages/home/artist/artist.vue';
 import Terms from '@/pages/about/terms.vue';
 import Login from '@/pages/userSystem/login/login.vue';
 import Register from '@/pages/userSystem/register/register.vue';
@@ -46,11 +45,6 @@ export default new Router({
           path: 'works',
           component: Works,
           name: 'Works'
-        },
-        {
-          path: '',
-          name: 'Artist',
-          component: Artist,
         }]
       },
       {
