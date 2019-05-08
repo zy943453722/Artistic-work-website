@@ -61,12 +61,18 @@ class Works extends Model
         }
 
         if (empty($factor)) {
-            return $this->model::join('userInformation',$this->table.'.pin','=','userInformation.pin')
+            $ret = $this->model::join('userInformation',$this->table.'.pin','=','userInformation.pin')
                 ->select('works.id','instance','name','works.pin','likes','website','nickname')
+                ->where('is_delete',0)
                 ->limit($limit)
                 ->offset($offset)
                 ->get()
                 ->toArray();
+            $ret['count'] = $this->model::join('userInformation',$this->table.'.pin','=','userInformation.pin')
+                ->select('works.id','instance','name','works.pin','likes','website','nickname')
+                ->where('is_delete',0)
+                ->count();
+            return $ret;
         }
 
         $var = $this->model::join('userInformation',$this->table.'.pin','=','userInformation.pin');
@@ -77,12 +83,18 @@ class Works extends Model
                 $var = $temp;
             }
         }
-        return $var->select('works.id','instance','name','works.pin','likes','website','nickname')
+        $res = $var->select('works.id','instance','name','works.pin','likes','website','nickname')
+            ->where('is_delete',0)
             ->limit($limit)
             ->offset($offset)
             ->get()
             ->toArray();
+        $res['count'] = $var->select('works.id','instance','name','works.pin','likes','website','nickname')
+            ->where('is_delete',0)
+            ->count();
+        return $res;
     }
+
 
     public function addWorksLike($id)
     {

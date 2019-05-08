@@ -29,9 +29,9 @@ class WorksController extends baseController
             'pageSize' => 'required|integer|between:0,9',
             'pageNumber' => 'required|integer|min:1',
             'type' => 'integer|between:0,17',
-            'lengthMin' => 'integer|between:0,200',
+            'lengthMin' => 'integer|between:0,201',
             'lengthMax' => 'integer|between:0,200',
-            'makeAtStart' => 'integer|between:1980,2019',
+            'makeAtStart' => 'integer|between:1979,2019',
             'makeAtEnd' => 'integer|between:1980,2019',
             'name' => 'string|between:0,16',
             'nickname' => 'string|between:0,16'
@@ -69,7 +69,7 @@ class WorksController extends baseController
                 $factor['makeAtStart']['symbol'] = "=";
                 $factor['makeAtStart']['data'] = $params['makeAtStart'];
             } else {
-                $factor['makeAtEnd']['symbol'] = ">";
+                $factor['makeAtEnd']['symbol'] = "<";
                 $factor['makeAtEnd']['data'] = $params['makeAtEnd'];
             }
         }
@@ -99,9 +99,9 @@ class WorksController extends baseController
             'pageSize' => 'required|integer|between:0,9',
             'pageNumber' => 'required|integer|min:1',
             'type' => 'integer|between:0,17',
-            'lengthMin' => 'integer|between:0,200',
+            'lengthMin' => 'integer|between:0,201',
             'lengthMax' => 'integer|between:0,200',
-            'makeAtStart' => 'integer|between:1980,2019',
+            'makeAtStart' => 'integer|between:1979,2019',
             'makeAtEnd' => 'integer|between:1980,2019',
             'name' => 'string|between:0,16',
             'nickname' => 'string|between:0,16'
@@ -139,7 +139,7 @@ class WorksController extends baseController
                 $factor['makeAtStart']['symbol'] = "=";
                 $factor['makeAtStart']['data'] = $params['makeAtStart'];
             } else {
-                $factor['makeAtEnd']['symbol'] = ">";
+                $factor['makeAtEnd']['symbol'] = "<";
                 $factor['makeAtEnd']['data'] = $params['makeAtEnd'];
             }
         }
