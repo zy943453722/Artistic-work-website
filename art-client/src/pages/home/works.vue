@@ -11,10 +11,10 @@
       <el-main>
         <feed-back></feed-back>
         <template v-if="accessToken">
-          <pin-artist :artists="pinArtistData"></pin-artist>
+          <works-main :works="pinWorksData"></works-main>
         </template>
         <template v-else>
-          <artist :artists="touristArtistData" @changeArtist="touristGetArtistInfo"></artist>
+          <works-main :works="touristWorksData" :worksCount="touristWorksCount" @changeTag="touristGetWorksInfo"></works-main>
         </template>
       </el-main>
     </el-container>
@@ -37,59 +37,43 @@ import HomeHeader from "./components/header.vue";
 import HomeTitle from "./components/title.vue";
 import SiderBar from "../common/siderBar.vue";
 import FeedBack from "../userSystem/feedback/feedback.vue";
-import Artist from "./artist/artist.vue";
-import PinArtist from "./artist/pinArtist.vue";
+import WorksMain from "./works/worksMain.vue";
 import axios from "axios";
 
 export default {
-  name: "Home",
+  name: "Works",
   components: {
     HomeHeader,
     HomeTitle,
     SiderBar,
     FeedBack,
-    Artist,
-    PinArtist,
+    WorksMain
   },
   data() {
     return {
       accessToken: localStorage.hasOwnProperty("accessToken"),
-      pinArtistData: Object,
-      touristArtistData: Object,
+      pinWorksData: {},
+      touristWorksData: {},
+      touristWorksCount: 0
     };
   },
   methods: {
-    pinGetArtistInfo() {
-      axios({
-        method: "get",
-        url: "/api/users/pinListUserRecord",
-        headers: {
-          Authorization: "Bearer " + localStorage.accessToken
-        },
-        params: {
-          pageSize: 9,
-          pageNumber: 1
-        }
-      }).then(res => {
-        if (res.status === 200) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-    },
-    touristGetArtistInfo(count) {
+    pinGetWorksInfo() {},
+    touristGetWorksInfo(parameter = {}) {
+      parameter.pageSize = 9;
+      if (!parameter.hasOwnProperty('pageNumber')) {
+        parameter.pageNumber = 1;
+      }
       axios
-        .get("/api/users/touristListUserRecord", {
-          params: {
-            pageSize: 9,
-            pageNumber: count
-          }
+        .get("/api/works/touristList", {
+          params: parameter
         })
         .then(res => {
           if (res.status === 200) {
             if (res.data.errno === 10000) {
-              this.touristArtistData = res.data.data;
+              this.touristWorksCount = res.data.data.count;
+              delete res.data.data.count;
+              this.touristWorksData = res.data.data;
             } else {
               this.$message({
                 message: "参数有误",
@@ -106,9 +90,9 @@ export default {
   },
   mounted() {
     if (localStorage.hasOwnProperty("accessToken")) {
-      this.pinGetArtistInfo();
+      this.pinGetWorksInfo();
     } else {
-      this.touristGetArtistInfo(1);
+      this.touristGetWorksInfo();
     }
   }
 };

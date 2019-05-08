@@ -5,7 +5,7 @@
 import Router from "vue-router";
 import Vue from 'vue';
 import Home from '@/pages/home/home.vue';
-import Works from '@/pages/home/works/works.vue';
+import Works from '@/pages/home/works.vue';
 import About from '@/pages/about/about.vue';
 import Terms from '@/pages/about/terms.vue';
 import Login from '@/pages/userSystem/login/login.vue';
@@ -40,13 +40,13 @@ export default new Router({
     routes: [{
         path: '/',
         name: 'Home',
-        component: Home,
-        children: [{
-          path: 'works',
-          component: Works,
-          name: 'Works'
-        }]
+        component: Home
       },
+      {
+        path: '/works',
+        component: Works,
+        name: 'Works'
+      }, 
       {
         path: '/about',
         name: 'About',
