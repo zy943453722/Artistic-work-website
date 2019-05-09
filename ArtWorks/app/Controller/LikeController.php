@@ -36,7 +36,7 @@ class LikeController extends baseController
         $work = new Works();
         $worksLike = new WorksLike();
         $userRecord = new UserRecord();
-        $worksLike->addWorksLike($params['pin'], $params['worksId']);
+        $worksLike->addWorksLike($token['pin'], $params['worksId']);
         $work->addWorksLike($params['worksId']);
         $userRecord->modifyUserRecord($pin, 'likes_number', '+');
 

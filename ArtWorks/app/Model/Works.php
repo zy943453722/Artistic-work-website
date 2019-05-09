@@ -89,6 +89,7 @@ class Works extends Model
             ->offset($offset)
             ->get()
             ->toArray();
+
         $res['count'] = $var->select('works.id','instance','name','works.pin','likes','website','nickname')
             ->where('is_delete',0)
             ->count();
