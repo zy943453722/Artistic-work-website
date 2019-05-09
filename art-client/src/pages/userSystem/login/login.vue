@@ -86,7 +86,7 @@ export default {
   },
   methods: {
     successHandle: function() {
-      let pin = btoa(this.phone);
+      let pin = btoa(this.ruleForm.phone);
       axios({
         method: "get",
         url: "/api/users/token",

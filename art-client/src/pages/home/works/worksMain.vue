@@ -1,6 +1,16 @@
 <template>
   <mu-container>
-    <mu-breadcrumbs class="home-works-nav" divider="—">
+    <mu-breadcrumbs class="home-works-nav" divider="|" v-if="accessToken">
+      <mu-breadcrumbs-item
+        class="home-works-nav-item"
+        v-for="item in pinItems"
+        :key="item.text"
+        :disabled="item.disabled"
+        :to="item.to"
+        :class="item.class"
+      >{{item.text}}</mu-breadcrumbs-item>
+    </mu-breadcrumbs>
+    <mu-breadcrumbs class="home-works-nav" divider="—" v-if="!accessToken">
       <mu-breadcrumbs-item
         class="home-works-nav-item"
         v-for="item in items"
@@ -83,9 +93,32 @@
         <el-col :span="8">
           <div>
             <router-link :to="{name: 'Art',params:{id: work.id}}">{{work.name}}</router-link>
-            <el-button @click="handleLike">
-              <span class="iconfont">&#xe620;</span>&nbsp;赞一下
-            </el-button>
+            <template v-if="work.hasOwnProperty('relation')">
+              <el-button @click="pinHandleLikeRelation" v-if="accessToken">
+                <span class="iconfont">&#xe621;</span>
+                &nbsp;{{work.likes}}
+              </el-button>
+              <el-popover placement="top" width="160" v-model="visible">
+                <p>确定不再喜欢了？</p>
+                <div style="text-align: right; margin: 0">
+                  <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+                  <el-button
+                    type="primary"
+                    size="mini"
+                    @click="handleCancelLike(work.pin, work.id)"
+                  >确定</el-button>
+                </div>
+              </el-popover>
+            </template>
+            <template v-else>
+              <el-button @click="pinHandleLike(work.id,work.pin)" v-if="accessToken">
+                <span class="iconfont">&#xe620;</span>&nbsp;赞一下
+              </el-button>
+              <el-button @click="handleLike" v-if="!accessToken">
+                <span class="iconfont">&#xe620;</span>&nbsp;赞一下
+              </el-button>
+            </template>
+
             <p>
               作者:
               <router-link
@@ -107,7 +140,7 @@
       :page-size="9"
       :total="worksCount"
       :current-page="currentPage"
-      hide-on-single-page=true
+      hide-on-single-page="true"
       @current-change="handleCurrentChange"
       @prev-click="handlePrevChange"
       @next-click="handleNextChange"
@@ -116,15 +149,16 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "WorksMain",
-  props: [
-    "works",
-    "worksCount"
-  ],
+  props: ["works", "worksCount"],
   data() {
     return {
+      accessToken: localStorage.hasOwnProperty("accessToken"),
       currentPage: 1,
+      visible: false,
       value: "",
       typeOld: "",
       lengthOld: "",
@@ -356,6 +390,20 @@ export default {
           to: { name: "Works" },
           class: "home-nav-item-works"
         }
+      ],
+      pinItems: [
+        {
+          text: "首页",
+          disabled: false,
+          to: { name: "Home" },
+          class: "home-nav-item-artist"
+        },
+        {
+          text: "所有作品",
+          disabled: false,
+          to: { name: "Works" },
+          class: "home-nav-item-works"
+        }
       ]
     };
   },
@@ -455,25 +503,149 @@ export default {
         });
         return false;
       }
-      if (this.selectValue === '1') {
+      if (this.selectValue === "1") {
         this.dynamicType.nickname = this.search;
       } else {
-        this.dynamicType.name =  this.search;
+        this.dynamicType.name = this.search;
       }
       this.$emit("changeTag", this.dynamicType);
     },
     handleLike() {
       this.$router.push({ name: "Login" });
     },
-    handleCurrentChange (currentPage) {
+    pinHandleLike(id,pin) {
+      axios({
+        method: "post",
+        url: "/api/works/addLikes",
+        headers: {
+          Authorization: "Bearer " + localStorage.accessToken,
+          "Content-Type": "application/json"
+        },
+        data: {
+          worksId: id,
+          pin: btoa(pin)
+        },
+        transformRequest: [
+          function(data) {
+            data = JSON.stringify(data);
+            return data;
+          }
+        ]
+      }).then(res => {
+        if (res.status === 200) {
+          if (res.data.errno === 10000) {
+            location.reload();
+          } else if (res.data.errno === 40005) {
+            this.refreshHandle();
+          } else {
+            this.$message({
+              message: "参数有误",
+              type: "warning"
+            });
+            return false;
+          }
+        } else if (res === 401) {
+          this.$message({
+            message: res.data.errmsg,
+            type: "warning"
+          });
+          this.$router.push({ name: "Home" });
+        } else {
+          this.$message.error("服务器请求错误");
+          return false;
+        }
+      });
+    },
+    pinHandleLikeRelation() {
+      this.visible = true;
+    },
+    refreshHandle: function() {
+      axios({
+        method: "put",
+        url: "/api/users/updateToken",
+        headers: {
+          "x-artgallery-refreshToken": localStorage.refreshToken,
+          "x-artgallery-pin": localStorage.pin
+        }
+      }).then(response => {
+        if (response.status === 200) {
+          if (response.data.errno === 10000) {
+            localStorage.accessToken = response.data.data.accessToken;
+            this.$router.push({ name: "Works" });
+          } else {
+            this.$message({
+              message: response.data.errmsg,
+              type: "warning"
+            });
+            this.$router.push({ name: "Home" });
+          }
+        } else if (response.status === 401) {
+          this.$message({
+            message: response.data.errmsg,
+            type: "warning"
+          });
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("pin");
+          this.$router.push({ name: "Login" });
+        } else {
+          this.$message.error("服务器请求错误");
+          this.$router.push({ name: "Home" });
+        }
+      });
+    },
+    handleCancelLike(pin, id) {
+      axios({
+        method: "delete",
+        url: "/api/works/deleteLikes",
+        headers: {
+          Authorization: "Bearer " + localStorage.accessToken,
+          "Content-Type": "application/json"
+        },
+        data: {
+          worksId: id,
+          pin: btoa(pin)
+        },
+        transformRequest: [
+          function(data) {
+            data = JSON.stringify(data);
+            return data;
+          }
+        ]
+      }).then(res => {
+        if (res.status === 200) {
+          if (res.data.errno === 10000) {
+            location.reload();
+          } else if (res.data.errno === 40005) {
+            this.refreshHandle();
+          } else {
+            this.$message({
+              message: "参数有误",
+              type: "warning"
+            });
+            return false;
+          }
+        } else if (res === 401) {
+          this.$message({
+            message: res.data.errmsg,
+            type: "warning"
+          });
+          this.$router.push({ name: "Home" });
+        } else {
+          this.$message.error("服务器请求错误");
+          return false;
+        }
+      });
+    },
+    handleCurrentChange(currentPage) {
       this.currentPage = currentPage;
       this.dynamicType.pageNumber = this.currentPage;
-      this.$emit('changeTag',this.dynamicType);
+      this.$emit("changeTag", this.dynamicType);
     },
-    handlePrevChange (prevPage) {
+    handlePrevChange(prevPage) {
       this.currentPage = prevPage;
     },
-    handleNextChange (nextPage) {
+    handleNextChange(nextPage) {
       this.currentPage = nextPage;
     }
   }

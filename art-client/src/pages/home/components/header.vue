@@ -21,8 +21,10 @@
             <el-dropdown-item @click="handleBlack()">夜晚</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-button size="medium" type="success">注册</el-button>
-        <el-button size="medium" type="info">登录</el-button>
+        <el-button size="medium" type="success" v-if="!accessToken">注册</el-button>
+        <el-button size="medium" type="info" v-if="!accessToken">登录</el-button>
+        <el-button size="medium" type="success" v-if="accessToken">设置</el-button>
+        <el-button size="medium" type="info" v-if="accessToken">登出</el-button>
       </div>
     </el-col>
   </el-row>
@@ -31,6 +33,11 @@
 <script>
 export default {
   name: "HomeHeader",
+  data () {
+    return {
+      accessToken: localStorage.hasOwnProperty("accessToken"),
+    }
+  },
   methods: {
     handleWhite: function() {
       

@@ -6,7 +6,12 @@
     <home-title></home-title>
     <el-container>
       <el-aside>
-        <sider-bar></sider-bar>
+        <template v-if="accessToken">
+          <i-sider-bar></i-sider-bar>
+        </template>
+        <template v-else>
+          <sider-bar></sider-bar>
+        </template>
       </el-aside>
       <el-main>
         <feed-back></feed-back>
@@ -39,6 +44,7 @@ import SiderBar from "../common/siderBar.vue";
 import FeedBack from "../userSystem/feedback/feedback.vue";
 import Artist from "./artist/artist.vue";
 import PinArtist from "./artist/pinArtist.vue";
+import iSiderBar from "../common/iSiderBar.vue";
 import axios from "axios";
 
 export default {
@@ -50,6 +56,7 @@ export default {
     FeedBack,
     Artist,
     PinArtist,
+    iSiderBar
   },
   data() {
     return {
