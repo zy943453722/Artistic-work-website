@@ -73,7 +73,7 @@ class UserRecord extends Model
         if (is_null($this->model)) {
             $this->init();
         }
-        return $this->model::join('userInformation', $this->table.'.pin','=','userInformation.pin')
+        $res = $this->model::join('userInformation', $this->table.'.pin','=','userInformation.pin')
             ->join('works', $this->table.'.masterpiece_id','=','works.id')
             ->where($this->table.'.pin','!=',$pin)
             ->select('userInformation.pin','works_number','followers_number','likes_number',
@@ -83,6 +83,11 @@ class UserRecord extends Model
             ->offset($offset)
             ->get()
             ->toArray();
+        $res['count'] = $this->model::join('userInformation', $this->table.'.pin','=','userInformation.pin')
+            ->join('works', $this->table.'.masterpiece_id','=','works.id')
+            ->where($this->table.'.pin','!=',$pin)
+            ->count();
+        return $res;
     }
 
     public function touristGetUserRecord($limit=9, $offset)
