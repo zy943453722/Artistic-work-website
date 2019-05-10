@@ -22,9 +22,6 @@ import UserLikeme from '@/pages/user/likeme/userLikeme.vue';
 import Fans from '@/pages/connection/fans.vue';
 import Connection from '@/pages/connection/connection.vue';
 import Follow from '@/pages/connection/follow.vue';
-import Search from '@/pages/search/search.vue';
-import SearchArtist from '@/pages/search/searchArtist.vue';
-import SearchWorks from '@/pages/search/searchWorks.vue';
 import Setting from '@/pages/setting/setting.vue';
 import BasicSetting from '@/pages/setting/basicSetting.vue';
 import PasswordSetting from '@/pages/setting/passwordSetting.vue';
@@ -166,23 +163,6 @@ export default new Router({
             path: '/edit',
             name: 'EditWorks',
             component: EditWorks
-          }
-        ]
-      },
-      {
-        path: '/search',
-        name: 'Search',
-        component: Search,
-        children: [
-          {
-            path: '/artist',
-            name: 'SearchArtist',
-            component: SearchArtist
-          },
-          {
-            path: '/works',
-            name: 'SearchWorks',
-            component: SearchWorks
           }
         ]
       }

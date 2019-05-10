@@ -85,7 +85,7 @@ export default {
     };
   },
   methods: {
-    successHandle: function() {
+    successHandle: function(id) {
       let pin = btoa(this.ruleForm.phone);
       axios({
         method: "get",
@@ -103,6 +103,7 @@ export default {
             localStorage.accessToken = res.data.data.accessToken;
             localStorage.refreshToken = res.data.data.refreshToken;
             localStorage.pin = pin;
+            localStorage.id = id;
             this.$router.push({ name: "Home" });
           } else {
             this.$message({
@@ -163,7 +164,7 @@ export default {
                   });
                   return false;
                 case 10000:
-                  this.successHandle();
+                  this.successHandle(response.data.data.id);
                   break;
                 default:
                   break;

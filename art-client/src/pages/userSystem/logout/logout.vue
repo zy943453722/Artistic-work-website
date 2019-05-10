@@ -66,6 +66,7 @@ export default {
             localStorage.removeItem("refreshToken");
             localStorage.removeItem("accessToken");
             localStorage.removeItem("pin");
+            localStorage.removeItem("id");
             this.$message({
               message: "登出成功",
               type: "success"

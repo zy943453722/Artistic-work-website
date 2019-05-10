@@ -75,8 +75,8 @@
               </mu-avatar>
             </el-col>
             <el-col :span="16">
-              <p style="text-align:center">hahah</p>
-              <p style="text-align:center">hahah</p>
+              <p style="text-align:center">{{userDetail.nickname}}</p>
+              <router-link :to="{name: 'UserWorks',params:{id: userDetail.id}}" style="text-align:center">{{userDetail.website}}</router-link>
             </el-col>
           </el-row>
           <mu-divider></mu-divider>
@@ -98,7 +98,7 @@
 <script>
 export default {
   name: "PinArtist",
-  props: ["artists", "artistCount"],
+  props: ["artists", "artistCount","userDetail"],
   data() {
     return {
       pageNumber: 1,

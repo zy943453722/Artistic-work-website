@@ -16,7 +16,12 @@
       <el-main>
         <feed-back></feed-back>
         <template v-if="accessToken">
-          <pin-artist :artists="pinArtistData" :artistCount="artistCount" @changeTag="pinGetArtistInfo"></pin-artist>
+          <pin-artist
+            :artists="pinArtistData"
+            :artistCount="artistCount"
+            @changeTag="pinGetArtistInfo"
+            :userDetail="userDetail"
+          ></pin-artist>
         </template>
         <template v-else>
           <artist :artists="touristArtistData" @changeArtist="touristGetArtistInfo"></artist>
@@ -63,7 +68,8 @@ export default {
       accessToken: localStorage.hasOwnProperty("accessToken"),
       pinArtistData: {},
       touristArtistData: {},
-      artistCount: 0
+      artistCount: 0,
+      userDetail: {}
     };
   },
   methods: {
@@ -79,7 +85,7 @@ export default {
         if (response.status === 200) {
           if (response.data.errno === 10000) {
             localStorage.accessToken = response.data.data.accessToken;
-            this.$router.push({ name: "Home" });  
+            this.$router.push({ name: "Home" });
           } else {
             this.$message({
               message: response.data.errmsg,
@@ -95,6 +101,7 @@ export default {
           localStorage.removeItem("refreshToken");
           localStorage.removeItem("accessToken");
           localStorage.removeItem("pin");
+          localStorage.removeItem("id");
           this.$router.push({ name: "Login" });
         } else {
           this.$message.error("服务器请求错误");
@@ -128,7 +135,7 @@ export default {
             });
             return false;
           }
-        } else if(res.status === 401) {
+        } else if (res.status === 401) {
           this.$message({
             message: res.data.errmsg,
             type: "warning"
@@ -165,10 +172,43 @@ export default {
           }
         });
     },
+    getUserDetail() {
+      axios({
+        method: "get",
+        url: "/api/users/getUserInfo",
+        headers: {
+          Authorization: "Bearer " + localStorage.accessToken
+        }
+      }).then(res => {
+        if (res.status === 200) {
+          if (res.data.errno === 10000) {
+            this.userDetail = res.data.data[0];
+          } else if (res.data.errno === 40005) {
+            this.refreshHandle();
+          } else {
+            this.$message({
+              message: "参数有误",
+              type: "warning"
+            });
+            return false;
+          }
+        } else if (res.status === 401) {
+          this.$message({
+            message: res.data.errmsg,
+            type: "warning"
+          });
+          this.$router.push({ name: "Home" });
+        } else {
+          this.$message.error("服务器请求错误");
+          return false;
+        }
+      });
+    }
   },
   mounted() {
     if (localStorage.hasOwnProperty("accessToken")) {
       this.pinGetArtistInfo(1);
+      this.getUserDetail();
     } else {
       this.touristGetArtistInfo(1);
     }

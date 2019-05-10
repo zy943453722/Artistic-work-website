@@ -21,10 +21,10 @@
             <el-dropdown-item @click="handleBlack()">夜晚</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-button size="medium" type="success" v-if="!accessToken">注册</el-button>
-        <el-button size="medium" type="info" v-if="!accessToken">登录</el-button>
-        <el-button size="medium" type="success" v-if="accessToken">设置</el-button>
-        <el-button size="medium" type="info" v-if="accessToken">登出</el-button>
+        <el-button size="medium" type="success" v-if="!accessToken" @click="handleRegister">注册</el-button>
+        <el-button size="medium" type="info" v-if="!accessToken"  @click="handleLogin">登录</el-button>
+        <el-button size="medium" type="success" v-if="accessToken"  @click="handleSetting">设置</el-button>
+        <el-button size="medium" type="info" v-if="accessToken"  @click="handleLogout">登出</el-button>
       </div>
     </el-col>
   </el-row>
@@ -44,6 +44,18 @@ export default {
     },
     handleBlack: function() {
    
+    },
+    handleRegister () {
+      this.$router.push({name: "Register"});
+    },
+    handleLogin () {
+      this.$router.push({name: "Login"});
+    },
+    handleSetting () {
+      this.$router.push({name: "BasicSetting"});
+    },
+    handleLogout () {
+      this.$router.push({name: "Logout"});
     }
   }
 };

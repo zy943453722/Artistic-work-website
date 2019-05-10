@@ -155,6 +155,7 @@ export default {
               }).then(response => {
               if (response.status === 201) {
                   let pin = btoa(response.data.data.pin);
+                  let id = response.data.data.id;
                   axios({
                     method: 'get',
                     url: '/api/users/token',
@@ -172,6 +173,7 @@ export default {
                           localStorage.accessToken = res.data.data.accessToken;
                           localStorage.refreshToken = res.data.data.refreshToken;
                           localStorage.pin = pin;
+                          localStorage.id = id;
                           this.$router.push({name: 'Home'});
                         } else {
                             this.$message({

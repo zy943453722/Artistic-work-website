@@ -587,6 +587,7 @@ export default {
           localStorage.removeItem("refreshToken");
           localStorage.removeItem("accessToken");
           localStorage.removeItem("pin");
+          localStorage.removeItem("id");
           this.$router.push({ name: "Login" });
         } else {
           this.$message.error("服务器请求错误");
