@@ -86,4 +86,14 @@ class User extends Model
             ]);
     }
 
+    public function getUserId($phoneNumber)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::where('pin','=',$phoneNumber)
+            ->select('id')
+            ->get()
+            ->toArray()[0]['id'];
+    }
 }

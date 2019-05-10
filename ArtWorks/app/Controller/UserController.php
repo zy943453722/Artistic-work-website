@@ -44,7 +44,6 @@ class UserController extends baseController
             return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
         }
 
-
         $userStatus = new UserStatus();
         $result = $userStatus->getUserStatus($params['phoneNumber']);
         if (empty($result)) {
@@ -65,7 +64,9 @@ class UserController extends baseController
         if ($ret == false) {
             return ApiView::jsonResponse($response, ResultCode::UNKNOWN_ERROR);
         }
-        return ApiView::jsonResponse($response, ResultCode::SUCCESS, []);
+        $id = $user->getUserId($params['phoneNumber']);
+        $data = ['data' => ['id' => $id]];
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
     }
 
     /**
@@ -104,11 +105,14 @@ class UserController extends baseController
         $userRecord = new UserRecord();
         $result &= $userRecord->addUserRecord($params['phoneNumber']);
         $usrInfo = new UserInformation();
+        $count = $usrInfo->getCountOfUserInfo() + 1;
         $result &= $usrInfo->addUserInfo($params['phoneNumber'], $params['nickname']);
         $usrStatus = new UserStatus();
         $result &= $usrStatus->addUserStatus($params['phoneNumber']);
 
-        $data = ['data' => ['pin' => $params['phoneNumber']]];
+        $data = ['data' => ['pin' => $params['phoneNumber'],
+            'id' => $count
+        ]];
         if ($result == true) {
             return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data, 201);
         }
