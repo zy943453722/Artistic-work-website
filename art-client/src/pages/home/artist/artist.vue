@@ -22,9 +22,6 @@
             <router-link
               :to="{name: 'UserWorks',params:{id: artist.website.slice(26)}}"
             >{{artist.nickname}}</router-link>
-            <el-button @click="handleFollow">
-              <span class="iconfont">&#xe61a;</span>&nbsp;关注
-            </el-button>
             <p>发表过{{artist.works_number}}件作品</p>
             <p>被{{artist.followers_number}}人关注</p>
             <p>累计点赞次数:{{artist.likes_number}}</p>

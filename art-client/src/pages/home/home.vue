@@ -16,7 +16,7 @@
       <el-main>
         <feed-back></feed-back>
         <template v-if="accessToken">
-          <pin-artist :artists="pinArtistData"></pin-artist>
+          <pin-artist :artists="pinArtistData" :artistCount="artistCount" @changeTag="pinGetArtistInfo"></pin-artist>
         </template>
         <template v-else>
           <artist :artists="touristArtistData" @changeArtist="touristGetArtistInfo"></artist>
@@ -61,12 +61,48 @@ export default {
   data() {
     return {
       accessToken: localStorage.hasOwnProperty("accessToken"),
-      pinArtistData: Object,
-      touristArtistData: Object,
+      pinArtistData: {},
+      touristArtistData: {},
+      artistCount: 0
     };
   },
   methods: {
-    pinGetArtistInfo() {
+    refreshHandle: function() {
+      axios({
+        method: "put",
+        url: "/api/users/updateToken",
+        headers: {
+          "x-artgallery-refreshToken": localStorage.refreshToken,
+          "x-artgallery-pin": localStorage.pin
+        }
+      }).then(response => {
+        if (response.status === 200) {
+          if (response.data.errno === 10000) {
+            localStorage.accessToken = response.data.data.accessToken;
+            this.$router.push({ name: "Home" });  
+          } else {
+            this.$message({
+              message: response.data.errmsg,
+              type: "warning"
+            });
+            this.$router.push({ name: "Home" });
+          }
+        } else if (response.status === 401) {
+          this.$message({
+            message: response.data.errmsg,
+            type: "warning"
+          });
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("pin");
+          this.$router.push({ name: "Login" });
+        } else {
+          this.$message.error("服务器请求错误");
+          this.$router.push({ name: "Home" });
+        }
+      });
+    },
+    pinGetArtistInfo(number) {
       axios({
         method: "get",
         url: "/api/users/pinListUserRecord",
@@ -75,12 +111,31 @@ export default {
         },
         params: {
           pageSize: 9,
-          pageNumber: 1
+          pageNumber: number
         }
       }).then(res => {
         if (res.status === 200) {
-          return true;
+          if (res.data.errno === 10000) {
+            this.artistCount = res.data.data.count;
+            delete res.data.data.count;
+            this.pinArtistData = res.data.data;
+          } else if (res.data.errno === 40005) {
+            this.refreshHandle();
+          } else {
+            this.$message({
+              message: "参数有误",
+              type: "warning"
+            });
+            return false;
+          }
+        } else if(res.status === 401) {
+          this.$message({
+            message: res.data.errmsg,
+            type: "warning"
+          });
+          this.$router.push({ name: "Home" });
         } else {
+          this.$message.error("服务器请求错误");
           return false;
         }
       });
@@ -113,7 +168,7 @@ export default {
   },
   mounted() {
     if (localStorage.hasOwnProperty("accessToken")) {
-      this.pinGetArtistInfo();
+      this.pinGetArtistInfo(1);
     } else {
       this.touristGetArtistInfo(1);
     }
