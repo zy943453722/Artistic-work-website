@@ -94,21 +94,10 @@
           <div>
             <router-link :to="{name: 'Art',params:{id: work.id}}">{{work.name}}</router-link>
             <template v-if="work.hasOwnProperty('relation')">
-              <el-button @click="pinHandleLikeRelation" v-if="accessToken">
+              <el-button @click="pinHandleLikeRelation(work.pin,work.id)" v-if="accessToken">
                 <span class="iconfont">&#xe621;</span>
                 &nbsp;{{work.likes}}
               </el-button>
-              <el-popover placement="top" width="160" v-model="visible">
-                <p>确定不再喜欢了？</p>
-                <div style="text-align: right; margin: 0">
-                  <el-button size="mini" type="text" @click="visible = false">取消</el-button>
-                  <el-button
-                    type="primary"
-                    size="mini"
-                    @click="handleCancelLike(work.pin, work.id)"
-                  >确定</el-button>
-                </div>
-              </el-popover>
             </template>
             <template v-else>
               <el-button @click="pinHandleLike(work.id,work.pin)" v-if="accessToken">
@@ -118,7 +107,6 @@
                 <span class="iconfont">&#xe620;</span>&nbsp;赞一下
               </el-button>
             </template>
-
             <p>
               作者:
               <router-link
@@ -158,7 +146,6 @@ export default {
     return {
       accessToken: localStorage.hasOwnProperty("accessToken"),
       currentPage: 1,
-      visible: false,
       value: "",
       typeOld: "",
       lengthOld: "",
@@ -556,8 +543,21 @@ export default {
         }
       });
     },
-    pinHandleLikeRelation() {
-      this.visible = true;
+    pinHandleLikeRelation(pin,id) {
+        this.$confirm("确定不再喜欢了?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.handleCancelLike(pin, id);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消操作"
+          });
+        });
     },
     refreshHandle: function() {
       axios({

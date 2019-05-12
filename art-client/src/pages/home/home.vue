@@ -66,7 +66,7 @@ export default {
   data() {
     return {
       accessToken: localStorage.hasOwnProperty("accessToken"),
-      pinArtistData: {},
+      pinArtistData: [],
       touristArtistData: {},
       artistCount: 0,
       userDetail: {}
@@ -125,7 +125,7 @@ export default {
           if (res.data.errno === 10000) {
             this.artistCount = res.data.data.count;
             delete res.data.data.count;
-            this.pinArtistData = res.data.data;
+            this.pinArtistData = Object.values(res.data.data);
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
           } else {

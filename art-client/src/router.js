@@ -90,22 +90,22 @@ export default new Router({
             component: UserWorks,
           },
           {
-            path: '/about',
+            path: 'about',
             name: 'UserAbout',
             component: UserAbout
           },
           {
-            path: '/ilike',
+            path: 'ilike',
             name: 'UserILike',
             component: UserILike
           },
           {
-            path: '/likeme',
+            path: 'likeme',
             name: 'UserLikeme',
             component: UserLikeme
           },
           {
-            path: '/comments',
+            path: 'comments',
             name: 'UserComments',
             component: UserComments
           }
@@ -117,12 +117,12 @@ export default new Router({
         component: Setting,
         children: [
         {
-          path: '/basics',
+          path: 'basics',
           name: 'BasicSetting',
           component: BasicSetting
         },
         {
-          path: '/password',
+          path: 'password',
           name: 'PasswordSetting',
           component: PasswordSetting
         }
@@ -134,12 +134,12 @@ export default new Router({
         component: Connection,
         children: [
         {
-          path: '/follow',
+          path: 'follow',
           name: 'Follow',
           component: Follow
         },
         {
-          path: '/fans',
+          path: 'fans',
           name: 'Fans',
           component: Fans
         }
@@ -156,11 +156,11 @@ export default new Router({
         component: DealWorks,
         children: [
           {
-            path: '/write',
+            path: 'write',
             name: 'UploadWorks',
             component: UploadWorks
           },{
-            path: '/edit',
+            path: 'edit',
             name: 'EditWorks',
             component: EditWorks
           }

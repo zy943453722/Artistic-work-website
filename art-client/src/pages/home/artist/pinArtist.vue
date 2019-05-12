@@ -22,24 +22,7 @@
           </el-carousel>
         </div>
         <div>
-          <template v-if="Object.keys(prvArtists).length !== 0">
-            <div v-for="card in prvArtists" :key="card.pin">
-              <mu-card style="width: 100%; max-width: 550px;margin: 50px auto;">
-                <mu-card-header :title="card.nickname" :sub-title="card.followers_number+'人关注过'">
-                  <mu-avatar slot="avatar">
-                    <img src="../../../assets/avator.jpg">
-                  </mu-avatar>
-                </mu-card-header>
-                <mu-card-media
-                  :title="card.name+' '+' '+' '+card.make_at+'年作品'"
-                  :sub-title="card.likes+'人赞过'"
-                >
-                  <img src="../../../assets/sun.jpg">
-                </mu-card-media>
-              </mu-card>
-            </div>
-          </template>
-          <div v-for="card in artists" :key="card.pin">
+          <div v-for="card in allArtists" :key="card.pin">
             <mu-card style="width: 100%; max-width: 550px;margin: 50px auto;">
               <mu-card-header :title="card.nickname" :sub-title="card.followers_number+'人关注过'">
                 <mu-avatar slot="avatar">
@@ -103,7 +86,7 @@ export default {
     return {
       pageNumber: 1,
       num: 20,
-      prvArtists: {},
+      prvArtists: [],
       imageItems: [
         {
           id: 1,
@@ -138,10 +121,15 @@ export default {
       ]
     };
   },
+  computed: {
+    allArtists() {
+      this.prvArtists = this.prvArtists.concat(this.artists);
+      return this.prvArtists;
+    },
+  },
   methods: {
     loadMore() {
       this.pageNumber++;
-      this.prvArtists = this.artists;
       this.$emit("changeTag", this.pageNumber);
     }
   }
@@ -165,10 +153,10 @@ export default {
   font-size: 20px;
 }
 .home-nav-item-artist {
-  color: black;
+  color: red;
 }
 .home-nav-item-works {
-  color: red;
+  color: black;
 }
 .art-main {
   border-style: inset;

@@ -66,7 +66,7 @@ export default {
       this.$router.push({name: "About"});
     },
     handleConnection () {
-      this.$router.push({name: "Connection"});
+      this.$router.push({name: "Follow"});
     }
   }
 };
