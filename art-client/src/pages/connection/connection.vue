@@ -4,7 +4,12 @@
     <i-sider-bar></i-sider-bar>
     <el-main class="connect-main">
       <feed-back></feed-back>
-      <router-view :key="this.$route.path" :followData="followData" :count="count" :mutualCount="mutualCount"></router-view>
+      <router-view
+        :key="this.$route.path"
+        :followData="followData"
+        :count="count"
+        :mutualCount="mutualCount"
+      ></router-view>
     </el-main>
   </el-container>
 </template>
@@ -22,11 +27,15 @@ export default {
   },
   data() {
     return {
-      routers: this.$route.path.slice(12),
       followData: {},
       mutualCount: 0,
       count: 0
     };
+  },
+  watch: {
+    '$route'(to, from) {
+      this.getFollowing(to.path);
+    }
   },
   methods: {
     refreshHandle: function() {
@@ -65,9 +74,9 @@ export default {
         }
       });
     },
-    getFollowing() {
-      let status = 0;
-      if (this.routers === "follow") {
+    getFollowing(path) {
+      let status;
+      if (path.slice(12) === "follow") {
         status = 0;
       } else {
         status = 1;
@@ -112,7 +121,7 @@ export default {
     }
   },
   mounted() {
-    this.getFollowing();
+    this.getFollowing(this.$route.path);
   }
 };
 </script>
