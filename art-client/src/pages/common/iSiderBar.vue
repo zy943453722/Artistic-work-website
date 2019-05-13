@@ -60,7 +60,7 @@ export default {
       this.$router.push({name: "UserWorks",params: {id: localStorage.id}});
     },
     handleSetting () {
-      this.$router.push({name: "Setting"});
+      this.$router.push({name: "BasicSetting"});
     },
     handleAbout () {
       this.$router.push({name: "About"});
