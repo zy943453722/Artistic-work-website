@@ -322,7 +322,7 @@ class UserController extends baseController
             'avator' => 'url',
             'nickname' => 'string|between:1,16',
             'sex' => 'integer|in:0,1,2',
-            'birthday' => 'integer|between:1900,2019',
+            'birthday' => 'integer',
             'city' => 'string|between:0,255',
             'introduction' => 'string|between:0,500'
         ];
