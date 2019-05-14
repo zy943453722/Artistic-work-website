@@ -19,10 +19,22 @@
       status-icon
     >
       <el-form-item label="头像:">
-        <mu-avatar style="float:left">
-          <img src="../../assets/avator.jpg">
+        <mu-avatar style="float:left" size="50" v-if="!imageUrl">
+          <img :src="ruleForm.avatar">
         </mu-avatar>
-        <el-button type="success" round style="float:left">更改头像</el-button>
+        <el-upload
+          class="avatar-uploader"
+          :action="oss.host"
+          :show-file-list="false"
+          :on-success="handleSuccess"
+          :before-upload="handleBefore"
+          :data="oss"
+          :limit="1"
+          :on-exceed="handleLimit"
+        >
+          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
       </el-form-item>
       <el-form-item label="昵称:" prop="nickname">
         <el-input placeholder="请输入您的昵称" v-model="ruleForm.nickname" @change="changeNickname"></el-input>
@@ -93,14 +105,24 @@ export default {
       }
     };
     return {
+      imageUrl: "",
       options: regionData,
+      oss: {
+        key: "",
+        OSSAccessKeyId: "",
+        policy: "",
+        Signature: "",
+        host: "",
+        success_action_status: 200,
+      },
       ruleForm: {
         nickname: "",
         sex: "",
         time: "",
         area: [],
         text: "",
-        phone: ""
+        phone: "",
+        avatar: "",
       },
       rules: {
         nickname: [
@@ -135,8 +157,70 @@ export default {
   },
   mounted() {
     this.getBasicInfo();
+    this.getOssSign();
   },
   methods: {
+    handleSuccess() {
+        this.imageUrl = this.oss.host + '/' + this.oss.key + '?x-oss-process=image/resize,m_lfit,h_100,w_100';
+        this.changeForm.avator = this.oss.host + '/' + this.oss.key;
+    },
+    handleBefore(file) {
+        const isJPG = file.type === ('image/jpeg' || 'image/png');
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式或 PNG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
+    },
+    handleLimit() {
+      this.$message({
+        message: "一次最多只能传一个头像,请重新选择",
+        type: "warning"
+      });
+    },
+    getOssSign() {
+      axios({
+        method: "get",
+        url: "/api/users/getUploadSign",
+        headers: {
+          Authorization: "Bearer " + localStorage.accessToken
+        },
+        params: {
+          status: 0
+        }
+      }).then(res => {
+        if (res.status === 200) {
+          if (res.data.errno === 10000) {
+            this.oss.key = res.data.data.dir+this.$uuid.v1();
+            this.oss.policy = res.data.data.policy;
+            this.oss.Signature = res.data.data.signature;
+            this.oss.host = res.data.data.host;
+            this.oss.OSSAccessKeyId = res.data.data.accessid;
+          } else if (res.data.errno === 40005) {
+            this.refreshHandle();
+          } else {
+            this.$message({
+              message: "参数有误",
+              type: "warning"
+            });
+            return false;
+          }
+        } else if (res.status === 401) {
+          this.$message({
+            message: res.data.errmsg,
+            type: "warning"
+          });
+          this.$router.push({ name: "Home" });
+        } else {
+          this.$message.error("服务器请求错误");
+          return false;
+        }
+      });
+    },
     refreshHandle: function() {
       axios({
         method: "put",
@@ -189,6 +273,7 @@ export default {
             this.ruleForm.area = res.data.data[0].city.split("|");
             this.ruleForm.text = res.data.data[0].introduction;
             this.ruleForm.phone = res.data.data[0].pin;
+            this.ruleForm.avatar = res.data.data[0].avator;
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
           } else {
@@ -302,5 +387,21 @@ export default {
 }
 .setting-nav-item-red {
   color: red;
+}
+.avatar-uploader {
+  width: 50px;
+  height: 50px;
+  border: 1px dashed #d9d9d9;
+  border-radius: 150px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader-icon {
+  color: #8c939d;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
 }
 </style>

@@ -8,10 +8,12 @@ import router from './router';
 import theme from 'muse-ui/lib/theme';
 import store from '../store/index.js';
 import './assets/iconfont/iconfont.css';
+import UUID from 'vue-uuid';
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(MuseUI);
+Vue.use(UUID);
 
 new Vue({
   render: h => h(App),
