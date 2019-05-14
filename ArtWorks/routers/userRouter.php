@@ -32,9 +32,7 @@ $app->group('/users',function () {
     $this->get('/getUserInfo', Controller\UserController::class.":getUserInfo");
     $this->get('/getUserRecord', Controller\UserController::class.":getUserRecord");
     $this->put('/modifyUserInfo', Controller\UserController::class.":modifyUserInfo");
-    $this->post('/upload', Controller\FileController::class.":getPolicy");
-    $this->post('/uploadCallback', Controller\FileController::class.":callback");
-    $this->get('/download', Controller\FileController::class.":download");
+    $this->get('/getUploadSign', Controller\FileController::class.":getPolicy");
     $this->put('/modifyUserPassword', Controller\UserController::class.":modifyPassword");
     $this->get('/touristListWorks', Controller\UserController::class.":touristGetUserWorksList");
     $this->get('/pinListWorks', Controller\UserController::class.":pinGetUserWorksList");

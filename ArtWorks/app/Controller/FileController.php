@@ -15,25 +15,31 @@ use App\Validation\Validator;
 use App\View\ApiView;
 use App\View\ResultCode;
 
+
 class FileController extends baseController
 {
     public function getPolicy(Request $request, Response $response)
     {
+        $params = $request->getQueryParams();
+        $rules = [
+            'status' => 'required|integer|in:0,1'
+        ];
+        if (!Validator::validators($rules, $params)) {
+            return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
+        }
+
         $id = $this->setting['oss']['accessKeyId'];
         $key= $this->setting['oss']['accessKeySecret'];
-        $host = 'artgallery1.oss-cn-beijing.aliyuncs.com';
+        $host = 'http://artgallery1.oss-cn-beijing.aliyuncs.com';
         $callbackUrl = 'http://api.artworks.com/users/uploadCallback';
-        $dir = 'artworks/';          // 用户上传文件时指定的前缀。
+        if ($params['status'] == 0) {//是头像上传时
+            $dir = 'avatars/';
+        } else {
+            $dir = 'works/';
+        }
 
-        $callback_param = [
-            'callbackUrl'=>$callbackUrl,
-            'callbackBody'=>'bucket=${bucket}filename=${object}&size=${size}&mimeType=${mimeType}',
-            'callbackBodyType'=>"application/json"
-        ];
-        $callback_string = json_encode($callback_param);
-
-        $base64_callback_body = base64_encode($callback_string);
-        $expiration = time() + 30;
+        $expiration = time() + 36000;
+        $expiration = $this->gmt_iso8601($expiration);
 
         //最大文件大小.用户可以自己设置
         $condition = array('content-length-range', 0, 1048576000);
@@ -54,33 +60,17 @@ class FileController extends baseController
                 'policy' => $base64_policy,
                 'signature' => $signature,
                 'expire' => $expiration,
-                'callback' => $base64_callback_body,
                 'dir' => $dir
             ]
         ];
         return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
     }
-
-    public function callback(Request $request, Response $response)
-    {
-
-    }
-
-    public function download(Request $request, Response $response)
-    {
-        $params = $request->getQueryParams();
-        $rules = [
-            'file' => 'required|string'
-        ];
-        if (!Validator::validators($rules, $params)) {
-            return ApiView::jsonResponse($response, ResultCode::PARAM_IS_INVAILD);
-        }
-
-        $bucket = $this->setting['oss']['bucket'];
-        $object = $params['file'];
-        $timeout = 3600;
-        $signUrl = $this->oss->signUrl($bucket, $object, $timeout);
-        $data = ['data' => ['url' => $signUrl]];
-        return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
+    public function gmt_iso8601($time) {
+        $dtStr = date("c", $time);
+        $mydatetime = new \DateTime($dtStr);
+        $expiration = $mydatetime->format(\DateTime::ISO8601);
+        $pos = strpos($expiration, '+');
+        $expiration = substr($expiration, 0, $pos);
+        return $expiration."Z";
     }
 }
