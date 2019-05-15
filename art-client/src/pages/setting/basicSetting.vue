@@ -319,6 +319,13 @@ export default {
     save(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
+          if (Object.keys(this.changeForm).length === 0) {
+            this.$message({
+              message: "您未作任何修改，提交无效",
+              type: "warning"
+            });
+            return false;
+          }
           axios({
             method: "put",
             url: "/api/users/modifyUserInfo",
