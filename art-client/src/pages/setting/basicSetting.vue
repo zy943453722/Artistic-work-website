@@ -113,7 +113,7 @@ export default {
         policy: "",
         Signature: "",
         host: "",
-        success_action_status: 200,
+        success_action_status: 200
       },
       ruleForm: {
         nickname: "",
@@ -122,7 +122,7 @@ export default {
         area: [],
         text: "",
         phone: "",
-        avatar: "",
+        avatar: ""
       },
       rules: {
         nickname: [
@@ -161,20 +161,26 @@ export default {
   },
   methods: {
     handleSuccess() {
-        this.imageUrl = this.oss.host + '/' + this.oss.key + '?x-oss-process=image/resize,m_lfit,h_100,w_100';
-        this.changeForm.avator = this.oss.host + '/' + this.oss.key;
+      this.imageUrl =
+        this.oss.host +
+        "/" +
+        this.oss.key +
+        "?x-oss-process=image/resize,m_lfit,h_100,w_100";
+      this.changeForm.avator = this.oss.host + "/" + this.oss.key;
     },
     handleBefore(file) {
-        const isJPG = file.type === ('image/jpeg' || 'image/png');
-        const isLt2M = file.size / 1024 / 1024 < 2;
+      const isJPG = file.type === "image/jpeg";
+      const isPNG = file.type === "image/png";
+      const isLt2M = file.size / 1024 / 1024 < 2;
 
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式或 PNG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        return isJPG && isLt2M;
+      if (!isJPG && !isPNG) {
+        this.$message.error("上传头像图片只能是 JPG 格式或 PNG 格式!");
+        return false;
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+        return false;
+      }
     },
     handleLimit() {
       this.$message({
@@ -195,7 +201,7 @@ export default {
       }).then(res => {
         if (res.status === 200) {
           if (res.data.errno === 10000) {
-            this.oss.key = res.data.data.dir+this.$uuid.v1();
+            this.oss.key = res.data.data.dir + this.$uuid.v1();
             this.oss.policy = res.data.data.policy;
             this.oss.Signature = res.data.data.signature;
             this.oss.host = res.data.data.host;

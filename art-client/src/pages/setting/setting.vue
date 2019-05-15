@@ -1,6 +1,6 @@
 <template>
   <el-container class="setting-container">
-    <el-header class="setting-header">设置</el-header>
+    <el-header class="setting-header">??</el-header>
     <i-sider-bar></i-sider-bar>
     <el-main class="setting-main">
         <feed-back></feed-back>
@@ -19,14 +19,6 @@ export default {
     FeedBack,
     iSiderBar
   },
-  data () {
-    return {
-
-    }
-  },
-  methods: {
-
-  }
 };
 </script>
 
