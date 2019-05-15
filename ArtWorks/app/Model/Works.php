@@ -197,7 +197,7 @@ class Works extends Model
             '=','userInformation.pin')
             ->where([$this->table.'.id' => $id,'is_delete' => 0])
             ->select($this->table.'.id','instance','name','type','length',
-                'height',$this->table.'.introduction',$this->table.'.pin','website','nickname','avator')
+                'height',$this->table.'.introduction',$this->table.'.pin','website','nickname','avator','make_at')
             ->get()
             ->toArray();
     }
