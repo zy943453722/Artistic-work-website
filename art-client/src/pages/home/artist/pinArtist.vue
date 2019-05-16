@@ -64,7 +64,7 @@
           </el-row>
           <mu-divider></mu-divider>
           <div style="text-align:center;margin:15px 0px">
-            <el-button type="success">发布作品</el-button>
+            <el-button type="success" @click="uploadWorks">发布作品</el-button>
           </div>
         </div>
         <div class="art-img-container">
@@ -131,6 +131,9 @@ export default {
     loadMore() {
       this.pageNumber++;
       this.$emit("changeTag", this.pageNumber);
+    },
+    uploadWorks() {
+      this.$router.push({name: "UploadWorks", params: {id: localStorage.id}} );
     }
   }
 };
