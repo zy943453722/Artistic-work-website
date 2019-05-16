@@ -196,7 +196,7 @@ class Works extends Model
         return $this->model::join('userInformation', $this->table.'.pin',
             '=','userInformation.pin')
             ->where([$this->table.'.id' => $id,'is_delete' => 0])
-            ->select($this->table.'.id','instance','name','type','length',
+            ->select($this->table.'.id','instance','name','type','length','likes',
                 'height',$this->table.'.introduction',$this->table.'.pin','website','nickname','avator','make_at')
             ->get()
             ->toArray();

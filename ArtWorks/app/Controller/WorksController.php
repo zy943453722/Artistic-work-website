@@ -281,6 +281,10 @@ class WorksController extends baseController
 
         $works = new Works();
         $result = $works->getWorksDetail($params['worksId']);
+        if (empty($result)) {
+            return ApiView::jsonResponse($response, ResultCode::WORKS_NOT_EXIST);
+        }
+        $result = $result[0];
         $data = ['data' => $result];
 
         return ApiView::jsonResponse($response, ResultCode::SUCCESS,$data);
@@ -299,11 +303,12 @@ class WorksController extends baseController
         $token = (Array)$this->token;
         $works = new Works();
         $result = $works->getWorksDetail($params['worksId']);
-        $worksLike = new WorksLike();
-        $count = $worksLike->getUserWorksLike($token['pin'], $params['worksId']);
         if (empty($result)) {
             return ApiView::jsonResponse($response, ResultCode::WORKS_NOT_EXIST);
         }
+        $worksLike = new WorksLike();
+        $count = $worksLike->getUserWorksLike($token['pin'], $params['worksId']);
+
         $result = $result[0];
         if ($count != 0) {
             $result['relation'] = "已点赞";
