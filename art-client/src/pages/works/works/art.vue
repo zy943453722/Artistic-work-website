@@ -1,6 +1,11 @@
 <template>
   <el-container>
-    <i-sider-bar></i-sider-bar>
+    <template v-if="accessToken">
+      <i-sider-bar></i-sider-bar>
+    </template>
+    <template v-else>
+      <sider-bar></sider-bar>
+    </template>
     <el-main>
       <feed-back></feed-back>
       <div class="art-img">
@@ -213,13 +218,15 @@
 <script>
 import FeedBack from "../../userSystem/feedback/feedback.vue";
 import iSiderBar from "../../common/iSiderBar.vue";
+import SiderBar from "../../common/siderBar.vue";
 import axios from "axios";
 
 export default {
   name: "Art",
   components: {
     FeedBack,
-    iSiderBar
+    iSiderBar,
+    SiderBar
   },
   data() {
     return {
@@ -349,6 +356,10 @@ export default {
   },
   methods: {
     sendComment() {
+      if (!this.accessToken) {
+        this.$router.push({name: 'Login'});
+        return false;
+      }
       if (this.input === "") {
         this.$message({
           message: "不能发送空消息",
@@ -423,6 +434,10 @@ export default {
       });
     },
     handleReply(name, nickname, pin) {
+      if (!this.accessToken) {
+        this.$router.push({name: 'Login'});
+        return false;
+      }
       this.$refs[name].focus();
       this.input = "回复@" + nickname + ":";
       this.to = btoa(pin);
@@ -543,7 +558,10 @@ export default {
     },
     loadMore() {
       this.pageNumber++;
-      this.pinGetWorksList(this.$route.params.id, this.pageNumber);
+      if (this.accessToken) 
+        this.pinGetWorksList(this.$route.params.id, this.pageNumber);
+      else 
+        this.touristGetWorksList(this.$route.params.id, this.pageNumber);
     },
     pinGetWorksList(id, number) {
       axios({
@@ -665,7 +683,7 @@ export default {
     touristGetCommentDetail(id) {
       axios({
         method: "get",
-        url: "/api/works/pinGetCommentsDetail",
+        url: "/api/works/touristGetCommentsDetail",
         params: {
           worksId: id
         }
