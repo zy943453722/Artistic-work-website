@@ -87,7 +87,7 @@
 import axios from "axios";
 
 export default {
-  name: "UploadWorks",
+  name: "EditWorks",
   data() {
     let lengthRule = (rule, value, callback) => {
       let regExp = /^[1-9]\d*$/;
@@ -243,7 +243,7 @@ export default {
   },
   mounted() {
     this.getOssSign();
-    this.getWorksDetail(15);
+    this.getWorksDetail(this.$route.params.worksId);
   },
   methods: {
     getWorksDetail(id) {

@@ -45,29 +45,33 @@
           </el-col>
           <el-col :span="8" style="line-height:50px" v-if="worksData.right">
             <el-tooltip class="item" effect="dark" content="修改作品" placement="bottom">
-              <span class="iconfont">&#xe623;</span>
+              <span class="iconfont" @click="handleEdit" style="cursor:pointer">&#xe623;</span>
             </el-tooltip>&nbsp;&nbsp;
             <el-tooltip class="item" effect="dark" content="删除作品" placement="bottom">
-              <span class="iconfont">&#xe686;</span>
+              <span class="iconfont" @click="handleDelete" style="cursor:pointer">&#xe686;</span>
             </el-tooltip>
           </el-col>
         </el-row>
       </div>
       <div style="text-align:center;margin: 20px 0px">
         <template v-if="worksData.relation">
-          <el-button type="danger" @click="pinHandleLikeRelation">
+          <el-button type="danger" @click="pinHandleLikeRelation(worksData.pin,worksData.id)">
             <span class="iconfont">&#xe621;</span>
             &nbsp;{{worksData.likes}}
           </el-button>
         </template>
         <template v-else>
-          <el-button type="danger" v-if="accessToken" @click="pinHandleLike">
+          <el-button
+            type="danger"
+            v-if="accessToken"
+            @click="pinHandleLike(worksData.id,worksData.pin)"
+          >
             <span class="iconfont">&#xe620;</span>
-            &nbsp;{{worksData.likes}}
+            &nbsp;赞一下
           </el-button>
           <el-button type="danger" v-if="!accessToken" @click="handleLike">
             <span class="iconfont">&#xe620;</span>
-            &nbsp;{{worksData.likes}}
+            &nbsp;赞一下
           </el-button>
         </template>
       </div>
@@ -108,57 +112,76 @@
           <p v-if="comment.to_pin" style="float:left">
             回复@
             <router-link
-              :to="{name: 'UserWorks',params:{id: comment.website.slice(26)}}"
-            >{{comment.nickname}}</router-link>
+              :to="{name: 'UserWorks',params:{id: comment.to_id}}"
+            >{{comment.to_nickname}}</router-link>
             :&nbsp;{{comment.content}}
           </p>
           <p v-else style="float:left">{{comment.content}}</p>
           <span class="iconfont" style="float:left">&#xe63a;</span>
         </div>
         <div style="float:right">
-          <el-button round>
+          <el-button round @click="handleReply('input',comment.nickname,comment.pin)">
             <span class="iconfont">&#xe663;</span>&nbsp;回复
           </el-button>
           <div v-if="comment.right" style="margin-top:5px">
             <el-tooltip class="item" effect="dark" content="删除评论" placement="bottom">
-              <span class="iconfont">&#xe686;</span>
+              <span class="iconfont" @click="handleDeleteComment(comment.id)" style="cursor:pointer">&#xe686;</span>
             </el-tooltip>
           </div>
         </div>
       </div>
       <mu-divider shallow-inset class="works-divider"></mu-divider>
       <div style="text-align:center;margin: 50px 300px 100px 300px">
-        <el-input v-model="input" placeholder="写一条评论吧~~" style="width:500px"></el-input>
-        <el-button type="success" round>发送</el-button>
+        <el-input
+          v-model="input"
+          type="text"
+          maxlength="50"
+          show-word-limit
+          placeholder="写一条评论吧~~"
+          style="width:500px"
+          ref="input"
+        ></el-input>
+        <el-button type="success" round @click="sendComment">发送</el-button>
       </div>
       <mu-divider shallow-inset class="works-divider"></mu-divider>
       <h2 style="text-align:center">{{worksData.nickname}}的更多作品</h2>
       <mu-divider shallow-inset class="works-divider"></mu-divider>
-      <el-row :gutter="20" v-if="Object.keys(works).length !== 0">
+      <el-row :gutter="20" v-if="Object.keys(works).length !== 0" style="margin: 20px 150px">
         <div v-for="work in works" :key="work.id">
           <el-col :span="8">
             <div>
-              <div>
+              <div style="width:300px;height:220px">
                 <router-link :to="{name: 'Art',params:{id: work.id}}">
                   <img
-                  :src="work.instance + '?x-oss-process=image/resize,m_lfit,h_200,w_200'"
-                  alt="图片加载失败，请稍等"
-                  :title="work.name"
-                  > 
+                    :src="work.instance + '?x-oss-process=image/resize,m_lfit,h_300,w_300'"
+                    alt="图片加载失败，请稍等"
+                    :title="work.name"
+                    style="width:300px;height:200px"
+                  >
                 </router-link>
               </div>
               <router-link :to="{name: 'Art',params:{id: work.id}}">{{work.name}}</router-link>
               <template v-if="work.hasOwnProperty('relation')">
-                <el-button @click="pinHandleLikeRelation" v-if="accessToken">
+                <el-button
+                  size="mini"
+                  @click="pinHandleLikeRelation(work.pin,work.id)"
+                  v-if="accessToken"
+                  style="float:right"
+                >
                   <span class="iconfont">&#xe621;</span>
                   &nbsp;{{work.likes}}
                 </el-button>
               </template>
               <template v-else>
-                <el-button @click="pinHandleLike" v-if="accessToken">
+                <el-button
+                  size="mini"
+                  @click="pinHandleLike(work.id, work.pin)"
+                  v-if="accessToken"
+                  style="float:right"
+                >
                   <span class="iconfont">&#xe620;</span>&nbsp;赞一下
                 </el-button>
-                <el-button @click="handleLike" v-if="!accessToken">
+                <el-button size="mini" @click="handleLike" v-if="!accessToken" style="float:right">
                   <span class="iconfont">&#xe620;</span>&nbsp;赞一下
                 </el-button>
               </template>
@@ -170,6 +193,19 @@
       <el-row v-else>
         <p style="text-align:center">该作者没有更多作品了~~</p>
       </el-row>
+      <template v-if="pageNumber < (~~(worksCount/9 + 1))">
+        <div style="text-align:center">
+          <el-button type="primary" @click="loadMore">加载更多</el-button>
+        </div>
+      </template>
+      <template v-else-if="Object.keys(works).length !== 0">
+        <div style="text-align:center">
+          <p>没有更多了~~</p>
+        </div>
+      </template>
+      <template v-else>
+        <span></span>
+      </template>
     </el-main>
   </el-container>
 </template>
@@ -187,6 +223,10 @@ export default {
   },
   data() {
     return {
+      to: "",
+      worksCount: 0,
+      pageNumber: 1,
+      prvWorks: [],
       works: [],
       input: "",
       likeAvatar: [],
@@ -308,6 +348,203 @@ export default {
     this.getLikeDetail(this.$route.params.id);
   },
   methods: {
+    sendComment() {
+      if (this.input === "") {
+        this.$message({
+          message: "不能发送空消息",
+          type: "warning"
+        });
+        return false;
+      }
+      let factor;
+      if (this.to === "") {
+        factor = {
+          worksId: this.$route.params.id,
+          content: this.input
+        };
+      } else {
+        let arr = this.input.split(":");
+        if (arr[1] === "") {
+          this.$message({
+            message: "不能发送空消息",
+            type: "warning"
+          });
+          return false;
+        }
+        let index = this.input.indexOf(":") + 1;
+        let text = this.input.slice(index);
+        factor = {
+          worksId: this.$route.params.id,
+          toPin: this.to,
+          content: text
+        };
+      }
+      axios({
+        method: "post",
+        url: "/api/works/addComments",
+        headers: {
+          Authorization: "Bearer " + localStorage.accessToken,
+          "Content-Type": "application/json"
+        },
+        data: factor,
+        transformRequest: [
+          function(data) {
+            data = JSON.stringify(data);
+            return data;
+          }
+        ]
+      }).then(res => {
+        if (res.status === 200) {
+          if (res.data.errno === 10000) {
+            this.$message({
+              message: "评论成功",
+              type: "success"
+            });
+            location.reload();
+          } else if (res.data.errno === 40005) {
+            this.refreshHandle();
+          } else {
+            this.$message({
+              message: "参数有误",
+              type: "warning"
+            });
+            return false;
+          }
+        } else if (res.status === 401) {
+          this.$message({
+            message: res.data.errmsg,
+            type: "warning"
+          });
+          this.$router.push({ name: "Home" });
+        } else {
+          this.$message.error("服务器请求错误");
+          return false;
+        }
+      });
+    },
+    handleReply(name, nickname, pin) {
+      this.$refs[name].focus();
+      this.input = "回复@" + nickname + ":";
+      this.to = btoa(pin);
+    },
+    handleDeleteComment(id) {
+      axios({
+        method: "delete",
+        url: "/api/works/deleteComments",
+        headers: {
+          Authorization: "Bearer " + localStorage.accessToken,
+          "Content-Type": "application/json"
+        },
+        data: {
+          id: id
+        },
+        transformRequest: [
+          function(data) {
+            data = JSON.stringify(data);
+            return data;
+          }
+        ]
+      }).then(res => {
+        if (res.status === 200) {
+          if (res.data.errno === 10000) {
+            this.$message({
+              message: "删除成功",
+              type: "success"
+            });
+            location.reload();
+          } else if (res.data.errno === 40005) {
+            this.refreshHandle();
+          } else {
+            this.$message({
+              message: "参数有误",
+              type: "warning"
+            });
+            return false;
+          }
+        } else if (res.status === 401) {
+          this.$message({
+            message: res.data.errmsg,
+            type: "warning"
+          });
+          this.$router.push({ name: "Home" });
+        } else {
+          this.$message.error("服务器请求错误");
+          return false;
+        }
+      });
+    },
+    handleEdit() {
+      this.$router.push({
+        name: "EditWorks",
+        params: { id: this.worksData.uid, worksId: this.$route.params.id }
+      });
+    },
+    handleDelete() {
+      this.$confirm("确定删除当前作品?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          axios({
+            method: "delete",
+            url: "/api/works/delete",
+            headers: {
+              Authorization: "Bearer " + localStorage.accessToken,
+              "Content-Type": "application/json"
+            },
+            data: {
+              id: this.$route.params.id
+            },
+            transformRequest: [
+              function(data) {
+                data = JSON.stringify(data);
+                return data;
+              }
+            ]
+          }).then(res => {
+            if (res.status === 200) {
+              if (res.data.errno === 10000) {
+                this.$message({
+                  message: "删除成功",
+                  type: "success"
+                });
+                this.$router.push({
+                  name: "UserWorks",
+                  params: { id: localStorage.id }
+                });
+              } else if (res.data.errno === 40005) {
+                this.refreshHandle();
+              } else {
+                this.$message({
+                  message: "参数有误",
+                  type: "warning"
+                });
+                return false;
+              }
+            } else if (res.status === 401) {
+              this.$message({
+                message: res.data.errmsg,
+                type: "warning"
+              });
+              this.$router.push({ name: "Home" });
+            } else {
+              this.$message.error("服务器请求错误");
+              return false;
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消操作"
+          });
+        });
+    },
+    loadMore() {
+      this.pageNumber++;
+      this.pinGetWorksList(this.$route.params.id, this.pageNumber);
+    },
     pinGetWorksList(id, number) {
       axios({
         method: "get",
@@ -324,6 +561,8 @@ export default {
       }).then(res => {
         if (res.status === 200) {
           if (res.data.errno === 10000) {
+            this.worksCount = res.data.data.count;
+            delete res.data.data.count;
             this.works = res.data.data;
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
@@ -359,6 +598,8 @@ export default {
       }).then(res => {
         if (res.status === 200) {
           if (res.data.errno === 10000) {
+            this.worksCount = res.data.data.count;
+            delete res.data.data.count;
             this.works = res.data.data;
           } else {
             this.$message({
@@ -469,9 +710,111 @@ export default {
           }
         });
     },
-    pinHandleLike() {},
-    handleLike() {},
-    pinHandleLikeRelation() {},
+    pinHandleLike(id, pin) {
+      axios({
+        method: "post",
+        url: "/api/works/addLikes",
+        headers: {
+          Authorization: "Bearer " + localStorage.accessToken,
+          "Content-Type": "application/json"
+        },
+        data: {
+          worksId: id,
+          pin: btoa(pin)
+        },
+        transformRequest: [
+          function(data) {
+            data = JSON.stringify(data);
+            return data;
+          }
+        ]
+      }).then(res => {
+        if (res.status === 200) {
+          if (res.data.errno === 10000) {
+            location.reload();
+          } else if (res.data.errno === 40005) {
+            this.refreshHandle();
+          } else {
+            this.$message({
+              message: "参数有误",
+              type: "warning"
+            });
+            return false;
+          }
+        } else if (res === 401) {
+          this.$message({
+            message: res.data.errmsg,
+            type: "warning"
+          });
+          this.$router.push({ name: "Home" });
+        } else {
+          this.$message.error("服务器请求错误");
+          return false;
+        }
+      });
+    },
+    handleLike() {
+      this.$router.push({ name: "Login" });
+    },
+    pinHandleLikeRelation(pin, id) {
+      this.$confirm("确定不再喜欢了?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.handleCancelLike(pin, id);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消操作"
+          });
+        });
+    },
+    handleCancelLike(pin, id) {
+      axios({
+        method: "delete",
+        url: "/api/works/deleteLikes",
+        headers: {
+          Authorization: "Bearer " + localStorage.accessToken,
+          "Content-Type": "application/json"
+        },
+        data: {
+          worksId: id,
+          pin: btoa(pin)
+        },
+        transformRequest: [
+          function(data) {
+            data = JSON.stringify(data);
+            return data;
+          }
+        ]
+      }).then(res => {
+        if (res.status === 200) {
+          if (res.data.errno === 10000) {
+            location.reload();
+          } else if (res.data.errno === 40005) {
+            this.refreshHandle();
+          } else {
+            this.$message({
+              message: "参数有误",
+              type: "warning"
+            });
+            return false;
+          }
+        } else if (res === 401) {
+          this.$message({
+            message: res.data.errmsg,
+            type: "warning"
+          });
+          this.$router.push({ name: "Home" });
+        } else {
+          this.$message.error("服务器请求错误");
+          return false;
+        }
+      });
+    },
     refreshHandle: function() {
       axios({
         method: "put",
