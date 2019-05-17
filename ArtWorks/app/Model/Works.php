@@ -220,20 +220,27 @@ class Works extends Model
             $this->init();
         }
         if ($worksId === 0) {
-            return $this->model::where(['pin'=>$pin, 'is_delete'=> 0])
-                ->select('id','instance','name','make_at','pin')
+            $ret = $this->model::where(['pin'=>$pin, 'is_delete'=> 0])
+                ->select('id','instance','name','make_at','pin','likes')
                 ->limit($limit)
                 ->offset($offset)
                 ->get()
                 ->toArray();
+            $ret['count'] = $this->model::where(['pin'=>$pin, 'is_delete'=> 0])
+                ->count();
+            return $ret;
         } else {
-            return $this->model::where(['pin'=>$pin, 'is_delete'=> 0])
+            $ret =  $this->model::where(['pin'=>$pin, 'is_delete'=> 0])
                 ->where('id','!=',$worksId)
-                ->select('id','instance','name','make_at','pin')
+                ->select('id','instance','name','make_at','pin','likes')
                 ->limit($limit)
                 ->offset($offset)
                 ->get()
                 ->toArray();
+            $ret['count'] = $this->model::where(['pin'=>$pin, 'is_delete'=> 0])
+                ->where('id','!=',$worksId)
+                ->count();
+            return $ret;
         }
     }
 

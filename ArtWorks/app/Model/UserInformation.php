@@ -57,6 +57,7 @@ class UserInformation extends Model
         return $this->model::where('pin','=', $pin)
             ->get()
             ->toArray();
+
     }
 
     public function modifyUserInfo($pin,$params)

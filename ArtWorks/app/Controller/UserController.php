@@ -416,12 +416,15 @@ class UserController extends baseController
         } else {
             $result = $works->getUserWorks($pin, $limit, $offset);
         }
+        $sum = $result['count'];
+        unset($result['count']);
         foreach ($result as $key => &$value) {
             $count = $worksLike->getUserWorksLike($token['pin'], $value['id']);
             if ($count === 1) {
                 $value['relation'] = "已点赞";
             }
         }
+        $result['count'] = $sum;
 
         $data = ['data' => $result];
         return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);

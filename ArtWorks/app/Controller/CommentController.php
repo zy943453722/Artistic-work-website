@@ -10,6 +10,7 @@
 namespace App\Controller;
 
 use App\Model\Comments;
+use App\Model\UserInformation;
 use App\Model\Works;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -39,7 +40,7 @@ class CommentController extends baseController
             'from_pin' => $token['pin']
         ];
         if (isset($params['toPin'])) {
-            $factor['toPin'] = $params['toPin'];
+            $factor['to_pin'] = base64_decode($params['toPin']);
         }
         $comments->addComments($factor);
 
@@ -74,6 +75,16 @@ class CommentController extends baseController
 
         $comments = new Comments();
         $result = $comments->getCommentsDetail($params['worksId']);
+        if (!empty($result)) {
+            $user = new UserInformation();
+            foreach ($result as $key => &$value) {
+                if ($value['to_pin'] !== "") {
+                    $info = $user->getUserInfoDetail($value['to_pin']);
+                    $value['to_nickname'] = $info[0]['nickname'];
+                    $value['to_id'] = $info[0]['id'];
+                }
+            }
+        }
         $data = ['data' => $result];
 
         return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
@@ -94,8 +105,14 @@ class CommentController extends baseController
         $result = $comments->getCommentsDetail($params['worksId']);
         if (!empty($result)) {
             $works = new Works();
+            $user = new UserInformation();
             $count = $works->getUserWorksOfCount($params['worksId'], $token['pin']);
             foreach ($result as $key => &$value) {
+                if ($value['to_pin'] !== "") {
+                    $info = $user->getUserInfoDetail($value['to_pin']);
+                    $value['to_nickname'] = $info[0]['nickname'];
+                    $value['to_id'] = $info[0]['id'];
+                }
                 if ($count == 1) {
                     $value['right'] = "可删除";
                 } elseif ($value['pin'] === $token['pin']){
