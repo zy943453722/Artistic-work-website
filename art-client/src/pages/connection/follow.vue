@@ -16,20 +16,39 @@
     <p v-if="count === 0">您还未关注任何人，快去找寻吧~~</p>
     <div v-for="card in followData" :key="card.website.slice(26)">
       <el-row>
-        <el-col :span="8">
-          <mu-avatar style="float:left">
-            <img src="../../assets/avator.jpg">
-          </mu-avatar>
-          <p style="float:left">{{card.nickname}}</p>
+        <el-col :span="8" style="height:50px">
+          <router-link
+            :to="{name: 'UserWorks',params:{id: card.website.slice(26)}}"
+            style="float:left;margin-right:10px"
+          >
+            <mu-avatar>
+              <img
+                :src="card.avator + '?x-oss-process=image/resize,m_lfit,h_100,w_100'"
+                :title="card.nickname"
+              >
+            </mu-avatar>
+          </router-link>
+          <router-link
+            :to="{name: 'UserWorks',params:{id: card.website.slice(26)}}"
+            style="float:left;line-height:50px"
+          >{{card.nickname}}</router-link>
         </el-col>
         <el-col :span="16">
           <template v-if="card.status === 0">
-            <el-button type="primary" style="float:right;width:100px" @click="handleCancel(card.friend_pin)">
+            <el-button
+              type="primary"
+              style="float:right;width:100px"
+              @click="handleCancel(card.friend_pin)"
+            >
               <span class="iconfont">&#xe62b;</span>&nbsp;取消
             </el-button>
           </template>
           <template v-else-if="card.status === 2">
-            <el-button type="primary" style="float:right;width:100px" @click="handleMutual(card.friend_pin)">互相关注</el-button>
+            <el-button
+              type="primary"
+              style="float:right;width:100px"
+              @click="handleMutual(card.friend_pin)"
+            >互相关注</el-button>
           </template>
           <template v-else>
             <el-button type="primary" style="float:right;width:100px">

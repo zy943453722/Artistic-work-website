@@ -26,14 +26,23 @@
             <mu-card style="width: 100%; max-width: 550px;margin: 50px auto;">
               <mu-card-header :title="card.nickname" :sub-title="card.followers_number+'人关注过'">
                 <mu-avatar slot="avatar">
-                  <img src="../../../assets/avator.jpg">
+                  <img
+                    :src="card.avator + '?x-oss-process=image/resize,m_lfit,h_100,w_100'"
+                    :title="card.nickname"
+                  >
                 </mu-avatar>
               </mu-card-header>
               <mu-card-media
                 :title="card.name+' '+' '+' '+card.make_at+'年作品'"
                 :sub-title="card.likes+'人赞过'"
               >
-                <img src="../../../assets/sun.jpg">
+                <router-link :to="{name: 'Art',params:{id: card.masterpiece_id}}">
+                  <img
+                    :src="card.masterpiece + '?x-oss-process=image/resize,m_lfit,h_550,w_550'"
+                    alt="图片加载失败，请稍等"
+                    :title="card.name"
+                  >
+                </router-link>
               </mu-card-media>
             </mu-card>
           </div>
@@ -53,13 +62,23 @@
         <div class="art-main">
           <el-row :gutter="20">
             <el-col :span="8" style="text-align:center;margin-top:20px">
-              <mu-avatar>
-                <img src="../../../assets/avator.jpg">
-              </mu-avatar>
+              <router-link
+                :to="{name: 'UserWorks',params:{id: userDetail.id}}"
+              >
+                <mu-avatar>
+                  <img
+                    :src="userDetail.avator + '?x-oss-process=image/resize,m_lfit,h_100,w_100'"
+                    :title="userDetail.nickname"
+                  >
+                </mu-avatar>
+              </router-link>
             </el-col>
             <el-col :span="16">
-              <p style="text-align:center">{{userDetail.nickname}}</p>
-              <router-link :to="{name: 'UserWorks',params:{id: userDetail.id}}" style="text-align:center">{{userDetail.website}}</router-link>
+              <p>{{userDetail.nickname}}</p>
+              <router-link
+                :to="{name: 'UserWorks',params:{id: userDetail.id}}"
+                style="text-align:center"
+              >{{userDetail.website}}</router-link>
             </el-col>
           </el-row>
           <mu-divider></mu-divider>
@@ -68,10 +87,10 @@
           </div>
         </div>
         <div class="art-img-container">
-          <img src="../../../assets/1.jpg">
+          <img src="http://artgallery1.oss-cn-beijing.aliyuncs.com/guanggao.png?x-oss-process=image/resize,m_lfit,h_500,w_500">
         </div>
         <div class="art-img-container">
-          <img src="../../../assets/2.jpg">
+          <img src="http://artgallery1.oss-cn-beijing.aliyuncs.com/guanggao1.png?x-oss-process=image/resize,m_lfit,h_500,w_500">
         </div>
       </el-main>
     </el-container>
@@ -81,7 +100,7 @@
 <script>
 export default {
   name: "PinArtist",
-  props: ["artists", "artistCount","userDetail"],
+  props: ["artists", "artistCount", "userDetail"],
   data() {
     return {
       pageNumber: 1,
@@ -125,7 +144,7 @@ export default {
     allArtists() {
       this.prvArtists = this.prvArtists.concat(this.artists);
       return this.prvArtists;
-    },
+    }
   },
   methods: {
     loadMore() {
@@ -133,7 +152,10 @@ export default {
       this.$emit("changeTag", this.pageNumber);
     },
     uploadWorks() {
-      this.$router.push({name: "UploadWorks", params: {id: localStorage.id}} );
+      this.$router.push({
+        name: "UploadWorks",
+        params: { id: localStorage.id }
+      });
     }
   }
 };

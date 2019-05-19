@@ -92,18 +92,36 @@
       <div class="home-works" v-for="work in works" :key="work.id">
         <el-col :span="8">
           <div>
+            <div style="width:300px;height:220px">
+              <router-link :to="{name: 'Art',params:{id: work.id}}">
+                <img
+                  :src="work.instance + '?x-oss-process=image/resize,m_lfit,h_300,w_300'"
+                  alt="图片加载失败，请稍等"
+                  :title="work.name"
+                  style="width:300px;height:200px"
+                >
+              </router-link>
+            </div>
             <router-link :to="{name: 'Art',params:{id: work.id}}">{{work.name}}</router-link>
             <template v-if="work.hasOwnProperty('relation')">
-              <el-button @click="pinHandleLikeRelation(work.pin,work.id)" v-if="accessToken">
+              <el-button
+                @click="pinHandleLikeRelation(work.pin,work.id)"
+                v-if="accessToken"
+                style="float:right"
+              >
                 <span class="iconfont">&#xe621;</span>
                 &nbsp;{{work.likes}}
               </el-button>
             </template>
             <template v-else>
-              <el-button @click="pinHandleLike(work.id,work.pin)" v-if="accessToken">
+              <el-button
+                @click="pinHandleLike(work.id,work.pin)"
+                v-if="accessToken"
+                style="float:right"
+              >
                 <span class="iconfont">&#xe620;</span>&nbsp;赞一下
               </el-button>
-              <el-button @click="handleLike" v-if="!accessToken">
+              <el-button @click="handleLike" v-if="!accessToken" style="float:right">
                 <span class="iconfont">&#xe620;</span>&nbsp;赞一下
               </el-button>
             </template>
@@ -500,7 +518,7 @@ export default {
     handleLike() {
       this.$router.push({ name: "Login" });
     },
-    pinHandleLike(id,pin) {
+    pinHandleLike(id, pin) {
       axios({
         method: "post",
         url: "/api/works/addLikes",
@@ -543,8 +561,8 @@ export default {
         }
       });
     },
-    pinHandleLikeRelation(pin,id) {
-        this.$confirm("确定不再喜欢了?", "提示", {
+    pinHandleLikeRelation(pin, id) {
+      this.$confirm("确定不再喜欢了?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"

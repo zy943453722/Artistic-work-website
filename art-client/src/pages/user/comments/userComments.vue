@@ -51,45 +51,53 @@
       </template>
     </div>
     <mu-divider shallow-inset style="margin: 20px 300px;width:700px"></mu-divider>
-    <div
-      v-for="comment in commentsForm"
-      :key="comment.id"
-      style="text-align:center;margin: 10px 300px;height:100px"
-    >
-      <router-link
-        :to="{name: 'UserWorks',params:{id: comment.website.slice(26)}}"
-        style="float:left"
+    <template v-if="Object.keys(commentsForm).length !== 0">
+      <div
+        v-for="comment in commentsForm"
+        :key="comment.id"
+        style="text-align:center;margin: 10px 300px;height:100px"
       >
-        <mu-avatar size="70" style="margin-right:10px">
-          <img :src="comment.avator+'?x-oss-process=image/resize,m_lfit,h_100,w_100'">
-        </mu-avatar>
-      </router-link>
-      <div style="float:left;margin: 0px 20px">
-        <p v-if="comment.to_pin">
-          <router-link
-            :to="{name: 'UserWorks',params:{id: comment.website.slice(26)}}"
-          >{{comment.nickname}}</router-link>
-          &nbsp;&nbsp;{{handleTime(comment.create_at)}}&nbsp;&nbsp;回复了评论
-        </p>
-        <p v-else>
-          <router-link
-            :to="{name: 'UserWorks',params:{id: comment.website.slice(26)}}"
-          >{{comment.nickname}}</router-link>
-          &nbsp;&nbsp;{{handleTime(comment.create_at)}}&nbsp;&nbsp;评论了作品&lt;&lt;
-          <router-link :to="{name: 'Art', params:{id: comment.works_id}}">{{comment.name}}</router-link>&gt;&gt;
-        </p>
+        <router-link
+          :to="{name: 'UserWorks',params:{id: comment.website.slice(26)}}"
+          style="float:left"
+        >
+          <mu-avatar size="70" style="margin-right:10px">
+            <img :src="comment.avator+'?x-oss-process=image/resize,m_lfit,h_100,w_100'">
+          </mu-avatar>
+        </router-link>
+        <div style="float:left;margin: 0px 20px">
+          <p v-if="comment.to_pin">
+            <router-link
+              :to="{name: 'UserWorks',params:{id: comment.website.slice(26)}}"
+            >{{comment.nickname}}</router-link>
+            &nbsp;&nbsp;{{handleTime(comment.create_at)}}&nbsp;&nbsp;回复了评论
+          </p>
+          <p v-else>
+            <router-link
+              :to="{name: 'UserWorks',params:{id: comment.website.slice(26)}}"
+            >{{comment.nickname}}</router-link>
+            &nbsp;&nbsp;{{handleTime(comment.create_at)}}&nbsp;&nbsp;评论了作品&lt;&lt;
+            <router-link :to="{name: 'Art', params:{id: comment.works_id}}">{{comment.name}}</router-link>&gt;&gt;
+          </p>
+        </div>
+        <div>
+          <span class="iconfont" style="float:left">&#xe63c;</span>
+          <p v-if="comment.to_pin" style="float:left">
+            回复@
+            {{userRecord.nickname}}
+            :&nbsp;{{comment.content}}
+          </p>
+          <p v-else style="float:left">{{comment.content}}</p>
+          <span class="iconfont" style="float:left">&#xe63a;</span>
+        </div>
       </div>
-      <div>
-        <span class="iconfont" style="float:left">&#xe63c;</span>
-        <p v-if="comment.to_pin" style="float:left">
-          回复@
-          {{userRecord.nickname}}
-          :&nbsp;{{comment.content}}
-        </p>
-        <p v-else style="float:left">{{comment.content}}</p>
-        <span class="iconfont" style="float:left">&#xe63a;</span>
-      </div>
-    </div>
+    </template>
+    <template v-else-if="relation !== 0">
+      <p>还没有人评论他哦~~</p>
+    </template>
+    <template v-else>
+      <p>还没有人评论您哦~~</p>
+    </template>
   </div>
 </template>
 

@@ -51,7 +51,8 @@
       </template>
     </div>
     <mu-divider shallow-inset style="margin: 20px 300px;width:700px"></mu-divider>
-    <div v-for="likeme in likemeForm" :key="likeme.index">
+    <template v-if="Object.keys(likemeForm).length !== 0">
+      <div v-for="likeme in likemeForm" :key="likeme.index">
       <div style="text-align:center;margin: 10px 300px;height:70px">
         <router-link
           :to="{name: 'UserWorks',params:{id: likeme.website.slice(26)}}"
@@ -71,6 +72,14 @@
       </div>
       <mu-divider shallow-inset style="margin: 20px 300px;width:700px"></mu-divider>
     </div>
+    </template>
+    <template v-else-if="relation !== 0">
+      <p>还没有人点赞该用户哦~~</p>
+    </template>
+    <template v-else>
+      <p>还没有人点赞您哦~~</p>
+    </template>
+    
   </div>
 </template>
 

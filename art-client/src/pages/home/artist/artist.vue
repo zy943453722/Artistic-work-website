@@ -19,12 +19,23 @@
       <div class="home-artist" v-for="artist in artists" :key="artist.website.slice(26)">
         <el-col :span="8">
           <div>
-            <router-link
-              :to="{name: 'UserWorks',params:{id: artist.website.slice(26)}}"
-            >{{artist.nickname}}</router-link>
-            <p>发表过{{artist.works_number}}件作品</p>
-            <p>被{{artist.followers_number}}人关注</p>
-            <p>累计点赞次数:{{artist.likes_number}}</p>
+            <div style="width:300px;height:220px">
+              <router-link :to="{name: 'Art',params:{id: artist.masterpiece_id}}">
+                <img
+                  :src="artist.masterpiece + '?x-oss-process=image/resize,m_lfit,h_300,w_300'"
+                  alt="图片加载失败，请稍等"
+                  style="width:300px;height:200px"
+                >
+              </router-link>
+            </div>
+            <div style="text-align:center">
+              <router-link
+                :to="{name: 'UserWorks',params:{id: artist.website.slice(26)}}"
+              >{{artist.nickname}}</router-link>
+              <p>发表过{{artist.works_number}}件作品</p>
+              <p>被{{artist.followers_number}}人关注</p>
+              <p>累计点赞次数:{{artist.likes_number}}</p>
+            </div>
           </div>
         </el-col>
       </div>
@@ -91,7 +102,7 @@ export default {
   color: black;
 }
 .home-btn-row {
-  margin: 0 100px;
+  margin: 0px 100px 20px 100px;
 }
 .home-btn {
   float: right;
