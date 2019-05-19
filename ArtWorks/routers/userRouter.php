@@ -40,4 +40,5 @@ $app->group('/users',function () {
     $this->get('/getLikemeDetail', Controller\LikeController::class.":getLikemeDetail");
     $this->get('/getILikeDetail', Controller\LikeController::class.":getILikeDetail");
     $this->get('/getComments', Controller\CommentController::class.":getUserCommentsDetail");
+    $this->get('/getPin', Controller\UserController::class.":getPinById");
 });

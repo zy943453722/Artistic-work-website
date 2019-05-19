@@ -250,7 +250,7 @@ class Works extends Model
             $this->init();
         }
         return $this->model::join('worksLike',$this->table.'.id','=','worksLike.works_id')
-            ->join('userInformation',$this->table.'.pin','=','userInformation.pin')
+            ->join('userInformation','worksLike.pin','=','userInformation.pin')
             ->where([$this->table.'.pin' => $pin, 'worksLike.is_delete'=>0])
             ->select('avator','nickname','website','like_time','name','works_id','userInformation.pin')
             ->get()

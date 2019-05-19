@@ -71,7 +71,8 @@ class Comments extends Model
         $ret = $this->model::join('userInformation',$this->table.'.from_pin','=','userInformation.pin')
             ->join('works',$this->table.'.works_id','=','works.id')
             ->where('from_pin','!=',$pin)
-            ->where(['works.pin'=>$pin, 'to_pin'=>'',$this->table.'.is_delete'=>0])
+            ->where('to_pin','!=',$pin)
+            ->where(['works.pin'=>$pin,$this->table.'.is_delete'=>0])
             ->select('avator','nickname','website','userInformation.pin',$this->table.'.create_at',
                 $this->table.'.id','content','works_id','name')
             ->get()

@@ -42,7 +42,8 @@ $app->add(new JwtAuthentication(
             "/users/feedback",
             "/users/verifyUserCode",
             "/users/getSms",
-            "/users/uploadCallback"
+            "/users/uploadCallback",
+            "/users/getPin"
         ],//不需要检查路径
         "error" => function ($request, $response, $args) {//错误处理
             $codes = ResultCode::mapCode();

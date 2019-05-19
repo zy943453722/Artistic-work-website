@@ -79,8 +79,8 @@ class LikeController extends baseController
         $pin = base64_decode($params['pin']);
         $works = new Works();
         $result = $works->getWorksLikeDetail($pin);
-        $count = $works->getWorksLikeDetailOfCount($pin);
-        $result['count'] = $count;
+        /*$count = $works->getWorksLikeDetailOfCount($pin);
+        $result['count'] = $count;*/
 
         $data = ['data' => $result];
         return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
@@ -116,8 +116,8 @@ class LikeController extends baseController
         $pin = base64_decode($params['pin']);
         $works = new Works();
         $result = $works->getLikeDetail($pin);
-        $count = $works->getLikeDetailOfCount($pin);
-        $result['count'] = $count;
+        /*$count = $works->getLikeDetailOfCount($pin);
+        $result['count'] = $count;*/
 
         $data = ['data' => $result];
         return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);

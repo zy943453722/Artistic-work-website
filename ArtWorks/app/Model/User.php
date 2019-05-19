@@ -96,4 +96,15 @@ class User extends Model
             ->get()
             ->toArray()[0]['id'];
     }
+
+    public function getUserPin($id)
+    {
+        if (is_null($this->model)) {
+            $this->init();
+        }
+        return $this->model::where('id','=',$id)
+            ->select('pin')
+            ->get()
+            ->toArray()[0]['pin'];
+    }
 }

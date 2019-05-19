@@ -430,6 +430,23 @@ class UserController extends baseController
         return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
     }
 
+    public function getPinById(Request $request, Response $response)
+    {
+        $params = $request->getQueryParams();
+        $rules = [
+            'id' => 'required|integer'
+        ];
+        if (!Validator::validators($rules, $params)) {
+            return ApiView::jsonResponse($response,ResultCode::PARAM_IS_INVAILD);
+        }
+
+        $user = new User();
+        $value = $user->getUserPin($params['id']);
+
+        $data = ['data' => ['pin'=> $value]];
+        return ApiView::jsonResponse($response, ResultCode::SUCCESS, $data);
+    }
+
     public function getRight(Request $request, Response $response)
     {
         $params = $request->getQueryParams();
