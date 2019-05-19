@@ -135,7 +135,7 @@
           </div>
         </div>
       </div>
-      <mu-divider shallow-inset class="works-divider"></mu-divider>
+      <mu-divider shallow-inset class="works-divider" v-if="Object.keys(commentList).length !== 0"></mu-divider>
       <div style="text-align:center;margin: 50px 300px 100px 300px">
         <el-input
           v-model="input"
