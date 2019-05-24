@@ -24,7 +24,6 @@ class SendEmail
             if ($job !== false) {
                 $email = (Array)json_decode($job->getData());
                 //处理业务逻辑
-
                 $this->buildEmail($email);
                 $consumer->delete($job);
             }

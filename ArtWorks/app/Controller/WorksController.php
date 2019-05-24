@@ -259,11 +259,19 @@ class WorksController extends baseController
         $res = $userRecord->pinGetUserRecordDetail($token['pin'], $params['id']);
         if (!empty($res)) {
             $ret = $works->getWorksIdAndInstance($token['pin']);
-            $factor = [
-                'masterpiece' => $ret['instance'],
-                'masterpiece_id' => $ret['id']
-            ];
-            $userRecord->modifyUserWorks($token['pin'], $factor);
+            if (!empty($ret)) {
+                $factor = [
+                    'masterpiece' => $ret[0]['instance'],
+                    'masterpiece_id' => $ret[0]['id']
+                ];
+                $userRecord->modifyUserWorks($token['pin'], $factor);
+            } else {
+                $factor = [
+                    'masterpiece' => "",
+                    'masterpiece_id' => 0
+                ];
+                $userRecord->modifyUserWorks($token['pin'], $factor);
+            }
         }
 
         return ApiView::jsonResponse($response, ResultCode::SUCCESS,[]);

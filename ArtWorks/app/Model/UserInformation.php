@@ -44,7 +44,8 @@ class UserInformation extends Model
           [
               'pin' => $pin,
               'nickname' => $nickname,
-              'website' => "http://artgallery.com/uid/".($count+1)
+              'website' => "http://artgallery.com/uid/".($count+1),
+              'avator' => "http://artgallery1.oss-cn-beijing.aliyuncs.com/avatars/default.jpg"
           ]
         );
     }

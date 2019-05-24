@@ -142,6 +142,7 @@ class UserRecord extends Model
         return $this->model::where(['pin' => $pin, 'masterpiece_id'=> $id],'=')
             ->get()
             ->toArray();
+
     }
 
 }

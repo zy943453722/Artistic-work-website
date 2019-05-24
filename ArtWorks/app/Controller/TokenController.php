@@ -17,6 +17,7 @@ use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use PhpMiddleware\RequestId\Generator\PhpUniqidGenerator;
 
+
 class TokenController extends baseController
 {
     public function getToken(Request $request, Response $response)

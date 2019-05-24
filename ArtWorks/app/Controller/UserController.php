@@ -321,7 +321,7 @@ class UserController extends baseController
         $rules = [
             'avator' => 'url',
             'nickname' => 'string|between:1,16',
-            'sex' => 'integer|in:0,1,2',
+            'sex' => 'integer|in:1,2,3',
             'birthday' => 'integer',
             'city' => 'string|between:0,255',
             'introduction' => 'string|between:0,500'

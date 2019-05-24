@@ -31,7 +31,7 @@ class FileController extends baseController
         $id = $this->setting['oss']['accessKeyId'];
         $key= $this->setting['oss']['accessKeySecret'];
         $host = 'http://artgallery1.oss-cn-beijing.aliyuncs.com';
-        $callbackUrl = 'http://api.artworks.com/users/uploadCallback';
+        //$callbackUrl = 'http://api.artworks.com/users/uploadCallback';
         if ($params['status'] == 0) {//是头像上传时
             $dir = 'avatars/';
         } else {

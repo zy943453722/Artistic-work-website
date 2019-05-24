@@ -185,7 +185,7 @@ class Works extends Model
             ->select('id','instance')
             ->orderBy('create_at','desc')
             ->get()
-            ->toArray()[0];
+            ->toArray();
     }
 
     public function getWorksDetail($id)
