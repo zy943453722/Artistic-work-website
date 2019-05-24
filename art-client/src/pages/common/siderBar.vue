@@ -62,11 +62,13 @@ export default {
 
 <style scoped>
 .btn-expand {
+  cursor:pointer;
   position: relative;
   left: 50px;
   font-size: 25px;
 }
 .btn-shrink {
+  cursor:pointer;
   position: relative;
   left: 256px;
   font-size: 25px;

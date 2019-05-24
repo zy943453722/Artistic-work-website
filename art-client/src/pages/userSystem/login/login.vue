@@ -52,7 +52,7 @@ export default {
   },
   data: function() {
     let phoneRule = (rule, value, callback) => {
-      let regExp = /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/;
+      let regExp = /^(13[0-9]|14[5|7|9]|15[0|1|2|3|5|6|7|8|9]|16[6]|17[0|1|2|3|5|6|7|8]|18[0-9]|19[8|9])\d{8}$/;
       if (regExp.test(value) === false) {
         callback(new Error("请保证11位大陆手机号"));
       } else {

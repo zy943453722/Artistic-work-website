@@ -29,6 +29,7 @@ import Art from '@/pages/works/works/art.vue';
 import DealWorks from '@/pages/works/dealWorks/dealWorks.vue';
 import EditWorks from '@/pages/works/dealWorks/editWorks.vue';
 import UploadWorks from '@/pages/works/dealWorks/uploadWorks.vue';
+import Empty from '@/pages/common/empty.vue';
 
 Vue.use(Router);
 
@@ -149,6 +150,11 @@ export default new Router({
         path: '/artid/:id',
         name: 'Art',
         component: Art,
+      },
+      {
+        path: 'xxxx',
+        name: 'Empty',
+        component: Empty
       },
       {
         path: '/uid/:id/works',

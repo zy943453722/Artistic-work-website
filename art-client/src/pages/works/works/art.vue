@@ -130,7 +130,11 @@
           </el-button>
           <div v-if="comment.right" style="margin-top:5px">
             <el-tooltip class="item" effect="dark" content="删除评论" placement="bottom">
-              <span class="iconfont" @click="handleDeleteComment(comment.id)" style="cursor:pointer">&#xe686;</span>
+              <span
+                class="iconfont"
+                @click="handleDeleteComment(comment.id)"
+                style="cursor:pointer"
+              >&#xe686;</span>
             </el-tooltip>
           </div>
         </div>
@@ -344,6 +348,13 @@ export default {
       ]
     };
   },
+  watch: {
+    $route() {
+      if (this.$route.params.id) {
+        this.$router.push({name: 'Empty', params:{toPath: this.$route.params.id}});
+      }
+    }
+  },
   mounted() {
     if (this.accessToken) {
       this.pinGetWorksDetail(this.$route.params.id);
@@ -357,7 +368,7 @@ export default {
   methods: {
     sendComment() {
       if (!this.accessToken) {
-        this.$router.push({name: 'Login'});
+        this.$router.push({ name: "Login" });
         return false;
       }
       if (this.input === "") {
@@ -435,7 +446,7 @@ export default {
     },
     handleReply(name, nickname, pin) {
       if (!this.accessToken) {
-        this.$router.push({name: 'Login'});
+        this.$router.push({ name: "Login" });
         return false;
       }
       this.$refs[name].focus();
@@ -558,10 +569,9 @@ export default {
     },
     loadMore() {
       this.pageNumber++;
-      if (this.accessToken) 
+      if (this.accessToken)
         this.pinGetWorksList(this.$route.params.id, this.pageNumber);
-      else 
-        this.touristGetWorksList(this.$route.params.id, this.pageNumber);
+      else this.touristGetWorksList(this.$route.params.id, this.pageNumber);
     },
     pinGetWorksList(id, number) {
       axios({

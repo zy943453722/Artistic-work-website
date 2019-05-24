@@ -24,3 +24,4 @@ new Vue({
   theme,
   store,
 }).$mount('#app');
+

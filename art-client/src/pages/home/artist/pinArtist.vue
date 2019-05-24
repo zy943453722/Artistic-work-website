@@ -109,19 +109,19 @@ export default {
       imageItems: [
         {
           id: 1,
-          url: require("../../../assets/1.jpg")
+          url: "http://artgallery1.oss-cn-beijing.aliyuncs.com/lunbo1.jpg?x-oss-process=image/resize,m_lfit,h_500,w_600"
         },
         {
           id: 2,
-          url: require("../../../assets/2.jpg")
+          url: "http://artgallery1.oss-cn-beijing.aliyuncs.com/lunbo2.jpg?x-oss-process=image/resize,m_lfit,h_500,w_600"
         },
         {
           id: 3,
-          url: require("../../../assets/3.jpg")
+          url: "http://artgallery1.oss-cn-beijing.aliyuncs.com/lunbo3.jpg?x-oss-process=image/resize,m_lfit,h_500,w_600"
         },
         {
           id: 4,
-          url: require("../../../assets/4.jpg")
+          url: "http://artgallery1.oss-cn-beijing.aliyuncs.com/lunbo4.jpg?x-oss-process=image/resize,m_lfit,h_500,w_600"
         }
       ],
       items: [

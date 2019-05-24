@@ -28,6 +28,7 @@
         </template>
       </el-main>
     </el-container>
+    <mu-divider shallow-inset></mu-divider>
     <el-footer>
       <el-col :span="18" class="home-footer-left">
         ©copyright&nbsp;&nbsp;2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

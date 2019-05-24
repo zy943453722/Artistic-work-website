@@ -109,6 +109,7 @@ export default {
 }
 .next-one {
   text-align: center;
+  margin: 50px 0px;
 }
 .next-icon {
   width: 150px;
