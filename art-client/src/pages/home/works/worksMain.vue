@@ -421,16 +421,25 @@ export default {
         case "类别":
           this.value = "";
           delete this.dynamicType.type;
+          delete this.dynamicType.pageNumber;
+          this.currentPage = 1;
+          this.typeOld = "";
           break;
         case "尺寸":
           this.lengthValue = "";
           delete this.dynamicType.lengthMin;
           delete this.dynamicType.lengthMax;
+          delete this.dynamicType.pageNumber;
+          this.currentPage = 1;
+          this.lengthOld = "";
           break;
         case "年代":
           this.timeValue = "";
           delete this.dynamicType.makeAtStart;
           delete this.dynamicType.makeAtEnd;
+          delete this.dynamicType.pageNumber;
+          this.currentPage = 1;
+          this.timeOld = "";
           break;
         default:
           break;
@@ -452,6 +461,8 @@ export default {
         this.dynamicType.type = data;
       }
       this.typeOld = label;
+      delete this.dynamicType.pageNumber;
+      this.currentPage = 1;
       this.$emit("changeTag", this.dynamicType);
     },
     handleLengthChange(data) {
@@ -470,6 +481,8 @@ export default {
       if (exist) this.dynamicType.lengthMax = obj.lengthMax;
       else delete this.dynamicType.lengthMax;
       this.dynamicType.lengthMin = obj.lengthMin;
+      delete this.dynamicType.pageNumber;
+      this.currentPage = 1;
       this.lengthOld = label;
       this.$emit("changeTag", this.dynamicType);
     },
@@ -498,6 +511,8 @@ export default {
         delete this.dynamicType.makeAtStart;
       }
       this.timeOld = label;
+      delete this.dynamicType.pageNumber;
+      this.currentPage = 1;
       this.$emit("changeTag", this.dynamicType);
     },
     searchWorks() {

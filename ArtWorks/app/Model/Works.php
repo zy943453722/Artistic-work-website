@@ -83,6 +83,10 @@ class Works extends Model
                 $var = $temp;
             }
         }
+
+        $count = $var->select('works.id','instance','name','works.pin','likes','website','nickname')
+            ->where('is_delete',0)
+            ->count();
         $res = $var->select('works.id','instance','name','works.pin','likes','website','nickname')
             ->where('is_delete',0)
             ->limit($limit)
@@ -90,9 +94,7 @@ class Works extends Model
             ->get()
             ->toArray();
 
-        $res['count'] = $var->select('works.id','instance','name','works.pin','likes','website','nickname')
-            ->where('is_delete',0)
-            ->count();
+        $res['count'] = $count;
         return $res;
     }
 
