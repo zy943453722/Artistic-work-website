@@ -362,6 +362,12 @@ class UserController extends baseController
         }
 
         $user->modifyUserPassword($token['pin'], $params['newPassword'], $this->setting['salt']);
+        //修改用户登录状态
+        $userStatus = new UserStatus();
+        $result = $userStatus->modifyUserStatus($token['pin'], 1);
+        if ($result == false) {
+            return ApiView::jsonResponse($response, ResultCode::UNKNOWN_ERROR);
+        }
         return ApiView::jsonResponse($response, ResultCode::SUCCESS, []);
     }
 

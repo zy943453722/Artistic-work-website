@@ -30,6 +30,7 @@ import DealWorks from '@/pages/works/dealWorks/dealWorks.vue';
 import EditWorks from '@/pages/works/dealWorks/editWorks.vue';
 import UploadWorks from '@/pages/works/dealWorks/uploadWorks.vue';
 import Empty from '@/pages/common/empty.vue';
+import UserEmpty from '@/pages/common/userEmpty.vue';
 
 Vue.use(Router);
 
@@ -155,6 +156,11 @@ export default new Router({
         path: 'xxxx',
         name: 'Empty',
         component: Empty
+      },
+      {
+        path: 'yyy',
+        name: 'UserEmpty',
+        component: UserEmpty
       },
       {
         path: '/uid/:id/works',

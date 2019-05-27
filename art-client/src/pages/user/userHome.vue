@@ -51,7 +51,7 @@
         <h2>{{userRecord.nickname}}</h2>
         <p>
           {{userRecord.works_number}}件作品&nbsp;|&nbsp;{{userRecord.followers_number}}人
-          关注了他&nbsp;|&nbsp;共收到{{userRecord.likes_number}}个赞
+          关注&nbsp;|&nbsp;共收到{{userRecord.likes_number}}个赞
         </p>
         <div>
           <template v-if="userRecord.city === '' ">
@@ -126,6 +126,13 @@ export default {
   },
   mounted() {
     this.getUserPin();
+  },
+  watch: {
+    $route(to, from) {
+      if (to.params.id !== from.params.id) {
+        this.$router.push({name: 'UserEmpty', params:{toPath: this.$route.params.id}});
+      }
+    }
   },
   methods: {
     getUserPin() {

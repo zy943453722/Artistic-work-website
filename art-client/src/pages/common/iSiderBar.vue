@@ -57,7 +57,7 @@ export default {
       this.$router.push({name: "Logout"});
     },
     handleUser () {
-      this.$router.push({name: "UserWorks",params: {id: localStorage.id}});
+      this.$router.push({name: 'UserEmpty', params:{toPath: localStorage.id}});
     },
     handleSetting () {
       this.$router.push({name: "BasicSetting"});

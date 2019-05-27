@@ -89,7 +89,7 @@ export default {
   props: ["relation", "likemeForm"],
   methods: {
     handleTime(time) {
-      let date = new Date(time);
+      let date = new Date(time*1000);
       let Y = date.getFullYear() + "年";
       let M =
         (date.getMonth() + 1 < 10
