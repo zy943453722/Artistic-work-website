@@ -178,9 +178,11 @@ export default {
   font-size: 20px;
 }
 .home-nav-item-artist {
+  font-family: 'kaiti';
   color: red;
 }
 .home-nav-item-works {
+  font-family: 'kaiti';
   color: black;
 }
 .art-main {

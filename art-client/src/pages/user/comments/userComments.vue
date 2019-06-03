@@ -107,17 +107,21 @@ export default {
   props: ["relation", "commentsForm", "userRecord"],
   methods: {
     handleTime(time) {
-      let date = new Date(time*1000);
+      let date = new Date(time * 1000);
       let Y = date.getFullYear() + "年";
       let M =
         (date.getMonth() + 1 < 10
           ? "0" + (date.getMonth() + 1)
           : date.getMonth() + 1) + "月";
-      let D = date.getDate() + "日";
-      let h = date.getHours() + ":";
-      let m = date.getMinutes() + ":";
-      let s = date.getSeconds();
+      let D = this.formatNumber(date.getDate()) + "日";
+      let h = this.formatNumber(date.getHours()) + ":";
+      let m = this.formatNumber(date.getMinutes()) + ":";
+      let s = this.formatNumber(date.getSeconds());
       return Y + M + D + h + m + s;
+    },
+    formatNumber(n) {
+      n = n.toString();
+      return n[1] ? n : "0" + n;
     }
   }
 };

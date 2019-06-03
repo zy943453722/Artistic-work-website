@@ -4,33 +4,6 @@
 
 import Router from "vue-router";
 import Vue from 'vue';
-import Home from '@/pages/home/home.vue';
-import Works from '@/pages/home/works.vue';
-import About from '@/pages/about/about.vue';
-import Terms from '@/pages/about/terms.vue';
-import Login from '@/pages/userSystem/login/login.vue';
-import Register from '@/pages/userSystem/register/register.vue';
-import Logout from '@/pages/userSystem/logout/logout.vue';
-import ForgotPassword from '@/pages/userSystem/forgotPassword/forgot.vue';
-import ResetPassword from '@/pages/userSystem/resetPassword/reset.vue';
-import UserHome from '@/pages/user/userHome.vue';
-import UserWorks from '@/pages/user/works/userWorks.vue';
-import UserAbout from '@/pages/user/about/userAbout.vue';
-import UserComments from '@/pages/user/comments/userComments.vue';
-import UserILike from '@/pages/user/ilike/userILike.vue';
-import UserLikeme from '@/pages/user/likeme/userLikeme.vue';
-import Fans from '@/pages/connection/fans.vue';
-import Connection from '@/pages/connection/connection.vue';
-import Follow from '@/pages/connection/follow.vue';
-import Setting from '@/pages/setting/setting.vue';
-import BasicSetting from '@/pages/setting/basicSetting.vue';
-import PasswordSetting from '@/pages/setting/passwordSetting.vue';
-import Art from '@/pages/works/works/art.vue';
-import DealWorks from '@/pages/works/dealWorks/dealWorks.vue';
-import EditWorks from '@/pages/works/dealWorks/editWorks.vue';
-import UploadWorks from '@/pages/works/dealWorks/uploadWorks.vue';
-import Empty from '@/pages/common/empty.vue';
-import UserEmpty from '@/pages/common/userEmpty.vue';
 
 Vue.use(Router);
 
@@ -39,142 +12,142 @@ export default new Router({
     routes: [{
         path: '/',
         name: 'Home',
-        component: Home
+        component: resolve => require(['@/pages/home/home.vue'], resolve)
       },
       {
         path: '/works',
-        component: Works,
-        name: 'Works'
+        name: 'Works',
+        component: resolve => require(['@/pages/home/works.vue'], resolve),
       }, 
       {
         path: '/about',
         name: 'About',
-        component: About
+        component: resolve => require(['@/pages/about/about.vue'], resolve)
       },
       {
         path: '/about/terms',
         name: 'Terms',
-        component: Terms
+        component: resolve => require(['@/pages/about/terms.vue'], resolve)
       },
       {
         path: '/login',
         name: 'Login',
-        component: Login
+        component: resolve => require(['@/pages/userSystem/login/login.vue'], resolve)
       },
       {
         path: '/register',
         name: 'Register',
-        component: Register
+        component: resolve => require(['@/pages/userSystem/register/register.vue'], resolve)
       },
       {
         path: '/logout',
         name: 'Logout',
-        component: Logout
+        component: resolve => require(['@/pages/userSystem/logout/logout.vue'], resolve)
       },
       {
         path: '/forgotPassword',
         name: 'ForgotPassword',
-        component: ForgotPassword
+        component: resolve => require(['@/pages/userSystem/forgotPassword/forgot.vue'], resolve)
       },
       {
         path: '/forgotPassword/reset',
         name: 'ResetPassword',
-        component: ResetPassword
+        component: resolve => require(['@/pages/userSystem/resetPassword/reset.vue'], resolve)
       },
       {
         path: '/uid/:id',
         name: 'UserHome',
-        component: UserHome,
+        component: resolve => require(['@/pages/user/userHome.vue'], resolve),
         children: [
           {
             path: '',
             name: 'UserWorks',
-            component: UserWorks,
+            component: resolve => require(['@/pages/user/works/userWorks.vue'], resolve),
           },
           {
             path: 'about',
             name: 'UserAbout',
-            component: UserAbout
+            component: resolve => require(['@/pages/user/about/userAbout.vue'], resolve)
           },
           {
             path: 'ilike',
             name: 'UserILike',
-            component: UserILike
+            component: resolve => require(['@/pages/user/ilike/userILike.vue'], resolve)
           },
           {
             path: 'likeme',
             name: 'UserLikeme',
-            component: UserLikeme
+            component: resolve => require(['@/pages/user/likeme/userLikeme.vue'], resolve)
           },
           {
             path: 'comments',
             name: 'UserComments',
-            component: UserComments
+            component: resolve => require(['@/pages/user/comments/userComments.vue'], resolve)
           }
         ]
       },
       {
         path: '/setting',
         name: 'Setting',
-        component: Setting,
+        component: resolve => require(['@/pages/setting/setting.vue'], resolve),
         children: [
         {
           path: 'basics',
           name: 'BasicSetting',
-          component: BasicSetting
+          component: resolve => require(['@/pages/setting/basicSetting.vue'], resolve)
         },
         {
           path: 'password',
           name: 'PasswordSetting',
-          component: PasswordSetting
+          component: resolve => require(['@/pages/setting/passwordSetting.vue'], resolve)
         }
       ]
       },
       {
         path: '/connection',
         name: 'Connection',
-        component: Connection,
+        component: resolve => require(['@/pages/connection/connection.vue'], resolve),
         children: [
         {
           path: 'follow',
           name: 'Follow',
-          component: Follow
+          component: resolve => require(['@/pages/connection/follow.vue'], resolve)
         },
         {
           path: 'fans',
           name: 'Fans',
-          component: Fans
+          component: resolve => require(['@/pages/connection/fans.vue'], resolve)
         }
       ]
       },
       {
         path: '/artid/:id',
         name: 'Art',
-        component: Art,
+        component: resolve => require(['@/pages/works/works/art.vue'], resolve),
       },
       {
         path: 'xxxx',
         name: 'Empty',
-        component: Empty
+        component: resolve => require(['@/pages/common/empty.vue'], resolve)
       },
       {
         path: 'yyy',
         name: 'UserEmpty',
-        component: UserEmpty
+        component: resolve => require(['@/pages/common/userEmpty.vue'], resolve)
       },
       {
         path: '/uid/:id/works',
         name: 'DealWorks',
-        component: DealWorks,
+        component: resolve => require(['@/pages/works/dealWorks/dealWorks.vue'], resolve),
         children: [
           {
             path: 'write',
             name: 'UploadWorks',
-            component: UploadWorks
+            component: resolve => require(['@/pages/works/dealWorks/uploadWorks.vue'], resolve)
           },{
             path: 'edit',
             name: 'EditWorks',
-            component: EditWorks
+            component: resolve => require(['@/pages/works/dealWorks/editWorks.vue'], resolve)
           }
         ]
       }

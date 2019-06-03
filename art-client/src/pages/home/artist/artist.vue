@@ -43,10 +43,10 @@
     <div class="next-one">
       <div class="next-icon">
         <router-link :to="{name: 'Register'}" style="text-decoration: none;">
-          <p>WHO IS THE NEXT?</p>
+          <p style="font-family:'stup'">WHO IS THE NEXT?</p>
         </router-link>
       </div>
-      <h3>下一个也许是你</h3>
+      <h3 style="font-family:'wenyiheiti';font-size:30px">下一个也许是你</h3>
       <p class="next-one-word">欢迎最棒的艺术家、专业机构和最富激情的爱好者们免费入驻ArtGallery!</p>
     </div>
   </mu-container>
@@ -96,15 +96,18 @@ export default {
   font-size: 20px;
 }
 .home-nav-item-artist {
+  font-family: 'kaiti';
   color: red;
 }
 .home-nav-item-works {
+  font-family: 'kaiti';
   color: black;
 }
 .home-btn-row {
   margin: 0px 100px 20px 100px;
 }
 .home-btn {
+  font-family:"Microsoft YaHei";
   float: right;
 }
 .next-one {
@@ -131,8 +134,9 @@ export default {
   padding: 30px 0;
 }
 .next-one-word {
+  font-family: 'kaiti';
   line-height: 24px;
-  font-size: 14px;
+  font-size: 20px;
   color: #000;
   margin: 50px 0px;
 }

@@ -554,6 +554,10 @@ export default {
       }).then(res => {
         if (res.status === 200) {
           if (res.data.errno === 10000) {
+            this.$message({
+              message: "点赞成功",
+              type: "success"
+            });
             location.reload();
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
@@ -649,6 +653,10 @@ export default {
       }).then(res => {
         if (res.status === 200) {
           if (res.data.errno === 10000) {
+            this.$message({
+              message: "取消点赞成功",
+              type: "success"
+            });
             location.reload();
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
@@ -695,9 +703,11 @@ export default {
   font-size: 20px;
 }
 .home-nav-item-artist {
+  font-family: 'kaiti';
   color: black;
 }
 .home-nav-item-works {
+  font-family: 'kaiti';
   color: red;
 }
 .works-divider {

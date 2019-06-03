@@ -2,14 +2,14 @@
   <el-row>
     <el-col :span="18">
       <div class="grid-content header-image">
-        <a href="#">
+        <router-link :to="{name: 'Home'}">
           <img
             class="header-img"
             src="../../../assets/logo.jpg"
             alt="artgallery"
             title="artgallery"
           >
-        </a>
+        </router-link>
       </div>
     </el-col>
     <el-col :span="6">
@@ -39,12 +39,8 @@ export default {
     }
   },
   methods: {
-    handleWhite: function() {
-      
-    },
-    handleBlack: function() {
-   
-    },
+    //handleWhite: function() {},
+    //handleBlack: function() {},
     handleRegister () {
       this.$router.push({name: "Register"});
     },
@@ -70,6 +66,7 @@ export default {
   height: 100px;
 }
 .header-btu {
+  font-family:"Microsoft YaHei";
   display: flex;
   align-items: center;
   justify-content: space-around;

@@ -11,6 +11,7 @@ import './assets/iconfont/iconfont.css';
 import UUID from 'vue-uuid';
 import Share from 'vue-social-share';
 import 'vue-social-share/dist/client.css';
+import "./font/font.css";
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);

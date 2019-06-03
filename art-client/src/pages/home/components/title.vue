@@ -13,14 +13,15 @@ export default {
 
 <style scoped>
 .main-title {
+    font-family: 'admir';
     font-size: 80px;
     color: black;
     text-align: center;
     margin-top: 20px;
     margin-bottom: 5px;
-    font-family: sans-serif;
 }
 .minor-title {
+    font-family: 'adventure';
     font-size: 40px;
     color: purple;
     text-align: center;

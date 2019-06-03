@@ -159,6 +159,10 @@ export default {
       }).then(res => {
         if (res.status === 200) {
           if (res.data.errno === 10000) {
+            this.$message({
+              message: "取消关注成功",
+              type: "success"
+            });
             location.reload();
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
@@ -201,6 +205,10 @@ export default {
       }).then(res => {
         if (res.status === 201) {
           if (res.data.errno === 10000) {
+            this.$message({
+              message: "关注成功",
+              type: "success"
+            });
             location.reload();
           } else if (res.data.errno === 40005) {
             this.refreshHandle();

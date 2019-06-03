@@ -474,7 +474,7 @@ export default {
         if (res.status === 200) {
           if (res.data.errno === 10000) {
             this.$message({
-              message: "删除成功",
+              message: "评论删除成功",
               type: "success"
             });
             location.reload();
@@ -643,17 +643,21 @@ export default {
       });
     },
     handleTime(time) {
-      let date = new Date(time*1000);
+      let date = new Date(time * 1000);
       let Y = date.getFullYear() + "年";
       let M =
         (date.getMonth() + 1 < 10
           ? "0" + (date.getMonth() + 1)
           : date.getMonth() + 1) + "月";
-      let D = date.getDate() + "日";
-      let h = date.getHours() + ":";
-      let m = date.getMinutes() + ":";
-      let s = date.getSeconds();
+      let D = this.formatNumber(date.getDate()) + "日";
+      let h = this.formatNumber(date.getHours()) + ":";
+      let m = this.formatNumber(date.getMinutes()) + ":";
+      let s = this.formatNumber(date.getSeconds());
       return Y + M + D + h + m + s;
+    },
+    formatNumber(n) {
+      n = n.toString();
+      return n[1] ? n : "0" + n;
     },
     pinGetCommentDetail(id) {
       axios({
@@ -759,6 +763,10 @@ export default {
       }).then(res => {
         if (res.status === 200) {
           if (res.data.errno === 10000) {
+            this.$message({
+              message: "点赞成功",
+              type: "success"
+            });
             location.reload();
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
@@ -821,6 +829,10 @@ export default {
       }).then(res => {
         if (res.status === 200) {
           if (res.data.errno === 10000) {
+            this.$message({
+              message: "取消点赞成功",
+              type: "success"
+            });
             location.reload();
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
