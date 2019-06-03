@@ -27,6 +27,7 @@ export default {
   background-color: honeydew;
 }
 .setting-header {
+  font-family: 'kaiti';
   text-align: center;
   font-size: 60px;
   margin: 50px 0px 0px 0px;

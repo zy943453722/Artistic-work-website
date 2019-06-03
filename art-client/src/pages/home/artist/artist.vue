@@ -31,10 +31,26 @@
             <div style="text-align:center">
               <router-link
                 :to="{name: 'UserWorks',params:{id: artist.website.slice(26)}}"
+                style="font-family: 'Microsoft YaHei';font-size:20px"
               >{{artist.nickname}}</router-link>
-              <p>发表过{{artist.works_number}}件作品</p>
-              <p>被{{artist.followers_number}}人关注</p>
-              <p>累计点赞次数:{{artist.likes_number}}</p>
+              <p style="font-family: 'Microsoft YaHei';font-size:15px">
+                发表过
+                <span
+                  style="font-family: 'stup';font-size:25px;color: purple"
+                >{{artist.works_number}}</span>件作品
+              </p>
+              <p style="font-family: 'Microsoft YaHei';font-size:15px">
+                被
+                <span
+                  style="font-family: 'stup';font-size:25px;color: purple"
+                >{{artist.followers_number}}</span>人关注
+              </p>
+              <p style="font-family: 'Microsoft YaHei';font-size:15px">
+                累计点赞次数:
+                <span
+                  style="font-family: 'stup';font-size:25px;color: purple"
+                >{{artist.likes_number}}</span>
+              </p>
             </div>
           </div>
         </el-col>
@@ -96,18 +112,18 @@ export default {
   font-size: 20px;
 }
 .home-nav-item-artist {
-  font-family: 'kaiti';
+  font-family: "kaiti";
   color: red;
 }
 .home-nav-item-works {
-  font-family: 'kaiti';
+  font-family: "kaiti";
   color: black;
 }
 .home-btn-row {
   margin: 0px 100px 20px 100px;
 }
 .home-btn {
-  font-family:"Microsoft YaHei";
+  font-family: "Microsoft YaHei";
   float: right;
 }
 .next-one {
@@ -134,7 +150,7 @@ export default {
   padding: 30px 0;
 }
 .next-one-word {
-  font-family: 'kaiti';
+  font-family: "kaiti";
   line-height: 24px;
   font-size: 20px;
   color: #000;

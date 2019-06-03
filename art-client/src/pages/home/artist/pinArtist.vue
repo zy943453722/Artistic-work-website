@@ -24,7 +24,9 @@
         <div>
           <div v-for="card in allArtists" :key="card.pin">
             <mu-card style="width: 100%; max-width: 550px;margin: 50px auto;">
-              <mu-card-header :title="card.nickname" :sub-title="card.followers_number+'人关注过'">
+              <mu-card-header :title="card.nickname" :sub-title="card.followers_number+'人关注过'"
+                  style="font-family: 'Microsoft YaHei';font-size:20px"
+              >
                 <mu-avatar slot="avatar">
                   <img
                     :src="card.avator + '?x-oss-process=image/resize,m_lfit,h_100,w_100'"
@@ -35,6 +37,7 @@
               <mu-card-media
                 :title="card.name+' '+' '+' '+card.make_at+'年作品'"
                 :sub-title="card.likes+'人赞过'"
+                style="font-family: 'Microsoft YaHei'"
               >
                 <router-link :to="{name: 'Art',params:{id: card.masterpiece_id}}">
                   <img
@@ -74,16 +77,16 @@
               </router-link>
             </el-col>
             <el-col :span="16">
-              <p>{{userDetail.nickname}}</p>
+              <p style="font-family: 'Microsoft YaHei';font-size:20px">{{userDetail.nickname}}</p>
               <router-link
                 :to="{name: 'UserWorks',params:{id: userDetail.id}}"
-                style="text-align:center"
+                style="text-align:center;font-family: 'angelicwar';font-size:20px;color:purple"
               >{{userDetail.website}}</router-link>
             </el-col>
           </el-row>
           <mu-divider></mu-divider>
           <div style="text-align:center;margin:15px 0px">
-            <el-button type="success" @click="uploadWorks">发布作品</el-button>
+            <el-button type="success" @click="uploadWorks"><span class="iconfont">&#xe60e;</span>&nbsp;发布作品</el-button>
           </div>
         </div>
         <div class="art-img-container">

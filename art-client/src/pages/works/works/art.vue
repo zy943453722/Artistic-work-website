@@ -26,7 +26,7 @@
               </router-link>
               <router-link
                 :to="{name: 'UserWorks',params:{id: worksData.uid}}"
-                style="line-height:20px"
+                style="line-height:20px;font-family: 'Microsoft YaHei';font-size:15px"
               >{{worksData.nickname}}</router-link>
             </div>
           </el-col>
@@ -38,7 +38,7 @@
           </el-col>
         </el-row>
         <el-row>
-          <p style="margin:15px 100px 5px 100px;float:left">
+          <p style="margin:15px 100px 5px 100px;float:left;font-family: 'Microsoft YaHei';font-size:15px">
             {{worksData.name}}&nbsp;&nbsp;|&nbsp;&nbsp;{{worksData.type}},
             &nbsp;&nbsp;{{worksData.length}}&times;{{worksData.height}}cm,&nbsp;&nbsp;
             {{worksData.make_at}}
@@ -46,7 +46,7 @@
         </el-row>
         <el-row style="height:50px">
           <el-col :span="16">
-            <p style="margin-left:100px;float:left">简介:&nbsp;&nbsp;{{worksData.introduction}}</p>
+            <p style="margin-left:100px;float:left;font-family: 'Microsoft YaHei';font-size:15px">简介:&nbsp;&nbsp;{{worksData.introduction}}</p>
           </el-col>
           <el-col :span="8" style="line-height:50px" v-if="worksData.right">
             <el-tooltip class="item" effect="dark" content="修改作品" placement="bottom">

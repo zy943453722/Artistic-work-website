@@ -11,9 +11,17 @@
       >{{item.text}}</mu-breadcrumbs-item>
     </mu-breadcrumbs>
     <mu-divider shallow-inset class="works-divider"></mu-divider>
-    <p>共有{{count}}人关注了你，其中互粉好友{{mutualCount}}人</p>
+    <p style="font-family: 'Microsoft YaHei';font-size:15px">
+      共有
+      <span style="font-family: 'stup';font-size:25px;color: purple">{{count}}</span>
+      人关注了你，其中互粉好友
+      <span style="font-family: 'stup';font-size:25px;color: purple">{{mutualCount}}</span>人
+    </p>
     <mu-divider shallow-inset class="works-divider"></mu-divider>
-    <p v-if="count === 0">还没有任何人关注您，快去发表作品吸引关注吧~~</p>
+    <p
+      v-if="count === 0"
+      style="font-family: 'Microsoft YaHei';font-size:15px"
+    >还没有任何人关注您，快去发表作品吸引关注吧~~</p>
     <div v-for="card in followData" :key="card.website.slice(26)">
       <el-row>
         <el-col :span="8" style="height:50px">

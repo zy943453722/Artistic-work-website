@@ -31,15 +31,16 @@
         </template>
       </el-main>
     </el-container>
+    <mu-divider shallow-inset></mu-divider>
     <el-footer>
       <el-col :span="18" class="home-footer-left">
         ©copyright&nbsp;&nbsp;2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <router-link :to="{name: 'Terms'}">用户协议</router-link>&nbsp;&nbsp;&nbsp;&nbsp;
-        <router-link :to="{name: 'About'}">关于我们</router-link>
+        <router-link :to="{name: 'Terms'}" style="font-family: 'kaiti'">用户协议</router-link>&nbsp;&nbsp;&nbsp;&nbsp;
+        <router-link :to="{name: 'About'}" style="font-family: 'kaiti'">关于我们</router-link>
       </el-col>
       <el-col :span="6" class="home-footer-right">
-        <h4>ArtGallery</h4>
-        <h5>http://www.artgallery.com</h5>
+        <h4 style="font-family: 'Microsoft YaHei'">ArtGallery</h4>
+        <h5 style="font-family: 'Microsoft YaHei'">http://www.artgallery.com</h5>
       </el-col>
     </el-footer>
   </el-container>
@@ -193,6 +194,7 @@ export default {
   text-align: right;
 }
 .home-footer-left {
+  font-family: 'Microsoft YaHei';
   text-align: bottom;
 }
 </style>

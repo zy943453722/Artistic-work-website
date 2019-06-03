@@ -1,6 +1,6 @@
 <template>
   <div style="text-align:center">
-    <h1>发表作品</h1>
+    <h1 style="font-family: 'kaiti'">发表作品</h1>
     <el-form
       label-position="right"
       label-width="90px"

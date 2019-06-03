@@ -4,7 +4,7 @@
     <sider-bar></sider-bar>
     <el-main class="forgot-main">
       <feed-back></feed-back>
-      <h3 style="text-align:center">找回密码</h3>
+      <h3 style="text-align:center;font-family:'Microsoft YaHei'">找回密码</h3>
       <el-form
         label-position="right"
         label-width="70px"
@@ -27,7 +27,7 @@
       </el-form>
     </el-main>
     <el-footer class="forgot-footer">
-      ©2019
+      ©2019&nbsp;&nbsp;
       <router-link :to="{name: 'Home'}">artgallery.com</router-link>
     </el-footer>
   </el-container>
@@ -138,6 +138,7 @@ export default {
   background-color: honeydew;
 }
 .forgot-header {
+  font-family:'angelicwar';
   text-align: center;
   font-size: 60px;
   margin: 50px 0px 0px 0px;
@@ -145,6 +146,7 @@ export default {
 }
 .forgot-footer {
   text-align: center;
+  font-family:'Microsoft YaHei';
 }
 .forgot-main {
   border: thin solid black;

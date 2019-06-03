@@ -1,6 +1,6 @@
 <template>
   <div style="text-align:center">
-    <h1>修改作品</h1>
+    <h1 style="font-family: 'kaiti'">修改作品</h1>
     <el-form
       label-position="right"
       label-width="90px"

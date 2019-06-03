@@ -49,13 +49,18 @@
           <img :src="userRecord.avator">
         </mu-avatar>
         <h2>{{userRecord.nickname}}</h2>
-        <p>
-          {{userRecord.works_number}}件作品&nbsp;|&nbsp;{{userRecord.followers_number}}人
-          关注&nbsp;|&nbsp;共收到{{userRecord.likes_number}}个赞
+        <p style="font-family: 'Microsoft YaHei';font-size:15px">
+          <span style="font-family: 'stup';font-size:25px;color: purple">{{userRecord.works_number}}</span>
+          件作品&nbsp;|&nbsp;
+          <span
+            style="font-family: 'stup';font-size:25px;color: purple"
+          >{{userRecord.followers_number}}</span>人
+          关注&nbsp;|&nbsp;共收到
+          <span style="font-family: 'stup';font-size:25px;color: purple">{{userRecord.likes_number}}</span>个赞
         </p>
         <div>
           <template v-if="userRecord.city === '' ">
-            <p>该用户不在服务区~~</p>
+            <p style="font-family: 'Microsoft YaHei';font-size:15px">该用户不在服务区~~</p>
           </template>
           <template v-else>
             <span class="iconfont">&#xe62d;</span>
@@ -121,7 +126,7 @@ export default {
       worksCount: 0,
       iLikeForm: [],
       likemeForm: [],
-      commentsForm: [],
+      commentsForm: []
     };
   },
   mounted() {
@@ -130,7 +135,10 @@ export default {
   watch: {
     $route(to, from) {
       if (to.params.id !== from.params.id) {
-        this.$router.push({name: 'UserEmpty', params:{toPath: this.$route.params.id}});
+        this.$router.push({
+          name: "UserEmpty",
+          params: { toPath: this.$route.params.id }
+        });
       }
     }
   },
@@ -170,11 +178,11 @@ export default {
       });
     },
     getILikeDetail() {
-        axios({
+      axios({
         method: "get",
         url: "/api/users/getILikeDetail",
         params: {
-          pin: btoa(this.pin),
+          pin: btoa(this.pin)
         }
       }).then(res => {
         if (res.status === 200) {
@@ -194,11 +202,11 @@ export default {
       });
     },
     getLikemeDetail() {
-        axios({
+      axios({
         method: "get",
         url: "/api/users/getLikemeDetail",
         params: {
-          pin: btoa(this.pin),
+          pin: btoa(this.pin)
         }
       }).then(res => {
         if (res.status === 200) {
@@ -218,11 +226,11 @@ export default {
       });
     },
     getComments() {
-        axios({
+      axios({
         method: "get",
         url: "/api/users/getComments",
         params: {
-          pin: btoa(this.pin),
+          pin: btoa(this.pin)
         }
       }).then(res => {
         if (res.status === 200) {

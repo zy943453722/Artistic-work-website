@@ -131,6 +131,7 @@ export default {
   background-color: honeydew;
 }
 .connect-header {
+  font-family: 'kaiti';
   text-align: center;
   font-size: 60px;
   margin: 50px 0px 0px 0px;

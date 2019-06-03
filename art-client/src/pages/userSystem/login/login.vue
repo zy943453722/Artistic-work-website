@@ -4,7 +4,7 @@
     <sider-bar></sider-bar>
     <el-main class="login-main">
       <feed-back></feed-back>
-      <h3 style="text-align:center">登录到Artgallery!</h3>
+      <h3 style="text-align:center;font-family:'Microsoft YaHei'">登录到Artgallery!</h3>
       <el-form
         label-position="right"
         label-width="70px"
@@ -25,7 +25,7 @@
           <el-button type="success" class="login-btn-cancel" @click="cancel">取消</el-button>
         </div>
         <div>
-          <h3 style="text-align:center">
+          <h3 style="text-align:center;font-family:'Microsoft YaHei'">
             还没注册ArtGallery?
             <router-link :to="{name: 'Register'}">立即注册</router-link>
           </h3>
@@ -33,8 +33,8 @@
       </el-form>
     </el-main>
     <el-footer class="login-footer">
-      ©2019
-      <router-link :to="{name: 'Home'}">artgallery.com</router-link>
+      ©2019&nbsp;&nbsp;
+      <router-link :to="{name: 'Home'}" style="font-family: 'Microsoft YaHei'">artgallery.com</router-link>
     </el-footer>
   </el-container>
 </template>
@@ -198,6 +198,7 @@ export default {
   background-color: honeydew;
 }
 .login-header {
+  font-family: 'angelicwar';
   text-align: center;
   font-size: 60px;
   margin: 50px 0px 0px 0px;

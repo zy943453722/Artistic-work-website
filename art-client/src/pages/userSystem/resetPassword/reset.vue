@@ -2,8 +2,11 @@
   <el-container class="reset-container">
     <el-header class="reset-header">Artgallery</el-header>
     <el-main class="reset-main">
-      <h3 style="text-align:center">设置新密码</h3>
-      <h4 style="text-align:center">当前账号: {{this.$route.params.pin}}</h4>
+      <h3 style="text-align:center;font-family:'Microsoft YaHei'">设置新密码</h3>
+      <h4 style="text-align:center;font-family:'Microsoft YaHei'">
+        当前账号:
+        <span style="font-family:'stup';font-size:20px;color: purple">{{this.$route.params.pin}}</span>
+      </h4>
       <el-form
         label-position="top"
         label-width="70px"
@@ -25,7 +28,7 @@
       </el-form>
     </el-main>
     <el-footer class="reset-footer">
-      ©2019
+      ©2019&nbsp;&nbsp;
       <router-link :to="{name: 'Home'}">artgallery.com</router-link>
     </el-footer>
   </el-container>
@@ -135,12 +138,14 @@ export default {
   background-color: white;
 }
 .reset-header {
+  font-family: "angelicwar";
   text-align: center;
   font-size: 60px;
   margin: 50px 0px 0px 0px;
   color: black;
 }
 .reset-footer {
+  font-family: "Microsoft YaHei";
   text-align: center;
 }
 .reset-btn {

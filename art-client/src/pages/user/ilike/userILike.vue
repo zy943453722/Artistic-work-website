@@ -67,7 +67,7 @@
             </div>
             <router-link :to="{name: 'Art',params:{id: iLike.works_id}}">{{iLike.name}}</router-link>
             <p>{{iLike.make_at}}年作品</p>
-            <p>共计{{iLike.likes}}个赞</p>
+            <p>共计<span style="font-family: 'stup';font-size:25px;color: purple">{{iLike.likes}}</span>个赞</p>
           </div>
         </el-col>
       </div>

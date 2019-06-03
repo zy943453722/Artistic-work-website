@@ -102,7 +102,10 @@
                 >
               </router-link>
             </div>
-            <router-link :to="{name: 'Art',params:{id: work.id}}">{{work.name}}</router-link>
+            <router-link
+              :to="{name: 'Art',params:{id: work.id}}"
+              style="font-family:'Microsoft YaHei';font-size:20px"
+            >{{work.name}}</router-link>
             <template v-if="work.hasOwnProperty('relation')">
               <el-button
                 @click="pinHandleLikeRelation(work.pin,work.id)"
@@ -125,13 +128,17 @@
                 <span class="iconfont">&#xe620;</span>&nbsp;赞一下
               </el-button>
             </template>
-            <p>
+            <p style="font-family: 'Microsoft YaHei';font-size:15px">
               作者:
               <router-link
                 :to="{name: 'UserWorks',params:{id: work.website.slice(26)}}"
+                style="font-family: 'Microsoft YaHei';font-size:15px;color:#808080"
               >{{work.nickname}}</router-link>
             </p>
-            <p>已被{{work.likes}}人点赞</p>
+            <p style="font-family: 'Microsoft YaHei';font-size:15px">
+              已被
+              <span style="font-family: 'stup';font-size:25px;color: purple">{{work.likes}}</span>人点赞
+            </p>
           </div>
         </el-col>
       </div>
@@ -703,11 +710,11 @@ export default {
   font-size: 20px;
 }
 .home-nav-item-artist {
-  font-family: 'kaiti';
+  font-family: "kaiti";
   color: black;
 }
 .home-nav-item-works {
-  font-family: 'kaiti';
+  font-family: "kaiti";
   color: red;
 }
 .works-divider {

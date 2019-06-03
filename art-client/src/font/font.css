@@ -18,3 +18,11 @@
     font-family: 'wenyiheiti';
     src: url('./wenyiheiti.ttf');
 }
+@font-face{
+    font-family: 'angelicwar';
+    src: url('./AngelicWar.ttf');
+}
+@font-face{
+    font-family: 'england';
+    src: url('./england.ttf');
+}

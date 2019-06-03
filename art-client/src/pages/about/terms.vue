@@ -39,6 +39,7 @@ export default {
     background-color:honeydew;
 }
 .terms-header {
+    font-family: 'wenyiheiti';
     text-align: center;
     font-size: 60px;
     margin: 50px 0px 0px 0px;

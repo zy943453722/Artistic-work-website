@@ -4,7 +4,7 @@
     <sider-bar></sider-bar>
     <el-main class="register-main">
       <feed-back></feed-back>
-      <h3 style="text-align:center">欢迎入驻Artgallery!</h3>
+      <h3 style="text-align:center;font-family:'Microsoft YaHei'">欢迎入驻Artgallery!</h3>
       <el-form label-position="right" label-width="90px" :model="ruleForm" :rules="rules" ref="ruleForm" status-icon>
         <el-form-item label="昵称:" prop="nickname">
           <el-input placeholder="1-16位中文/字母/数字组合" v-model="ruleForm.nickname"></el-input>
@@ -40,7 +40,7 @@
       </el-form>
     </el-main>
     <el-footer class="register-footer">
-      ©2019
+      ©2019&nbsp;&nbsp;
       <router-link :to="{name: 'Home'}">artgallery.com</router-link>
     </el-footer>
   </el-container>
@@ -230,6 +230,7 @@ export default {
   background-color: honeydew;
 }
 .register-header {
+  font-family:'angelicwar';
   text-align: center;
   font-size: 60px;
   margin: 50px 0px 0px 0px;
@@ -237,6 +238,7 @@ export default {
 }
 .register-footer {
   text-align: center;
+  font-family:'Microsoft YaHei';
 }
 .register-main {
   border: thin solid black;

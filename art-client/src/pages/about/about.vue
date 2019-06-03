@@ -45,6 +45,7 @@ export default {
     background-color:honeydew;
 }
 .about-header {
+    font-family: 'wenyiheiti';
     text-align: center;
     font-size: 60px;
     margin: 50px 0px 0px 0px;
@@ -57,5 +58,9 @@ export default {
 }
 .about-footer {
     text-align: center;
+}
+p {
+    font-family: 'Microsoft YaHei';
+    font-size: 15px;
 }
 </style>
