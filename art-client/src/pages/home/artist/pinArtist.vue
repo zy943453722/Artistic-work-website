@@ -145,8 +145,9 @@ export default {
   },
   computed: {
     allArtists() {
-      this.prvArtists = this.prvArtists.concat(this.artists);
-      return this.prvArtists;
+      let _this = this;
+      _this.prvArtists = _this.prvArtists.concat(this.artists);
+      return _this.prvArtists;
     }
   },
   methods: {

@@ -38,7 +38,9 @@
           </el-col>
         </el-row>
         <el-row>
-          <p style="margin:15px 100px 5px 100px;float:left;font-family: 'Microsoft YaHei';font-size:15px">
+          <p
+            style="margin:15px 100px 5px 100px;float:left;font-family: 'Microsoft YaHei';font-size:15px"
+          >
             {{worksData.name}}&nbsp;&nbsp;|&nbsp;&nbsp;{{worksData.type}},
             &nbsp;&nbsp;{{worksData.length}}&times;{{worksData.height}}cm,&nbsp;&nbsp;
             {{worksData.make_at}}
@@ -46,7 +48,9 @@
         </el-row>
         <el-row style="height:50px">
           <el-col :span="16">
-            <p style="margin-left:100px;float:left;font-family: 'Microsoft YaHei';font-size:15px">简介:&nbsp;&nbsp;{{worksData.introduction}}</p>
+            <p
+              style="margin-left:100px;float:left;font-family: 'Microsoft YaHei';font-size:15px"
+            >简介:&nbsp;&nbsp;{{worksData.introduction}}</p>
           </el-col>
           <el-col :span="8" style="line-height:50px" v-if="worksData.right">
             <el-tooltip class="item" effect="dark" content="修改作品" placement="bottom">
@@ -84,7 +88,9 @@
         <div v-for="person in likeAvatar" :key="person.pin" style="display:inline">
           <router-link :to="{name: 'UserWorks',params:{id: person.website.slice(26)}}">
             <mu-avatar size="50" style="margin-right:10px">
-              <img :src="person.avator+'?x-oss-process=image/resize,m_lfit,h_100,w_100'">
+              <img :src="person.avator+'?x-oss-process=image/resize,m_lfit,h_100,w_100'"
+              alt="图片加载失败，请稍等"
+              :title="person.nickname">
             </mu-avatar>
           </router-link>
         </div>
@@ -92,8 +98,8 @@
       <h3 style="margin: 0px 300px">大家的评论</h3>
       <mu-divider shallow-inset class="works-divider"></mu-divider>
       <div
-        v-for="comment in commentList"
-        :key="comment.pin"
+        v-for="(comment,index) in commentList"
+        :key="index"
         style="text-align:center;margin: 10px 300px;height:100px"
       >
         <router-link
@@ -351,7 +357,10 @@ export default {
   watch: {
     $route() {
       if (this.$route.params.id) {
-        this.$router.push({name: 'Empty', params:{toPath: this.$route.params.id}});
+        this.$router.push({
+          name: "Empty",
+          params: { toPath: this.$route.params.id }
+        });
       }
     }
   },
@@ -418,11 +427,12 @@ export default {
       }).then(res => {
         if (res.status === 200) {
           if (res.data.errno === 10000) {
+            this.input = "";
             this.$message({
               message: "评论成功",
               type: "success"
             });
-            location.reload();
+            this.pinGetCommentDetail(this.$route.params.id);
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
           } else {
@@ -454,50 +464,63 @@ export default {
       this.to = btoa(pin);
     },
     handleDeleteComment(id) {
-      axios({
-        method: "delete",
-        url: "/api/works/deleteComments",
-        headers: {
-          Authorization: "Bearer " + localStorage.accessToken,
-          "Content-Type": "application/json"
-        },
-        data: {
-          id: id
-        },
-        transformRequest: [
-          function(data) {
-            data = JSON.stringify(data);
-            return data;
-          }
-        ]
-      }).then(res => {
-        if (res.status === 200) {
-          if (res.data.errno === 10000) {
-            this.$message({
-              message: "评论删除成功",
-              type: "success"
-            });
-            location.reload();
-          } else if (res.data.errno === 40005) {
-            this.refreshHandle();
-          } else {
-            this.$message({
-              message: "参数有误",
-              type: "warning"
-            });
-            return false;
-          }
-        } else if (res.status === 401) {
-          this.$message({
-            message: res.data.errmsg,
-            type: "warning"
+      this.$confirm("确定删除当前评论?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          axios({
+            method: "delete",
+            url: "/api/works/deleteComments",
+            headers: {
+              Authorization: "Bearer " + localStorage.accessToken,
+              "Content-Type": "application/json"
+            },
+            data: {
+              id: id
+            },
+            transformRequest: [
+              function(data) {
+                data = JSON.stringify(data);
+                return data;
+              }
+            ]
+          }).then(res => {
+            if (res.status === 200) {
+              if (res.data.errno === 10000) {
+                this.$message({
+                  message: "评论删除成功",
+                  type: "success"
+                });
+                this.pinGetCommentDetail(this.$route.params.id);
+              } else if (res.data.errno === 40005) {
+                this.refreshHandle();
+              } else {
+                this.$message({
+                  message: "参数有误",
+                  type: "warning"
+                });
+                return false;
+              }
+            } else if (res.status === 401) {
+              this.$message({
+                message: res.data.errmsg,
+                type: "warning"
+              });
+              this.$router.push({ name: "Home" });
+            } else {
+              this.$message.error("服务器请求错误");
+              return false;
+            }
           });
-          this.$router.push({ name: "Home" });
-        } else {
-          this.$message.error("服务器请求错误");
-          return false;
-        }
-      });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消操作"
+          });
+        });
     },
     handleEdit() {
       this.$router.push({
@@ -767,7 +790,8 @@ export default {
               message: "点赞成功",
               type: "success"
             });
-            location.reload();
+            this.pinGetWorksDetail(this.$route.params.id);
+            this.getLikeDetail(this.$route.params.id);
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
           } else {
@@ -833,7 +857,9 @@ export default {
               message: "取消点赞成功",
               type: "success"
             });
-            location.reload();
+            this.worksData.relation = "";
+            this.pinGetWorksDetail(this.$route.params.id);
+            this.getLikeDetail(this.$route.params.id);
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
           } else {

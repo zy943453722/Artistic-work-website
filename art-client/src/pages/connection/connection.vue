@@ -9,6 +9,7 @@
         :followData="followData"
         :count="count"
         :mutualCount="mutualCount"
+        @changeFollow="getFollowing"
       ></router-view>
     </el-main>
   </el-container>

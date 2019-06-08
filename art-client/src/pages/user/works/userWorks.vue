@@ -160,7 +160,8 @@ export default {
               message: "点赞成功",
               type: "success"
             });
-            location.reload();
+            this.$emit("changePageNumber", this.pageNumber);
+            this.$emit("changeLike");
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
           } else {
@@ -226,7 +227,8 @@ export default {
               message: "取消点赞成功",
               type: "success"
             });
-            location.reload();
+            this.$emit("changePageNumber", this.pageNumber);
+            this.$emit("changeLike");
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
           } else {

@@ -565,7 +565,7 @@ export default {
               message: "点赞成功",
               type: "success"
             });
-            location.reload();
+            this.$emit("changeTag", this.dynamicType);
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
           } else {
@@ -615,7 +615,7 @@ export default {
         if (response.status === 200) {
           if (response.data.errno === 10000) {
             localStorage.accessToken = response.data.data.accessToken;
-            this.$router.push({ name: "Works" });
+            location.reload();
           } else {
             this.$message({
               message: response.data.errmsg,
@@ -664,7 +664,7 @@ export default {
               message: "取消点赞成功",
               type: "success"
             });
-            location.reload();
+            this.$emit("changeTag", this.dynamicType);
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
           } else {

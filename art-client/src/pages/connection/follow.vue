@@ -153,7 +153,7 @@ export default {
               message: "取消关注成功",
               type: "success"
             });
-            location.reload();
+            this.$emit("changeFollow", this.$route.path);
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
           } else {
@@ -199,7 +199,7 @@ export default {
               message: "取消关注成功",
               type: "success"
             });
-            location.reload();
+            this.$emit("changeFollow", this.$route.path);
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
           } else {
