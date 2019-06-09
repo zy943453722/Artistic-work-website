@@ -52,7 +52,7 @@
     </div>
     <mu-divider shallow-inset style="margin: 20px 300px;width:700px"></mu-divider>
     <el-row :gutter="20" v-if="Object.keys(works).length !== 0" style="margin: 20px 150px">
-      <div v-for="work in works" :key="work.id">
+      <div v-for="work in allWorks" :key="work.id">
         <el-col :span="8">
           <div style="width:300px;height:300px">
             <div style="width:300px;height:220px">
@@ -127,8 +127,16 @@ export default {
   data() {
     return {
       pageNumber: 1,
-      accessToken: localStorage.hasOwnProperty("accessToken")
+      accessToken: localStorage.hasOwnProperty("accessToken"),
+      prvWorks: [],
     };
+  },
+  computed: {
+    allWorks() {
+      let _this = this;
+      _this.prvWorks = _this.prvWorks.concat(this.works);
+      return _this.prvWorks;
+    }
   },
   methods: {
     loadMore() {
@@ -160,7 +168,11 @@ export default {
               message: "点赞成功",
               type: "success"
             });
-            this.$emit("changePageNumber", this.pageNumber);
+            let _this = this;
+            _this.prvWorks.length = 0;
+            for (let i = 1; i <= this.pageNumber; i++) {
+              this.$emit("changePageNumber", i);
+            }
             this.$emit("changeLike");
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
@@ -227,7 +239,11 @@ export default {
               message: "取消点赞成功",
               type: "success"
             });
-            this.$emit("changePageNumber", this.pageNumber);
+            let _this = this;
+            _this.prvWorks.length = 0;
+            for (let i = 1; i <= this.pageNumber; i++) {
+              this.$emit("changePageNumber", i);
+            }
             this.$emit("changeLike");
           } else if (res.data.errno === 40005) {
             this.refreshHandle();

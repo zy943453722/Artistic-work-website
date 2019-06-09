@@ -267,7 +267,7 @@ export default {
           if (res.data.errno === 10000) {
             this.worksCount = res.data.data.count;
             delete res.data.data.count;
-            this.works = res.data.data;
+            this.works = Object.values(res.data.data);
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
           } else {

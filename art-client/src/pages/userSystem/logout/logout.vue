@@ -20,7 +20,7 @@ export default {
         if (response.status === 200) {
           if (response.data.errno === 10000) {
             localStorage.accessToken = response.data.data.accessToken;
-            this.$router.push({ name: "Logout" });  
+            location.reload();  
           } else {
             this.$message({
               message: response.data.errmsg,
