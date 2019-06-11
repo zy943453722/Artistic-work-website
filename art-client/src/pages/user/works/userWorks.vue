@@ -174,6 +174,8 @@ export default {
               this.$emit("changePageNumber", i);
             }
             this.$emit("changeLike");
+            this.$emit("changeIlike");
+            this.$emit("changeLikeme");
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
           } else {
@@ -245,6 +247,8 @@ export default {
               this.$emit("changePageNumber", i);
             }
             this.$emit("changeLike");
+            this.$emit("changeIlike");
+            this.$emit("changeLikeme");
           } else if (res.data.errno === 40005) {
             this.refreshHandle();
           } else {

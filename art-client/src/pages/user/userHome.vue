@@ -81,6 +81,8 @@
             :commentsForm="commentsForm"
             @changePageNumber="pinGetWorksList"
             @changeLike="getUserRecord"
+            @changeIlike="getILikeDetail"
+            @changeLikeme="getLikemeDetail"
           ></router-view>
         </template>
         <template v-else>
