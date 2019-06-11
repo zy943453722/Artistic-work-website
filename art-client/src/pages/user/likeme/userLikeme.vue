@@ -52,7 +52,7 @@
     </div>
     <mu-divider shallow-inset style="margin: 20px 300px;width:700px"></mu-divider>
     <template v-if="Object.keys(likemeForm).length !== 0">
-      <div v-for="likeme in likemeForm" :key="likeme.index">
+      <div v-for="(likeme,index) in likemeForm" :key="index">
       <div style="text-align:center;margin: 10px 300px;height:70px">
         <router-link
           :to="{name: 'UserWorks',params:{id: likeme.website.slice(26)}}"

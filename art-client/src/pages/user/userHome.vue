@@ -303,7 +303,7 @@ export default {
           if (res.data.errno === 10000) {
             this.worksCount = res.data.data.count;
             delete res.data.data.count;
-            this.works = res.data.data;
+            this.works = Object.values(res.data.data);
           } else {
             this.$message({
               message: "参数有误",

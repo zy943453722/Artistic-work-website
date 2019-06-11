@@ -162,7 +162,7 @@
       <h2 style="text-align:center">{{worksData.nickname}}的更多作品</h2>
       <mu-divider shallow-inset class="works-divider"></mu-divider>
       <el-row :gutter="20" v-if="Object.keys(works).length !== 0" style="margin: 20px 150px">
-        <div v-for="work in allWorks" :key="work.id">
+        <div v-for="work in works" :key="work.id">
           <el-col :span="8">
             <div>
               <div style="width:300px;height:220px">
@@ -362,13 +362,6 @@ export default {
           params: { toPath: this.$route.params.id }
         });
       }
-    }
-  },
-  computed: {
-    allWorks() {
-      let _this = this;
-      _this.prvWorks = _this.prvWorks.concat(Object.values(this.works));
-      return _this.prvWorks;
     }
   },
   mounted() {
